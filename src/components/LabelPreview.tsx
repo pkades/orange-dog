@@ -23,7 +23,7 @@ interface LabelPreviewProps {
 // Label size constants (68x45mm)
 const LABEL_WIDTH = 193; // ~68mm at 72 DPI
 const LABEL_HEIGHT = 128; // ~45mm at 72 DPI
-const BLEED = 8.5; // ~3mm at 72 DPI (changed from 4mm to 3mm)
+const BLEED = 8.5; // ~3mm at 72 DPI
 
 const LabelPreview: React.FC<LabelPreviewProps> = ({
   logoUrl,
@@ -52,7 +52,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
     if (type === 'facingIn' && svgRef.current) {
       const img = svgRef.current;
       
-      // When the SVG is loaded, add it to a hidden iframe to modify its content
+      // When the SVG is loaded, modify its content
       img.onload = () => {
         try {
           // Create a helper function to fetch and modify the SVG
@@ -130,31 +130,33 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
     
     return (
       <div className="w-full h-full relative">
-        {/* SVG background - positioned at the back */}
-        <img 
-          ref={svgRef}
-          src={svgUrl} 
-          alt="Service Label Template" 
-          className="w-full h-full object-contain absolute top-0 left-0 z-0"
-          onError={(e) => {
-            console.error(`Failed to load SVG: ${svgUrl}`);
-            e.currentTarget.style.display = 'none';
-            // Show fallback message
-            const parent = e.currentTarget.parentElement;
-            if (parent) {
-              const fallback = document.createElement('div');
-              fallback.textContent = "Template Failed to Load";
-              fallback.className = "w-full h-full flex items-center justify-center text-red-500";
-              parent.appendChild(fallback);
-            }
-          }}
-        />
+        {/* SVG background - positioned at the back with z-index 0 */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          <img 
+            ref={svgRef}
+            src={svgUrl} 
+            alt="Service Label Template" 
+            className="w-full h-full object-contain"
+            onError={(e) => {
+              console.error(`Failed to load SVG: ${svgUrl}`);
+              e.currentTarget.style.display = 'none';
+              // Show fallback message
+              const parent = e.currentTarget.parentElement;
+              if (parent) {
+                const fallback = document.createElement('div');
+                fallback.textContent = "Template Failed to Load";
+                fallback.className = "w-full h-full flex items-center justify-center text-red-500";
+                parent.appendChild(fallback);
+              }
+            }}
+          />
+        </div>
         
-        {/* Logo and text overlay - positioned in front */}
-        <div className="absolute top-0 left-0 w-full h-full z-10">
+        {/* Logo and text overlay - positioned in front with z-index 10 */}
+        <div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
           {/* Logo placement */}
           {logoUrl && (
-            <div className="absolute top-2 left-2 w-16 h-9">
+            <div className="absolute top-3 left-3 w-16 h-9 pointer-events-auto">
               <img 
                 src={logoUrl} 
                 alt="Business logo" 
@@ -165,7 +167,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
           
           {/* Contact info placement */}
           <div 
-            className="absolute top-2 right-2 text-right" 
+            className="absolute top-3 right-3 text-right pointer-events-auto" 
             style={{ 
               fontFamily: phoneFont || "'Bebas Neue', sans-serif",
             }}
@@ -206,20 +208,26 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
           }}
           className="mx-auto my-4 border border-gray-300"
         >
-          {/* Bleed indicator - now 3mm instead of 4mm */}
-          <div className="absolute inset-0 border border-dashed border-red-400 m-[8.5px] pointer-events-none z-20" />
+          {/* Actual label content first (background) */}
+          {type === 'facingOut' ? (
+            <div 
+              style={{ 
+                width: `${LABEL_WIDTH + BLEED * 2}px`,
+                height: `${LABEL_HEIGHT + BLEED * 2}px`,
+                backgroundColor: type === 'facingOut' ? backgroundColor : 'transparent'
+              }}
+              className="absolute inset-0"
+            >
+              {renderFacingOut()}
+            </div>
+          ) : (
+            <div className="absolute inset-0">
+              {renderFacingIn()}
+            </div>
+          )}
           
-          {/* Actual label content */}
-          <div 
-            className="absolute inset-0 m-[8.5px]"
-            style={{ 
-              width: `${LABEL_WIDTH}px`,
-              height: `${LABEL_HEIGHT}px`,
-              backgroundColor: type === 'facingOut' ? backgroundColor : 'transparent'
-            }}
-          >
-            {type === 'facingOut' ? renderFacingOut() : renderFacingIn()}
-          </div>
+          {/* Bleed indicator - 3mm */}
+          <div className="absolute inset-0 border border-dashed border-red-400 m-[8.5px] pointer-events-none z-20" />
         </div>
         
         <div className="p-2 bg-gray-50 text-xs text-gray-500 text-center border-t">
