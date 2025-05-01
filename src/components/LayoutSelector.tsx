@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 export interface Layout {
   id: string;
   name: string;
-  image: string;
+  image?: string; // Optional now as we'll render previews directly
 }
 
 interface LayoutSelectorProps {
@@ -21,12 +21,98 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
   selectedLayoutId,
   onLayoutChange,
 }) => {
-  // Debug images on component mount
+  // Debug layouts on component mount
   useEffect(() => {
-    layouts.forEach(layout => {
-      console.log("Layout image URL:", layout.image);
-    });
+    console.log("Available layouts:", layouts);
   }, [layouts]);
+
+  // Render the layout preview based on layout ID
+  const renderLayoutPreview = (layoutId: string) => {
+    switch(layoutId) {
+      case 'layout1':
+        return (
+          <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
+            {/* Grey Box */}
+            <div className="absolute h-8 left-2 right-2 top-14 bg-gray-200 rounded-xl"></div>
+            {/* Orange Circle */}
+            <div className="absolute w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center top-[54px] left-3">🔧</div>
+            {/* Service Text */}
+            <div className="absolute top-14 left-12 text-xs font-bebas">
+              SERVICE<br/>NEXT DUE:
+            </div>
+            {/* Demo contact info */}
+            <div className="absolute top-2 right-2 text-right text-xs">
+              <div className="font-bold">PHONE</div>
+              <div>LOCATION</div>
+            </div>
+            {/* Demo logo */}
+            <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center">
+              <span className="text-[8px]">LOGO</span>
+            </div>
+          </div>
+        );
+      case 'layout2':
+        return (
+          <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
+            {/* Write Box */}
+            <div className="absolute h-6 left-2 right-2 top-14 bg-gray-100 rounded-md"></div>
+            {/* Black Label */}
+            <div className="absolute h-6 w-16 top-14 left-2 bg-black text-white text-xs flex items-center justify-center font-bebas">
+              SERVICE
+            </div>
+            {/* Demo contact info */}
+            <div className="absolute top-2 right-2 text-right text-xs">
+              <div className="font-bold">PHONE</div>
+              <div>LOCATION</div>
+            </div>
+            {/* Demo logo */}
+            <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center">
+              <span className="text-[8px]">LOGO</span>
+            </div>
+          </div>
+        );
+      case 'layout3':
+        return (
+          <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden flex">
+            {/* Left accent panel */}
+            <div className="w-2/5 h-full bg-gray-200 p-2">
+              {/* Demo logo */}
+              <div className="w-full h-8 flex items-center justify-center mb-1">
+                <div className="w-12 h-6 bg-white flex items-center justify-center">
+                  <span className="text-[8px]">LOGO</span>
+                </div>
+              </div>
+              {/* Demo contact */}
+              <div className="text-xs">
+                <div className="font-bold">PHONE</div>
+                <div>LOCATION</div>
+              </div>
+            </div>
+            {/* Right fields */}
+            <div className="flex-1 p-2 flex flex-col justify-center space-y-3">
+              <div>
+                <div className="h-4 w-14 bg-black text-white text-[8px] flex items-center justify-center">
+                  DATE
+                </div>
+                <div className="h-5 border border-black"></div>
+              </div>
+              <div>
+                <div className="h-4 w-14 bg-black text-white text-[8px] flex items-center justify-center">
+                  KM
+                </div>
+                <div className="h-5 border border-black"></div>
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className="w-full h-32 bg-gray-100 flex items-center justify-center">
+            Preview Not Available
+          </div>
+        );
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -43,16 +129,7 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
             <Label htmlFor={`layout-${layout.id}`} className="w-full cursor-pointer">
               <Card className={`overflow-hidden transition-all ${selectedLayoutId === layout.id ? 'ring-2 ring-primary' : ''}`}>
                 <CardContent className="p-2">
-                  {/* Image with error handling */}
-                  <img
-                    src={layout.image}
-                    alt={layout.name}
-                    className="w-full h-32 object-contain border border-gray-200"
-                    onError={(e) => {
-                      console.error(`Failed to load image: ${layout.image}`);
-                      e.currentTarget.src = "/placeholder.svg";
-                    }}
-                  />
+                  {renderLayoutPreview(layout.id)}
                   <p className="text-center text-sm mt-2">{layout.name}</p>
                 </CardContent>
               </Card>

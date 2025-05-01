@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,26 +16,23 @@ import LayoutSelector, { Layout } from '@/components/LayoutSelector';
 // Orange Dog logo
 const ORANGE_DOG_LOGO = '/lovable-uploads/595ae1dd-8573-4284-a957-b07ca48f511c.png';
 
-// Define the available layouts
+// Define the available layouts with new descriptions
 const LABEL_LAYOUTS: Layout[] = [
   { 
     id: 'layout1', 
-    name: 'Standard Service Label', 
-    image: '/lovable-uploads/6e165541-c48e-40e6-8c5b-d5a8977baec0.png'
+    name: 'Orange Circle Service Label', 
   },
   {
     id: 'layout2',
-    name: 'Horizontal Service Label',
-    image: '/lovable-uploads/b406f024-3af0-42a5-8812-d6131d8e4102.png'
+    name: 'Black Banner Service Label',
   },
   {
     id: 'layout3',
-    name: 'Modern Service Label',
-    image: '/lovable-uploads/5fdde112-f5e3-4ac6-b8a9-83d7e8f181cd.png'
+    name: 'Split Panel Service Label',
   }
 ];
 
-// Font options
+// Add Bebas Neue to the font options
 const FONT_OPTIONS = [
   { name: 'Bebas Neue', value: "'Bebas Neue', sans-serif" },
   { name: 'Montserrat', value: "'Montserrat', sans-serif" },
@@ -64,6 +60,20 @@ const FONT_WEIGHTS = [
 const ORANGE_DOG_COLOR = '#FF7A00';
 
 const Index = () => {
+  // Add Bebas Neue font to the document
+  React.useEffect(() => {
+    // Add Google Fonts link for Bebas Neue
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    
+    return () => {
+      // Cleanup if component unmounts
+      document.head.removeChild(link);
+    };
+  }, []);
+
   // Form state
   const [logoUrl, setLogoUrl] = useState<string | null>(ORANGE_DOG_LOGO);
   const [phoneNumber, setPhoneNumber] = useState('');

@@ -9,7 +9,7 @@ interface LabelPreviewProps {
   location: string;
   backgroundColor: string;
   accentColor: string;
-  selectedLayout: { id: string; name: string; image: string; } | null;
+  selectedLayout: { id: string; name: string; image?: string; } | null;
   type: 'facingOut' | 'facingIn';
   fontFamily: string;
   phoneFont: string;
@@ -57,6 +57,10 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             src={logoUrl} 
             alt="Business logo" 
             className="max-w-full max-h-full object-contain"
+            onError={(e) => {
+              console.error(`Failed to load logo: ${logoUrl}`);
+              e.currentTarget.style.display = 'none';
+            }}
           />
         </div>
       )}

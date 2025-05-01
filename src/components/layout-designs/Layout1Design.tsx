@@ -24,7 +24,6 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   backgroundColor,
   accentColor,
   layoutId,
-  layoutImage,
   phoneFont,
   locationFont,
   phoneFontSize,
@@ -35,160 +34,343 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   // Split location into lines if it contains newlines
   const locationLines = location ? location.split('\n') : [];
   
-  // Debug the image URL
-  console.log("Layout1Design - layoutImage:", layoutImage);
-  
-  const renderContentBasedOnLayout = () => {
-    // For layouts that use the uploaded image templates
-    if (layoutImage) {
-      // Background with layout image
-      return (
-        <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-          {/* Layout template image */}
-          <img 
-            src={layoutImage} 
-            alt={`Layout ${layoutId}`} 
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              objectFit: 'cover'
-            }}
-            onError={(e) => {
-              console.error(`Failed to load layout image: ${layoutImage}`);
-              e.currentTarget.style.backgroundColor = "#f0f0f0";
-              e.currentTarget.style.border = "1px dashed #ccc";
-            }}
-          />
-          
-          {/* Content overlay for the left side of the layout */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '50%',
-            height: '100%',
-            padding: '8px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            boxSizing: 'border-box'
-          }}>
-            {/* Logo area */}
-            <div style={{
-              width: '80%',
-              height: '40%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '8px'
-            }}>
-              {logoUrl ? (
-                <img src={logoUrl} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-              ) : (
-                <div style={{ fontSize: '16px', fontWeight: 'bold' }}>LOGO</div>
-              )}
-            </div>
-            
-            {/* Phone number */}
-            <div style={{
-              fontFamily: phoneFont,
-              fontSize: phoneFontSize,
-              fontWeight: phoneFontWeight,
-              textAlign: 'center',
-              width: '100%',
-              marginBottom: '4px'
-            }}>
-              {phoneNumber ? phoneNumber : ''}
-            </div>
-            
-            {/* Location */}
-            <div style={{
-              fontFamily: locationFont,
-              fontSize: locationFontSize,
-              fontWeight: locationFontWeight,
-              textAlign: 'center',
-              width: '100%'
-            }}>
-              {locationLines.map((line, index) => (
-                <div key={index}>{line}</div>
-              ))}
-            </div>
-          </div>
-        </div>
-      );
+  const renderLayout = () => {
+    // Determine which layout to render based on layoutId
+    switch(layoutId) {
+      case 'layout1':
+        return renderLayout1();
+      case 'layout2':
+        return renderLayout2();
+      case 'layout3':
+        return renderLayout3();
+      default:
+        return renderLayout1();
     }
-    
-    // Fallback if no layout image is provided
+  };
+
+  // Layout Option 1 - Orange accent with circle icon
+  const renderLayout1 = () => {
     return (
       <div style={{
         width: '100%',
         height: '100%',
-        display: 'flex',
-        fontFamily: 'sans-serif',
+        position: 'relative',
         boxSizing: 'border-box',
-        backgroundColor
+        backgroundColor: '#fff',
+        overflow: 'hidden',
+        fontFamily: "'Bebas Neue', sans-serif",
       }}>
+        {/* Logo */}
         <div style={{
-          width: '50%',
-          padding: '2mm',
-          boxSizing: 'border-box',
-          textAlign: 'center',
-          backgroundColor
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          width: '70px',
+          height: '40px',
         }}>
+          {logoUrl ? (
+            <img 
+              src={logoUrl} 
+              alt="Logo" 
+              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
+            />
+          ) : (
+            <div style={{ fontSize: '16px', fontWeight: 'bold' }}>LOGO</div>
+          )}
+        </div>
+        
+        {/* Contact Info */}
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          textAlign: 'right',
+          fontFamily: phoneFont || "'Bebas Neue', sans-serif",
+          fontSize: phoneFontSize || '16px',
+          fontWeight: phoneFontWeight || 'bold',
+          lineHeight: '1.2',
+        }}>
+          <div>{phoneNumber || ''}</div>
+          {locationLines.map((line, index) => (
+            <div 
+              key={index} 
+              style={{ 
+                fontFamily: locationFont || "'Bebas Neue', sans-serif",
+                fontSize: locationFontSize || '14px',
+                fontWeight: locationFontWeight || 'normal',
+              }}
+            >
+              {line}
+            </div>
+          ))}
+        </div>
+        
+        {/* Grey Background Box */}
+        <div style={{
+          position: 'absolute',
+          top: '60px',
+          left: '10px',
+          right: '10px',
+          height: '30px',
+          backgroundColor: '#e6e6e6',
+          borderRadius: '15px',
+        }}></div>
+        
+        {/* Accent Circle */}
+        <div style={{
+          position: 'absolute',
+          top: '59px',
+          left: '12px',
+          width: '25px',
+          height: '25px',
+          backgroundColor: accentColor || '#f58220',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontSize: '14px',
+        }}>
+          🔧
+        </div>
+        
+        {/* Service Text */}
+        <div style={{
+          position: 'absolute',
+          top: '63px',
+          left: '45px',
+          fontSize: '16px',
+          color: '#000',
+        }}>
+          SERVICE<br/>NEXT DUE:
+        </div>
+        
+        {/* Date Slashes */}
+        <div style={{
+          position: 'absolute',
+          top: '80px',
+          left: '45px',
+          fontSize: '16px',
+          letterSpacing: '10px',
+          color: '#000',
+        }}>
+          /&nbsp;/
+        </div>
+      </div>
+    );
+  };
+  
+  // Layout Option 2 - Black label with write-on area
+  const renderLayout2 = () => {
+    return (
+      <div style={{
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+        boxSizing: 'border-box',
+        backgroundColor: '#fff',
+        overflow: 'hidden',
+        fontFamily: "'Bebas Neue', sans-serif",
+      }}>
+        {/* Logo */}
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          width: '70px',
+          height: '40px',
+        }}>
+          {logoUrl ? (
+            <img 
+              src={logoUrl} 
+              alt="Logo" 
+              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
+            />
+          ) : (
+            <div style={{ fontSize: '16px', fontWeight: 'bold' }}>LOGO</div>
+          )}
+        </div>
+        
+        {/* Contact Info */}
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          textAlign: 'right',
+          fontFamily: phoneFont || "'Bebas Neue', sans-serif",
+          fontSize: phoneFontSize || '16px',
+          fontWeight: phoneFontWeight || 'bold',
+          lineHeight: '1.2',
+        }}>
+          <div>{phoneNumber || ''}</div>
+          {locationLines.map((line, index) => (
+            <div 
+              key={index} 
+              style={{ 
+                fontFamily: locationFont || "'Bebas Neue', sans-serif",
+                fontSize: locationFontSize || '14px',
+                fontWeight: locationFontWeight || 'normal',
+              }}
+            >
+              {line}
+            </div>
+          ))}
+        </div>
+        
+        {/* Write-on Box */}
+        <div style={{
+          position: 'absolute',
+          width: 'calc(100% - 20px)',
+          height: '25px',
+          backgroundColor: '#f0f0f0',
+          left: '10px',
+          top: '60px',
+          borderRadius: '5px',
+        }}></div>
+        
+        {/* Black Label */}
+        <div style={{
+          position: 'absolute',
+          top: '60px',
+          left: '10px',
+          width: '70px',
+          height: '12px',
+          backgroundColor: '#000',
+          color: '#fff',
+          fontSize: '16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          SERVICE
+        </div>
+      </div>
+    );
+  };
+  
+  // Layout Option 3 - Split design with accent area
+  const renderLayout3 = () => {
+    return (
+      <div style={{
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+        boxSizing: 'border-box',
+        backgroundColor: '#fff',
+        overflow: 'hidden',
+        fontFamily: "'Bebas Neue', sans-serif",
+        display: 'flex',
+        flexDirection: 'row',
+      }}>
+        {/* Left Accent Panel */}
+        <div style={{
+          width: '40%',
+          height: '100%',
+          backgroundColor: backgroundColor || '#dcdcdc',
+          padding: '10px',
+          boxSizing: 'border-box',
+          color: '#000',
+        }}>
+          {/* Logo */}
           <div style={{
             width: '100%',
-            height: '20mm',
+            height: '30px',
+            marginBottom: '10px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
           }}>
             {logoUrl ? (
-              <img src={logoUrl} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+              <img 
+                src={logoUrl} 
+                alt="Logo" 
+                style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
+              />
             ) : (
-              <div style={{ fontSize: '6mm', fontWeight: 'bold' }}>LOGO</div>
+              <div style={{ fontSize: '16px', fontWeight: 'bold' }}>LOGO</div>
             )}
           </div>
+          
+          {/* Contact Info */}
           <div style={{
-            marginTop: '2mm',
-            fontFamily: phoneFont,
-            fontSize: phoneFontSize,
-            fontWeight: phoneFontWeight
+            fontFamily: phoneFont || "'Bebas Neue', sans-serif",
+            fontSize: phoneFontSize || '14px',
+            fontWeight: phoneFontWeight || 'bold',
+            textAlign: 'left',
           }}>
-            {phoneNumber || ''}
-          </div>
-          <div style={{
-            fontFamily: locationFont,
-            fontSize: locationFontSize,
-            fontWeight: locationFontWeight
-          }}>
-            {locationLines.length > 0 ? 
-              locationLines.map((line, index) => <div key={index}>{line}</div>) : 
-              'Location'
-            }
+            <div>{phoneNumber || ''}</div>
+            {locationLines.map((line, index) => (
+              <div 
+                key={index} 
+                style={{ 
+                  fontFamily: locationFont || "'Bebas Neue', sans-serif",
+                  fontSize: locationFontSize || '12px',
+                  fontWeight: locationFontWeight || 'normal',
+                }}
+              >
+                {line}
+              </div>
+            ))}
           </div>
         </div>
+        
+        {/* Right Fields */}
         <div style={{
-          width: '50%',
-          backgroundColor: '#999',
-          padding: '2mm',
-          boxSizing: 'border-box',
+          flex: 1,
+          padding: '10px',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between'
+          justifyContent: 'center',
+          gap: '15px',
         }}>
-          <div>Date Serviced</div>
-          <div>Next Due</div>
-          <div>Oil Type</div>
+          {/* Date Field */}
+          <div>
+            <div style={{
+              width: '80px',
+              height: '15px',
+              backgroundColor: '#000',
+              color: '#fff',
+              fontSize: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: 'Arial Narrow, sans-serif',
+            }}>
+              DATE
+            </div>
+            <div style={{
+              width: '100%',
+              height: '25px',
+              border: '1px solid #000',
+            }}></div>
+          </div>
+          
+          {/* KM Field */}
+          <div>
+            <div style={{
+              width: '80px',
+              height: '15px',
+              backgroundColor: '#000',
+              color: '#fff',
+              fontSize: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: 'Arial Narrow, sans-serif',
+            }}>
+              KM
+            </div>
+            <div style={{
+              width: '100%',
+              height: '25px',
+              border: '1px solid #000',
+            }}></div>
+          </div>
         </div>
       </div>
     );
   };
 
-  return renderContentBasedOnLayout();
+  return renderLayout();
 };
 
 export default Layout1Design;
