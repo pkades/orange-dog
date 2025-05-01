@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import Layout1Design from './layout-designs/Layout1Design';
 
 interface LabelPreviewProps {
   logoUrl: string | null;
@@ -70,23 +69,31 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
     </div>
   );
 
-  const renderFacingIn = () => (
-    <Layout1Design
-      logoUrl={logoUrl}
-      phoneNumber={phoneNumber}
-      location={location}
-      backgroundColor={backgroundColor}
-      accentColor={accentColor}
-      layoutId={selectedLayout?.id || 'layout1'}
-      layoutImage={selectedLayout?.image || ''}
-      phoneFont={phoneFont || fontFamily}
-      locationFont={locationFont || fontFamily}
-      phoneFontSize={phoneFontSize}
-      locationFontSize={locationFontSize}
-      phoneFontWeight={phoneFontWeight || fontWeight}
-      locationFontWeight={locationFontWeight || fontWeight}
-    />
-  );
+  const renderFacingIn = () => {
+    const svgUrl = "https://raw.githubusercontent.com/pkades/orangedog/main/service%20label%20option%201%20test.svg";
+    
+    return (
+      <div className="w-full h-full">
+        <img 
+          src={svgUrl} 
+          alt="Service Label Template" 
+          className="w-full h-full object-contain"
+          onError={(e) => {
+            console.error(`Failed to load SVG: ${svgUrl}`);
+            e.currentTarget.style.display = 'none';
+            // Show fallback message
+            const parent = e.currentTarget.parentElement;
+            if (parent) {
+              const fallback = document.createElement('div');
+              fallback.textContent = "Template Failed to Load";
+              fallback.className = "w-full h-full flex items-center justify-center text-red-500";
+              parent.appendChild(fallback);
+            }
+          }}
+        />
+      </div>
+    );
+  };
   
   return (
     <Card className="overflow-hidden">
