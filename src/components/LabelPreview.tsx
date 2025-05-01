@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import Layout1Design from './layout-designs/Layout1Design';
@@ -21,9 +20,9 @@ interface LabelPreviewProps {
   locationFontWeight: string;
 }
 
-// Label size constants (60x40mm)
-const LABEL_WIDTH = 170; // ~60mm at 72 DPI
-const LABEL_HEIGHT = 113; // ~40mm at 72 DPI
+// Label size constants (68x45mm)
+const LABEL_WIDTH = 193; // ~68mm at 72 DPI
+const LABEL_HEIGHT = 128; // ~45mm at 72 DPI
 const BLEED = 11; // ~4mm at 72 DPI
 
 const LabelPreview: React.FC<LabelPreviewProps> = ({
@@ -122,7 +121,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
         </div>
         
         <div className="p-2 bg-gray-50 text-xs text-gray-500 text-center border-t">
-          Label size: 60x40mm (with 4mm bleed)
+          Label size: 68x45mm (with 4mm bleed)
         </div>
       </CardContent>
     </Card>

@@ -108,7 +108,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Grey Background Box */}
         <div style={{
           position: 'absolute',
-          top: '60px',
+          top: '70px',
           left: '10px',
           right: '10px',
           height: '30px',
@@ -119,7 +119,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Accent Circle */}
         <div style={{
           position: 'absolute',
-          top: '59px',
+          top: '69px',
           left: '12px',
           width: '25px',
           height: '25px',
@@ -137,7 +137,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Service Text */}
         <div style={{
           position: 'absolute',
-          top: '63px',
+          top: '73px',
           left: '45px',
           fontSize: '16px',
           color: '#000',
@@ -148,7 +148,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Date Slashes */}
         <div style={{
           position: 'absolute',
-          top: '80px',
+          top: '90px',
           left: '45px',
           fontSize: '16px',
           letterSpacing: '10px',
@@ -221,20 +221,20 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         <div style={{
           position: 'absolute',
           width: 'calc(100% - 20px)',
-          height: '25px',
+          height: '35px',
           backgroundColor: '#f0f0f0',
           left: '10px',
-          top: '60px',
+          top: '70px',
           borderRadius: '5px',
         }}></div>
         
         {/* Black Label */}
         <div style={{
           position: 'absolute',
-          top: '60px',
+          top: '70px',
           left: '10px',
           width: '70px',
-          height: '12px',
+          height: '20px',
           backgroundColor: '#000',
           color: '#fff',
           fontSize: '16px',

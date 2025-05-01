@@ -412,9 +412,9 @@ const Index = () => {
               <CardContent className="p-4">
                 <h3 className="font-medium mb-2">Specifications</h3>
                 <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Label size: 60x40mm</li>
+                  <li>• Label size: 68x45mm</li>
                   <li>• Bleed area: 4mm</li>
-                  <li>• Print-ready dimensions: 64x44mm</li>
+                  <li>• Print-ready dimensions: 72x49mm</li>
                   <li>• Export format: Vector (CMYK color mode)</li>
                 </ul>
               </CardContent>
