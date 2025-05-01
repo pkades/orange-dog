@@ -61,11 +61,11 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   );
 
   const renderLayout1 = () => (
-    <div className="w-full h-full flex flex-col border border-gray-800">
+    <div className="w-full h-full flex flex-col" style={{ backgroundColor }}>
       {/* Top section with logo and contact info */}
       <div className="flex w-full">
         {/* Logo area */}
-        <div className="w-1/2 bg-gray-400 p-2 flex items-center justify-center">
+        <div className="w-1/2 p-2 flex items-center justify-center" style={{ backgroundColor: accentColor }}>
           {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[50px] object-contain" />}
           {!logoUrl && <div className="text-white text-2xl font-bold">LOGO</div>}
         </div>
@@ -96,10 +96,10 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
       </div>
       
       {/* Service section */}
-      <div className="flex-grow bg-gray-100 p-2">
+      <div className="flex-grow p-2">
         {/* Service next due section */}
         <div className="bg-gray-200 rounded-full mb-2 flex items-center">
-          <div className="bg-gray-800 rounded-full p-1 flex items-center">
+          <div className="rounded-full p-1 flex items-center" style={{ backgroundColor: accentColor }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19 7h-1V4H6v3H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z" stroke="white" strokeWidth="2" />
               <path d="M9 14v-5h3m0 0h-3m3 0 3 5" stroke="white" strokeWidth="2" />
@@ -119,7 +119,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             OR AT:
           </div>
           <div className="flex-grow"></div>
-          <div className="bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold">
+          <div className="text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold" style={{ backgroundColor: accentColor }}>
             KM
           </div>
         </div>
@@ -128,24 +128,24 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   );
 
   const renderLayout2 = () => (
-    <div className="w-full h-full flex flex-col border border-gray-800">
+    <div className="w-full h-full flex flex-col" style={{ backgroundColor }}>
       {/* Left side - logo and contact */}
       <div className="flex w-full h-full">
         <div className="w-1/2 flex flex-col">
           {/* Logo area */}
-          <div className="bg-gray-400 flex-1 flex items-center justify-center">
-            {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[80px] object-contain" />}
+          <div className="flex-1 flex items-center justify-center p-1" style={{ backgroundColor: accentColor }}>
+            {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[70px] object-contain" />}
             {!logoUrl && <div className="text-white text-3xl font-bold">LOGO</div>}
           </div>
         </div>
         
         {/* Right side - service panels */}
-        <div className="w-1/2 bg-gray-500">
+        <div className="w-1/2" style={{ backgroundColor: '#f3f3f3' }}>
           <div className="h-full flex flex-col p-2 justify-between">
-            {/* Contact info at the bottom */}
+            {/* Contact info at the top */}
             <div className="flex flex-col space-y-0">
               <div 
-                className="font-bold text-lg"
+                className="font-bold text-sm"
                 style={{ 
                   fontFamily: phoneFont || fontFamily, 
                   fontSize: phoneFontSize, 
@@ -155,7 +155,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
                 {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
               </div>
               <div 
-                className="whitespace-pre-line"
+                className="whitespace-pre-line text-xs"
                 style={{ 
                   fontFamily: locationFont || fontFamily, 
                   fontSize: locationFontSize, 
@@ -167,29 +167,29 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             </div>
             
             {/* Service panels */}
-            <div className="space-y-2 mt-4">
-              <div className="bg-white rounded border border-gray-800 p-1 relative h-12">
-                <div className="absolute top-0 left-0 bg-gray-800 text-white px-2 text-xs font-bold">
+            <div className="space-y-2 mt-1">
+              <div className="bg-white border border-gray-400 p-1 relative h-8">
+                <div className="absolute -top-1 left-1 bg-gray-800 text-white px-1 text-[8px] font-bold">
                   DATE SERVICED
                 </div>
-                <div className="flex justify-end items-center h-full pr-2">
+                <div className="flex justify-end items-center h-full pr-2 text-xs">
                   <span className="font-mono">/</span>
-                  <span className="w-6"></span>
+                  <span className="w-4"></span>
                   <span className="font-mono">/</span>
                 </div>
               </div>
               
-              <div className="bg-white rounded border border-gray-800 p-1 relative h-12">
-                <div className="absolute top-0 left-0 bg-gray-800 text-white px-2 text-xs font-bold">
+              <div className="bg-white border border-gray-400 p-1 relative h-8">
+                <div className="absolute -top-1 left-1 bg-gray-800 text-white px-1 text-[8px] font-bold">
                   NEXT DUE
                 </div>
-                <div className="absolute bottom-1 right-2 text-[8px]">
+                <div className="absolute bottom-0 right-1 text-[6px]">
                   date / km
                 </div>
               </div>
               
-              <div className="bg-white rounded border border-gray-800 p-1 relative h-12">
-                <div className="absolute top-0 left-0 bg-gray-800 text-white px-2 text-xs font-bold">
+              <div className="bg-white border border-gray-400 p-1 relative h-8">
+                <div className="absolute -top-1 left-1 bg-gray-800 text-white px-1 text-[8px] font-bold">
                   OIL TYPE
                 </div>
               </div>
@@ -201,20 +201,20 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   );
 
   const renderLayout3 = () => (
-    <div className="w-full h-full flex flex-col border border-gray-800">
+    <div className="w-full h-full flex flex-col" style={{ backgroundColor }}>
       <div className="flex h-full">
         {/* Left side - Logo and contact info */}
-        <div className="w-1/2 flex flex-col p-2 space-y-2">
+        <div className="w-1/2 flex flex-col p-1 space-y-1">
           {/* Logo area */}
-          <div className="bg-gray-400 flex-grow flex items-center justify-center p-4">
+          <div className="flex-grow flex items-center justify-center p-1" style={{ backgroundColor: accentColor }}>
             {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />}
-            {!logoUrl && <div className="text-white text-3xl font-bold">LOGO</div>}
+            {!logoUrl && <div className="text-white text-2xl font-bold">LOGO</div>}
           </div>
           
           {/* Contact info */}
-          <div className="flex flex-col items-start space-y-1">
+          <div className="flex flex-col items-start">
             <div 
-              className="font-bold text-lg"
+              className="font-bold text-sm"
               style={{ 
                 fontFamily: phoneFont || fontFamily, 
                 fontSize: phoneFontSize, 
@@ -224,7 +224,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
               {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
             </div>
             <div 
-              className="whitespace-pre-line"
+              className="whitespace-pre-line text-xs"
               style={{ 
                 fontFamily: locationFont || fontFamily, 
                 fontSize: locationFontSize, 
@@ -237,33 +237,33 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
         </div>
         
         {/* Right side - Date boxes */}
-        <div className="w-1/2 bg-gray-300 p-2 flex flex-col justify-center space-y-3">
+        <div className="w-1/2 bg-gray-100 p-1 flex flex-col justify-center space-y-2">
           {/* Date serviced box */}
-          <div className="bg-white rounded-lg border border-gray-800 p-2 relative">
-            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 text-xs font-bold rounded">
+          <div className="bg-white border border-gray-400 p-1 relative">
+            <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-1 text-[8px] font-bold">
               DATE SERVICED
             </div>
-            <div className="h-8 flex justify-center items-center">
+            <div className="h-6 flex justify-center items-center text-xs">
               <span className="font-mono">/</span>
-              <span className="w-6"></span>
+              <span className="w-4"></span>
               <span className="font-mono">/</span>
             </div>
           </div>
           
           {/* Next due box */}
-          <div className="bg-white rounded-lg border border-gray-800 p-2 relative">
-            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 text-xs font-bold rounded">
+          <div className="bg-white border border-gray-400 p-1 relative">
+            <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-1 text-[8px] font-bold">
               NEXT DUE
             </div>
-            <div className="h-8"></div>
+            <div className="h-6"></div>
           </div>
           
           {/* Oil type box */}
-          <div className="bg-white rounded-lg border border-gray-800 p-2 relative">
-            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 text-xs font-bold rounded">
+          <div className="bg-white border border-gray-400 p-1 relative">
+            <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-1 text-[8px] font-bold">
               OIL TYPE
             </div>
-            <div className="h-8"></div>
+            <div className="h-6"></div>
           </div>
         </div>
       </div>
@@ -303,10 +303,10 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
           className="mx-auto my-4 border border-gray-300"
         >
           {/* Bleed indicator */}
-          <div className="absolute inset-0 border border-dashed border-red-400 m-[4px] pointer-events-none z-10" />
+          <div className="absolute inset-0 border border-dashed border-red-400 m-[11px] pointer-events-none z-10" />
           
           {/* Actual label content */}
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 p-[11px]">
             {type === 'facingOut' ? renderFacingOut() : renderFacingIn()}
           </div>
         </div>
