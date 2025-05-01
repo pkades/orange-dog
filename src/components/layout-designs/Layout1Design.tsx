@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface Layout1DesignProps {
@@ -48,18 +47,32 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
     }
   };
 
-  // Layout Option 1 - Orange accent with circle icon
+  // Layout Option 1 - Updated with new SVG
   const renderLayout1 = () => {
+    const svgUrl = "https://raw.githubusercontent.com/pkades/orangedog/main/service%20label%20option%201%20test.svg";
+    
     return (
       <div style={{
         width: '100%',
         height: '100%',
         position: 'relative',
         boxSizing: 'border-box',
-        backgroundColor: '#fff',
         overflow: 'hidden',
-        fontFamily: "'Bebas Neue', sans-serif",
       }}>
+        {/* SVG Background */}
+        <img 
+          src={svgUrl}
+          alt="Service Label Template"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+          }}
+        />
+        
         {/* Logo */}
         <div style={{
           position: 'absolute',
@@ -67,6 +80,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           left: '10px',
           width: '70px',
           height: '40px',
+          zIndex: 10,
         }}>
           {logoUrl ? (
             <img 
@@ -89,6 +103,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           fontSize: phoneFontSize || '16px',
           fontWeight: phoneFontWeight || 'bold',
           lineHeight: '1.2',
+          zIndex: 10,
         }}>
           <div>{phoneNumber || ''}</div>
           {locationLines.map((line, index) => (
@@ -103,58 +118,6 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
               {line}
             </div>
           ))}
-        </div>
-        
-        {/* Grey Background Box */}
-        <div style={{
-          position: 'absolute',
-          top: '75px',
-          left: '10px',
-          right: '10px',
-          height: '35px',
-          backgroundColor: '#e6e6e6',
-          borderRadius: '15px',
-        }}></div>
-        
-        {/* Accent Circle */}
-        <div style={{
-          position: 'absolute',
-          top: '74px',
-          left: '12px',
-          width: '30px',
-          height: '30px',
-          backgroundColor: accentColor || '#f58220',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          fontSize: '16px',
-        }}>
-          🔧
-        </div>
-        
-        {/* Service Text */}
-        <div style={{
-          position: 'absolute',
-          top: '78px',
-          left: '50px',
-          fontSize: '16px',
-          color: '#000',
-        }}>
-          SERVICE<br/>NEXT DUE:
-        </div>
-        
-        {/* Date Slashes */}
-        <div style={{
-          position: 'absolute',
-          top: '95px',
-          left: '50px',
-          fontSize: '16px',
-          letterSpacing: '10px',
-          color: '#000',
-        }}>
-          /&nbsp;/
         </div>
       </div>
     );

@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -32,21 +31,20 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
       case 'layout1':
         return (
           <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
-            {/* Grey Box */}
-            <div className="absolute h-8 left-2 right-2 top-16 bg-gray-200 rounded-xl"></div>
-            {/* Orange Circle */}
-            <div className="absolute w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center top-[62px] left-3">🔧</div>
-            {/* Service Text */}
-            <div className="absolute top-16 left-12 text-xs font-bebas">
-              SERVICE<br/>NEXT DUE:
-            </div>
-            {/* Demo contact info */}
-            <div className="absolute top-2 right-2 text-right text-xs">
+            {/* New SVG Background */}
+            <img 
+              src="https://raw.githubusercontent.com/pkades/orangedog/main/service%20label%20option%201%20test.svg"
+              alt="Label Design" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            
+            {/* Demo elements for preview only */}
+            <div className="absolute top-2 right-2 text-right text-xs z-10">
               <div className="font-bold">PHONE</div>
               <div>LOCATION</div>
             </div>
             {/* Demo logo */}
-            <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center">
+            <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center z-10">
               <span className="text-[8px]">LOGO</span>
             </div>
           </div>

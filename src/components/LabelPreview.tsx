@@ -49,7 +49,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   
   // Effect to modify SVG colors when it loads or when colors change
   useEffect(() => {
-    if (type === 'facingIn' && svgRef.current) {
+    if (svgRef.current) {
       const img = svgRef.current;
       
       // When the SVG is loaded, modify its content
@@ -99,7 +99,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
         }
       };
     }
-  }, [backgroundColor, accentColor, type]);
+  }, [backgroundColor, accentColor]);
 
   const renderFacingOut = () => (
     <div 
