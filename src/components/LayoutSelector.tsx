@@ -28,7 +28,7 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
       <RadioGroup
         value={selectedLayoutId}
         onValueChange={onLayoutChange}
-        className="grid grid-cols-1 md:grid-cols-1 gap-4"
+        className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
         {layouts.map((layout) => (
           <div key={layout.id} className="flex items-start space-x-2">

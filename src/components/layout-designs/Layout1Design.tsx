@@ -7,6 +7,8 @@ interface Layout1DesignProps {
   location: string;
   backgroundColor: string;
   accentColor: string;
+  layoutId: string;
+  layoutImage: string;
   phoneFont: string;
   locationFont: string;
   phoneFontSize: string;
@@ -21,6 +23,8 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   location,
   backgroundColor,
   accentColor,
+  layoutId,
+  layoutImage,
   phoneFont,
   locationFont,
   phoneFontSize,
@@ -29,158 +33,154 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   locationFontWeight,
 }) => {
   // Split location into lines if it contains newlines
-  const locationLines = location ? location.split('\n') : ['123 STREET', 'CITY'];
+  const locationLines = location ? location.split('\n') : [];
 
-  return (
-    <div style={{
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      fontFamily: 'sans-serif',
-      boxSizing: 'border-box',
-      backgroundColor
-    }}>
-      {/* Left side (Logo + Address) */}
+  const renderContentBasedOnLayout = () => {
+    // For layouts that use the uploaded image templates
+    if (layoutImage) {
+      // Background with layout image
+      return (
+        <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+          {/* Layout template image */}
+          <img 
+            src={layoutImage} 
+            alt={`Layout ${layoutId}`} 
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              objectFit: 'cover'
+            }} 
+          />
+          
+          {/* Content overlay for the left side of the layout */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '50%',
+            height: '100%',
+            padding: '8px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            boxSizing: 'border-box'
+          }}>
+            {/* Logo area */}
+            <div style={{
+              width: '80%',
+              height: '40%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '8px'
+            }}>
+              {logoUrl ? (
+                <img src={logoUrl} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+              ) : (
+                <div style={{ fontSize: '16px', fontWeight: 'bold' }}>LOGO</div>
+              )}
+            </div>
+            
+            {/* Phone number */}
+            <div style={{
+              fontFamily: phoneFont,
+              fontSize: phoneFontSize,
+              fontWeight: phoneFontWeight,
+              textAlign: 'center',
+              width: '100%',
+              marginBottom: '4px'
+            }}>
+              {phoneNumber ? phoneNumber : ''}
+            </div>
+            
+            {/* Location */}
+            <div style={{
+              fontFamily: locationFont,
+              fontSize: locationFontSize,
+              fontWeight: locationFontWeight,
+              textAlign: 'center',
+              width: '100%'
+            }}>
+              {locationLines.map((line, index) => (
+                <div key={index}>{line}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    // Fallback if no layout image is provided
+    return (
       <div style={{
-        width: '50%',
-        padding: '2mm',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        fontFamily: 'sans-serif',
         boxSizing: 'border-box',
-        textAlign: 'center',
         backgroundColor
       }}>
         <div style={{
-          width: '100%',
-          height: '20mm',
+          width: '50%',
+          padding: '2mm',
+          boxSizing: 'border-box',
+          textAlign: 'center',
+          backgroundColor
+        }}>
+          <div style={{
+            width: '100%',
+            height: '20mm',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            {logoUrl ? (
+              <img src={logoUrl} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+            ) : (
+              <div style={{ fontSize: '6mm', fontWeight: 'bold' }}>LOGO</div>
+            )}
+          </div>
+          <div style={{
+            marginTop: '2mm',
+            fontFamily: phoneFont,
+            fontSize: phoneFontSize,
+            fontWeight: phoneFontWeight
+          }}>
+            {phoneNumber || ''}
+          </div>
+          <div style={{
+            fontFamily: locationFont,
+            fontSize: locationFontSize,
+            fontWeight: locationFontWeight
+          }}>
+            {locationLines.length > 0 ? 
+              locationLines.map((line, index) => <div key={index}>{line}</div>) : 
+              'Location'
+            }
+          </div>
+        </div>
+        <div style={{
+          width: '50%',
+          backgroundColor: '#999',
+          padding: '2mm',
+          boxSizing: 'border-box',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
+          flexDirection: 'column',
+          justifyContent: 'space-between'
         }}>
-          {logoUrl ? (
-            <img src={logoUrl} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-          ) : (
-            <div style={{ fontSize: '6mm', fontWeight: 'bold' }}>LOGO</div>
-          )}
-        </div>
-        <div style={{
-          marginTop: '2mm',
-          fontFamily: phoneFont,
-          fontSize: phoneFontSize,
-          fontWeight: phoneFontWeight
-        }}>
-          {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
-        </div>
-        <div style={{
-          fontFamily: locationFont,
-          fontSize: locationFontSize,
-          fontWeight: locationFontWeight
-        }}>
-          {locationLines.map((line, index) => (
-            <div key={index}>{line}</div>
-          ))}
+          <div>Date Serviced</div>
+          <div>Next Due</div>
+          <div>Oil Type</div>
         </div>
       </div>
+    );
+  };
 
-      {/* Right side (Fields) */}
-      <div style={{
-        width: '50%',
-        backgroundColor: '#999',
-        padding: '2mm',
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-      }}>
-        {/* DATE SERVICED */}
-        <div style={{
-          background: '#fff',
-          width: '25.4mm',
-          height: '10.8mm',
-          position: 'relative'
-        }}>
-          <div style={{
-            background: '#222',
-            color: '#fff',
-            fontSize: '2.2mm',
-            fontWeight: 'bold',
-            height: '3.6mm',
-            width: '19.6mm',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: '-2mm',
-            left: 0
-          }}>
-            DATE SERVICED
-          </div>
-          <div style={{
-            marginTop: '4mm',
-            textAlign: 'center',
-            fontSize: '3mm'
-          }}>
-            / &nbsp; /
-          </div>
-        </div>
-
-        {/* NEXT DUE */}
-        <div style={{
-          background: '#fff',
-          width: '25.4mm',
-          height: '10.8mm',
-          position: 'relative'
-        }}>
-          <div style={{
-            background: '#222',
-            color: '#fff',
-            fontSize: '2.2mm',
-            fontWeight: 'bold',
-            height: '3.6mm',
-            width: '19.6mm',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: '-2mm',
-            left: 0
-          }}>
-            NEXT DUE
-          </div>
-          <div style={{
-            marginTop: '4mm',
-            textAlign: 'center',
-            fontSize: '3mm'
-          }}>
-            date / km
-          </div>
-        </div>
-
-        {/* OIL TYPE */}
-        <div style={{
-          background: '#fff',
-          width: '25.4mm',
-          height: '10.8mm',
-          position: 'relative'
-        }}>
-          <div style={{
-            background: '#222',
-            color: '#fff',
-            fontSize: '2.2mm',
-            fontWeight: 'bold',
-            height: '3.6mm',
-            width: '19.6mm',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: '-2mm',
-            left: 0
-          }}>
-            OIL TYPE
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return renderContentBasedOnLayout();
 };
 
 export default Layout1Design;

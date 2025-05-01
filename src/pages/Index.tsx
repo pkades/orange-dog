@@ -22,7 +22,17 @@ const LABEL_LAYOUTS: Layout[] = [
   { 
     id: 'layout1', 
     name: 'Standard Service Label', 
-    image: 'https://via.placeholder.com/300x200/f0f0f0/888888?text=Layout+1'
+    image: '/lovable-uploads/6e165541-c48e-40e6-8c5b-d5a8977baec0.png'
+  },
+  {
+    id: 'layout2',
+    name: 'Horizontal Service Label',
+    image: '/lovable-uploads/b406f024-3af0-42a5-8812-d6131d8e4102.png'
+  },
+  {
+    id: 'layout3',
+    name: 'Modern Service Label',
+    image: '/lovable-uploads/5fdde112-f5e3-4ac6-b8a9-83d7e8f181cd.png'
   }
 ];
 
