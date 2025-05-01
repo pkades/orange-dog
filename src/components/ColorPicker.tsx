@@ -4,7 +4,6 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Palette } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // CMYK conversion utilities
 const rgbToCmyk = (r: number, g: number, b: number): [number, number, number, number] => {
@@ -81,8 +80,7 @@ interface ColorPickerProps {
 const CustomColorPicker: React.FC<ColorPickerProps> = ({ 
   label, 
   color, 
-  onChange,
-  useCmyk = false 
+  onChange
 }) => {
   const [cmykValues, setCmykValues] = useState<[number, number, number, number]>([0, 0, 0, 0]);
   
@@ -92,9 +90,10 @@ const CustomColorPicker: React.FC<ColorPickerProps> = ({
     setCmykValues(rgbToCmyk(r, g, b));
   }, [color]);
   
-  // Handle CMYK input changes
+  // Handle CMYK input changes with fixed bug for C value
   const handleCmykChange = (component: 'c' | 'm' | 'y' | 'k', value: number) => {
-    let newValue = Math.max(0, Math.min(100, value));
+    // Ensure value is a valid number
+    let newValue = isNaN(value) ? 0 : Math.max(0, Math.min(100, value));
     
     const newCmyk = [...cmykValues] as [number, number, number, number];
     
@@ -142,82 +141,61 @@ const CustomColorPicker: React.FC<ColorPickerProps> = ({
                 ))}
               </div>
               
-              <Tabs defaultValue={useCmyk ? "cmyk" : "rgb"}>
-                <TabsList className="grid grid-cols-2 w-full">
-                  <TabsTrigger value="rgb">RGB</TabsTrigger>
-                  <TabsTrigger value="cmyk">CMYK</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="rgb" className="mt-2">
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="custom-color">Custom Colour</Label>
-                    <input
-                      id="custom-color"
-                      type="color"
-                      value={color}
-                      onChange={(e) => onChange(e.target.value)}
-                      className="w-full h-10"
+              <div className="mt-2">
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="cmyk-c" className="w-10">C:</Label>
+                    <Input
+                      id="cmyk-c"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={cmykValues[0]}
+                      onChange={(e) => handleCmykChange('c', parseInt(e.target.value || '0', 10))}
                     />
-                    <div className="text-sm font-mono mt-1">{color.toUpperCase()}</div>
+                    <span>%</span>
                   </div>
-                </TabsContent>
-                
-                <TabsContent value="cmyk" className="mt-2">
-                  <div className="flex flex-col gap-3">
-                    <div className="flex items-center gap-2">
-                      <Label htmlFor="cmyk-c" className="w-10">C:</Label>
-                      <Input
-                        id="cmyk-c"
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={cmykValues[0]}
-                        onChange={(e) => handleCmykChange('c', parseInt(e.target.value || '0'))}
-                      />
-                      <span>%</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <Label htmlFor="cmyk-m" className="w-10">M:</Label>
-                      <Input
-                        id="cmyk-m"
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={cmykValues[1]}
-                        onChange={(e) => handleCmykChange('m', parseInt(e.target.value || '0'))}
-                      />
-                      <span>%</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <Label htmlFor="cmyk-y" className="w-10">Y:</Label>
-                      <Input
-                        id="cmyk-y"
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={cmykValues[2]}
-                        onChange={(e) => handleCmykChange('y', parseInt(e.target.value || '0'))}
-                      />
-                      <span>%</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <Label htmlFor="cmyk-k" className="w-10">K:</Label>
-                      <Input
-                        id="cmyk-k"
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={cmykValues[3]}
-                        onChange={(e) => handleCmykChange('k', parseInt(e.target.value || '0'))}
-                      />
-                      <span>%</span>
-                    </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="cmyk-m" className="w-10">M:</Label>
+                    <Input
+                      id="cmyk-m"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={cmykValues[1]}
+                      onChange={(e) => handleCmykChange('m', parseInt(e.target.value || '0', 10))}
+                    />
+                    <span>%</span>
                   </div>
-                </TabsContent>
-              </Tabs>
+                  
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="cmyk-y" className="w-10">Y:</Label>
+                    <Input
+                      id="cmyk-y"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={cmykValues[2]}
+                      onChange={(e) => handleCmykChange('y', parseInt(e.target.value || '0', 10))}
+                    />
+                    <span>%</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="cmyk-k" className="w-10">K:</Label>
+                    <Input
+                      id="cmyk-k"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={cmykValues[3]}
+                      onChange={(e) => handleCmykChange('k', parseInt(e.target.value || '0', 10))}
+                    />
+                    <span>%</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </PopoverContent>
         </Popover>

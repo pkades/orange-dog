@@ -9,29 +9,12 @@ import { MapPin, Phone, Download } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import LogoUploader from '@/components/LogoUploader';
 import CustomColorPicker from '@/components/ColorPicker';
-import LayoutSelector, { Layout } from '@/components/LayoutSelector';
 import LabelPreview from '@/components/LabelPreview';
 import FontSelector from '@/components/FontSelector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Layout options with image URLs pointing to the uploaded images
-const LAYOUT_OPTIONS: Layout[] = [
-  {
-    id: 'layout1',
-    name: 'Layout 1',
-    image: '/lovable-uploads/a5676688-d472-4375-96c2-ccf8de1dafd8.png'
-  },
-  {
-    id: 'layout2',
-    name: 'Layout 2',
-    image: '/lovable-uploads/036c12f8-9c81-4fe9-93db-c591dffc7153.png'
-  },
-  {
-    id: 'layout3',
-    name: 'Layout 3',
-    image: '/lovable-uploads/0627efdf-fb65-4272-9d74-987ab9895a18.png'
-  }
-];
+// Orange Dog logo
+const ORANGE_DOG_LOGO = '/lovable-uploads/595ae1dd-8573-4284-a957-b07ca48f511c.png';
 
 // Font options
 const FONT_OPTIONS = [
@@ -62,12 +45,11 @@ const ORANGE_DOG_COLOR = '#FF7A00';
 
 const Index = () => {
   // Form state
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string | null>(ORANGE_DOG_LOGO);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [location, setLocation] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
   const [accentColor, setAccentColor] = useState(ORANGE_DOG_COLOR);
-  const [selectedLayoutId, setSelectedLayoutId] = useState('layout1');
   
   // Font state
   const [fontFamily, setFontFamily] = useState(FONT_OPTIONS[0].value);
@@ -79,8 +61,8 @@ const Index = () => {
   const [phoneFontWeight, setPhoneFontWeight] = useState(FONT_WEIGHTS[1].value);
   const [locationFontWeight, setLocationFontWeight] = useState(FONT_WEIGHTS[0].value);
   
-  // Get selected layout
-  const selectedLayout = LAYOUT_OPTIONS.find(layout => layout.id === selectedLayoutId) || null;
+  // Create a dummy selected layout object for compatibility
+  const selectedLayout = { id: 'layout1', name: 'Layout 1', image: '' };
   
   // Logo upload handler
   const handleLogoChange = (url: string) => {
@@ -110,7 +92,7 @@ const Index = () => {
           <div className="flex justify-between items-center mb-6">
             <a href="https://www.orangedog.co.nz" target="_blank" rel="noopener noreferrer">
               <img 
-                src="/lovable-uploads/a5676688-d472-4375-96c2-ccf8de1dafd8.png" 
+                src={ORANGE_DOG_LOGO}
                 alt="Orange Dog Logo" 
                 className="h-16"
               />
@@ -276,23 +258,14 @@ const Index = () => {
                       label="Background Colour"
                       color={backgroundColor}
                       onChange={setBackgroundColor}
-                      useCmyk={true}
                     />
                     
                     <CustomColorPicker 
                       label="Accent Colour"
                       color={accentColor}
                       onChange={setAccentColor}
-                      useCmyk={true}
                     />
                   </div>
-                  
-                  {/* Layout Selection */}
-                  <LayoutSelector 
-                    layouts={LAYOUT_OPTIONS}
-                    selectedLayoutId={selectedLayoutId}
-                    onLayoutChange={setSelectedLayoutId}
-                  />
                   
                   <Button 
                     type="submit" 
