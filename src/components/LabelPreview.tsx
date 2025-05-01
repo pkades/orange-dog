@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from './LayoutSelector';
@@ -21,7 +22,7 @@ interface LabelPreviewProps {
   locationFontWeight: string;
 }
 
-// Label size constants (60x40mm converted to pixels at 72 DPI)
+// Label size constants (60x40mm)
 const LABEL_WIDTH = 170; // ~60mm at 72 DPI
 const LABEL_HEIGHT = 113; // ~40mm at 72 DPI
 const BLEED = 11; // ~4mm at 72 DPI
@@ -45,7 +46,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
 }) => {
   const renderFacingOut = () => (
     <div 
-      className="w-full h-full flex items-center justify-center relative"
+      className="w-full h-full flex items-center justify-center"
       style={{ backgroundColor }}
     >
       {logoUrl && (
@@ -56,6 +57,9 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             className="max-w-full max-h-full object-contain"
           />
         </div>
+      )}
+      {!logoUrl && (
+        <div className="text-3xl font-bold">LOGO</div>
       )}
     </div>
   );
@@ -249,15 +253,27 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             width: `${LABEL_WIDTH + BLEED * 2}px`,
             height: `${LABEL_HEIGHT + BLEED * 2}px`,
             position: 'relative',
-            backgroundColor: backgroundColor, // Fill entire label with background color
           }}
           className="mx-auto my-4 border border-gray-300"
         >
+          {/* Background color for entire label area */}
+          <div 
+            className="absolute inset-0" 
+            style={{ backgroundColor }} 
+          />
+          
           {/* Bleed indicator */}
           <div className="absolute inset-0 border border-dashed border-red-400 m-[11px] pointer-events-none z-10" />
           
           {/* Actual label content */}
-          <div className="absolute inset-0 p-[11px]">
+          <div 
+            className="absolute inset-0 p-[11px]"
+            style={{ 
+              width: `${LABEL_WIDTH}px`,
+              height: `${LABEL_HEIGHT}px`,
+              margin: `${BLEED}px`
+            }}
+          >
             {type === 'facingOut' ? renderFacingOut() : renderFacingIn()}
           </div>
         </div>

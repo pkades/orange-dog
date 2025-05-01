@@ -28,77 +28,77 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   phoneFontWeight,
   locationFontWeight,
 }) => {
-  // Convert mm to pixels (at 72dpi)
-  // 1mm ≈ 2.83 pixels
-  const mmToPx = (mm: number) => Math.round(mm * 2.83);
-
-  // Dimensions from the specification
-  const whiteBoxHeight = mmToPx(10.8);
-  const whiteBoxWidth = mmToPx(25.4);
-  const blackLabelHeight = mmToPx(3.6);
-  const blackLabelWidth = mmToPx(19.6);
-  const textHeight = mmToPx(2.2);
-
   // Split location into lines if it contains newlines
   const locationLines = location ? location.split('\n') : ['123 STREET', 'CITY'];
 
   return (
-    <div className="w-full h-full flex">
+    <div className="w-full h-full flex" style={{ fontFamily: 'sans-serif', boxSizing: 'border-box' }}>
       {/* Left side - Logo and contact info */}
-      <div className="w-1/2 h-full" style={{ backgroundColor }}>
-        <div className="flex flex-col h-full p-2">
-          {/* Logo area */}
-          <div className="flex-1 flex items-center justify-center p-1 mb-2">
-            {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[80px] object-contain" />}
-            {!logoUrl && <div className="text-3xl font-bold">LOGO</div>}
+      <div 
+        className="w-1/2 flex flex-col items-center p-2" 
+        style={{ backgroundColor }}
+      >
+        {/* Logo area */}
+        <div className="w-full h-[20mm] flex items-center justify-center mb-2">
+          {logoUrl ? (
+            <img src={logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />
+          ) : (
+            <div className="text-2xl font-bold">LOGO</div>
+          )}
+        </div>
+        
+        {/* Contact info */}
+        <div className="mt-2 flex flex-col items-center">
+          <div 
+            className="text-center font-bold"
+            style={{ 
+              fontFamily: phoneFont, 
+              fontSize: phoneFontSize, 
+              fontWeight: phoneFontWeight
+            }}
+          >
+            {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
           </div>
-          
-          {/* Contact info */}
-          <div className="flex flex-col items-center mb-3">
-            <div 
-              className="text-center font-bold"
-              style={{ 
-                fontFamily: phoneFont, 
-                fontSize: phoneFontSize, 
-                fontWeight: phoneFontWeight
-              }}
-            >
-              {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
-            </div>
-            <div 
-              className="text-center"
-              style={{ 
-                fontFamily: locationFont,
-                fontSize: locationFontSize, 
-                fontWeight: locationFontWeight
-              }}
-            >
-              {locationLines.map((line, index) => (
-                <div key={index}>{line}</div>
-              ))}
-            </div>
+          <div 
+            className="text-center"
+            style={{ 
+              fontFamily: locationFont,
+              fontSize: locationFontSize, 
+              fontWeight: locationFontWeight
+            }}
+          >
+            {locationLines.map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
           </div>
         </div>
       </div>
       
       {/* Right side - Service boxes */}
-      <div className="w-1/2 bg-gray-400 flex flex-col p-3 justify-center space-y-3">
+      <div className="w-1/2 bg-gray-400 flex flex-col p-2 justify-between">
         {/* DATE SERVICED box */}
         <div className="relative">
           <div 
-            className="bg-white rounded" 
-            style={{ height: `${whiteBoxHeight}px`, width: `${whiteBoxWidth}px` }}
+            className="bg-white" 
+            style={{ width: '25.4mm', height: '10.8mm' }}
           >
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white rounded"
-              style={{ height: `${blackLabelHeight}px`, width: `${blackLabelWidth}px`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              className="absolute bg-gray-900 text-white flex items-center justify-center"
+              style={{ 
+                width: '19.6mm', 
+                height: '3.6mm', 
+                fontSize: '2.2mm',
+                fontWeight: 'bold',
+                top: '-2mm',
+                left: 0
+              }}
             >
-              <span style={{ fontSize: `${textHeight}px` }} className="font-bold">DATE SERVICED</span>
+              DATE SERVICED
             </div>
-            <div className="flex justify-center items-center h-full">
-              <span className="font-mono text-lg">/</span>
+            <div className="flex justify-center items-center h-full text-sm">
+              <span>/</span>
               <span className="w-6"></span>
-              <span className="font-mono text-lg">/</span>
+              <span>/</span>
             </div>
           </div>
         </div>
@@ -106,14 +106,21 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* NEXT DUE box */}
         <div className="relative">
           <div 
-            className="bg-white rounded" 
-            style={{ height: `${whiteBoxHeight}px`, width: `${whiteBoxWidth}px` }}
+            className="bg-white" 
+            style={{ width: '25.4mm', height: '10.8mm' }}
           >
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white rounded"
-              style={{ height: `${blackLabelHeight}px`, width: `${blackLabelWidth}px`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              className="absolute bg-gray-900 text-white flex items-center justify-center"
+              style={{ 
+                width: '19.6mm', 
+                height: '3.6mm', 
+                fontSize: '2.2mm',
+                fontWeight: 'bold',
+                top: '-2mm',
+                left: 0
+              }}
             >
-              <span style={{ fontSize: `${textHeight}px` }} className="font-bold">NEXT DUE</span>
+              NEXT DUE
             </div>
             <div className="flex justify-center items-center h-full text-sm">
               date / km
@@ -124,14 +131,21 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* OIL TYPE box */}
         <div className="relative">
           <div 
-            className="bg-white rounded" 
-            style={{ height: `${whiteBoxHeight}px`, width: `${whiteBoxWidth}px` }}
+            className="bg-white" 
+            style={{ width: '25.4mm', height: '10.8mm' }}
           >
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white rounded"
-              style={{ height: `${blackLabelHeight}px`, width: `${blackLabelWidth}px`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              className="absolute bg-gray-900 text-white flex items-center justify-center"
+              style={{ 
+                width: '19.6mm', 
+                height: '3.6mm', 
+                fontSize: '2.2mm',
+                fontWeight: 'bold',
+                top: '-2mm',
+                left: 0
+              }}
             >
-              <span style={{ fontSize: `${textHeight}px` }} className="font-bold">OIL TYPE</span>
+              OIL TYPE
             </div>
           </div>
         </div>
