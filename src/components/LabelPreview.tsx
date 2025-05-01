@@ -92,7 +92,6 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             width: `${LABEL_WIDTH + BLEED * 2}px`,
             height: `${LABEL_HEIGHT + BLEED * 2}px`,
             position: 'relative',
-            backgroundColor
           }}
           className="mx-auto my-4 border border-gray-300"
         >
@@ -105,6 +104,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             style={{ 
               width: `${LABEL_WIDTH}px`,
               height: `${LABEL_HEIGHT}px`,
+              backgroundColor: type === 'facingOut' ? backgroundColor : 'transparent'
             }}
           >
             {type === 'facingOut' ? renderFacingOut() : renderFacingIn()}
