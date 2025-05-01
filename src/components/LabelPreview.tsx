@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Layout } from './LayoutSelector';
+import Layout1Design from './layout-designs/Layout1Design';
 
 interface LabelPreviewProps {
   logoUrl: string | null;
@@ -60,82 +60,15 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
     </div>
   );
 
-  const renderLayout1 = () => (
-    <div className="w-full h-full flex flex-col" style={{ backgroundColor }}>
-      {/* Top section with logo and contact info */}
-      <div className="flex w-full">
-        {/* Logo area */}
-        <div className="w-1/2 p-2 flex items-center justify-center" style={{ backgroundColor: accentColor }}>
-          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[50px] object-contain" />}
-          {!logoUrl && <div className="text-white text-2xl font-bold">LOGO</div>}
-        </div>
-        
-        {/* Contact info */}
-        <div className="w-1/2 p-2 flex flex-col justify-between">
-          <div 
-            className="text-right font-bold" 
-            style={{ 
-              fontFamily: phoneFont || fontFamily, 
-              fontSize: phoneFontSize, 
-              fontWeight: phoneFontWeight || fontWeight
-            }}
-          >
-            {phoneNumber || 'XX XXX XXXX'}
-          </div>
-          <div 
-            className="text-right" 
-            style={{ 
-              fontFamily: locationFont || fontFamily, 
-              fontSize: locationFontSize, 
-              fontWeight: locationFontWeight || fontWeight
-            }}
-          >
-            {location || 'STREET\nCITY TOWN'}
-          </div>
-        </div>
-      </div>
-      
-      {/* Service section */}
-      <div className="flex-grow p-2">
-        {/* Service next due section */}
-        <div className="bg-gray-200 rounded-full mb-2 flex items-center">
-          <div className="rounded-full p-1 flex items-center" style={{ backgroundColor: accentColor }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19 7h-1V4H6v3H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z" stroke="white" strokeWidth="2" />
-              <path d="M9 14v-5h3m0 0h-3m3 0 3 5" stroke="white" strokeWidth="2" />
-            </svg>
-            <span className="ml-1 text-white text-xs font-bold">SERVICE NEXT DUE:</span>
-          </div>
-          <div className="flex-grow flex justify-end items-center pr-4">
-            <span className="font-mono">/</span>
-            <span className="w-6"></span>
-            <span className="font-mono">/</span>
-          </div>
-        </div>
-        
-        {/* OR AT km section */}
-        <div className="bg-gray-200 rounded-full flex items-center">
-          <div className="px-2 py-1 font-bold text-xs">
-            OR AT:
-          </div>
-          <div className="flex-grow"></div>
-          <div className="text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold" style={{ backgroundColor: accentColor }}>
-            KM
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   const renderLayout2 = () => (
     <div className="w-full h-full flex flex-col" style={{ backgroundColor }}>
       {/* Left side - logo and contact */}
       <div className="flex w-full h-full">
         <div className="w-1/2 flex flex-col">
           {/* Logo area */}
-          <div className="flex-1 flex items-center justify-center p-1" style={{ backgroundColor: accentColor }}>
+          <div className="flex-1 flex items-center justify-center p-1" style={{ backgroundColor }}>
             {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[70px] object-contain" />}
-            {!logoUrl && <div className="text-white text-3xl font-bold">LOGO</div>}
+            {!logoUrl && <div className="text-3xl font-bold">LOGO</div>}
           </div>
         </div>
         
@@ -168,19 +101,21 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             
             {/* Service panels */}
             <div className="space-y-2 mt-1">
+              {/* Date serviced box - updated dimensions */}
               <div className="bg-white border border-gray-400 p-1 relative h-8">
-                <div className="absolute -top-1 left-1 bg-gray-800 text-white px-1 text-[8px] font-bold">
+                <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-1 text-[8px] font-bold">
                   DATE SERVICED
                 </div>
-                <div className="flex justify-end items-center h-full pr-2 text-xs">
+                <div className="flex justify-center items-center h-full text-xs">
                   <span className="font-mono">/</span>
                   <span className="w-4"></span>
                   <span className="font-mono">/</span>
                 </div>
               </div>
               
+              {/* Next due box - updated dimensions */}
               <div className="bg-white border border-gray-400 p-1 relative h-8">
-                <div className="absolute -top-1 left-1 bg-gray-800 text-white px-1 text-[8px] font-bold">
+                <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-1 text-[8px] font-bold">
                   NEXT DUE
                 </div>
                 <div className="absolute bottom-0 right-1 text-[6px]">
@@ -188,8 +123,9 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
                 </div>
               </div>
               
+              {/* Oil type box - updated dimensions */}
               <div className="bg-white border border-gray-400 p-1 relative h-8">
-                <div className="absolute -top-1 left-1 bg-gray-800 text-white px-1 text-[8px] font-bold">
+                <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-1 text-[8px] font-bold">
                   OIL TYPE
                 </div>
               </div>
@@ -204,11 +140,11 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
     <div className="w-full h-full flex flex-col" style={{ backgroundColor }}>
       <div className="flex h-full">
         {/* Left side - Logo and contact info */}
-        <div className="w-1/2 flex flex-col p-1 space-y-1">
-          {/* Logo area */}
-          <div className="flex-grow flex items-center justify-center p-1" style={{ backgroundColor: accentColor }}>
-            {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />}
-            {!logoUrl && <div className="text-white text-2xl font-bold">LOGO</div>}
+        <div className="w-1/2 flex flex-col p-2">
+          {/* Logo area - removed accent box */}
+          <div className="flex-grow flex items-center justify-center p-1">
+            {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[70px] object-contain" />}
+            {!logoUrl && <div className="text-2xl font-bold">LOGO</div>}
           </div>
           
           {/* Contact info */}
@@ -275,7 +211,21 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
     
     switch (selectedLayout.id) {
       case 'layout1':
-        return renderLayout1();
+        return (
+          <Layout1Design
+            logoUrl={logoUrl}
+            phoneNumber={phoneNumber}
+            location={location}
+            backgroundColor={backgroundColor}
+            accentColor={accentColor}
+            phoneFont={phoneFont || fontFamily}
+            locationFont={locationFont || fontFamily}
+            phoneFontSize={phoneFontSize}
+            locationFontSize={locationFontSize}
+            phoneFontWeight={phoneFontWeight || fontWeight}
+            locationFontWeight={locationFontWeight || fontWeight}
+          />
+        );
       case 'layout2':
         return renderLayout2();
       case 'layout3':
@@ -299,6 +249,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             width: `${LABEL_WIDTH + BLEED * 2}px`,
             height: `${LABEL_HEIGHT + BLEED * 2}px`,
             position: 'relative',
+            backgroundColor: backgroundColor, // Fill entire label with background color
           }}
           className="mx-auto my-4 border border-gray-300"
         >
