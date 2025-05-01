@@ -32,6 +32,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   location,
   backgroundColor,
   accentColor,
+  selectedLayout,
   type,
   fontFamily,
   phoneFont,

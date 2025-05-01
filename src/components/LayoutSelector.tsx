@@ -23,7 +23,7 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="font-medium text-lg">Select Label Layout (Inside)</h3>
+      <h3 className="font-medium text-lg">Select Label Layout</h3>
       
       <RadioGroup
         value={selectedLayoutId}

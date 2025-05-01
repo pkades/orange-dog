@@ -12,9 +12,19 @@ import CustomColorPicker from '@/components/ColorPicker';
 import LabelPreview from '@/components/LabelPreview';
 import FontSelector from '@/components/FontSelector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import LayoutSelector, { Layout } from '@/components/LayoutSelector';
 
 // Orange Dog logo
 const ORANGE_DOG_LOGO = '/lovable-uploads/595ae1dd-8573-4284-a957-b07ca48f511c.png';
+
+// Define the available layouts
+const LABEL_LAYOUTS: Layout[] = [
+  { 
+    id: 'layout1', 
+    name: 'Standard Service Label', 
+    image: 'https://via.placeholder.com/300x200/f0f0f0/888888?text=Layout+1'
+  }
+];
 
 // Font options
 const FONT_OPTIONS = [
@@ -61,8 +71,9 @@ const Index = () => {
   const [phoneFontWeight, setPhoneFontWeight] = useState(FONT_WEIGHTS[1].value);
   const [locationFontWeight, setLocationFontWeight] = useState(FONT_WEIGHTS[0].value);
   
-  // Create a dummy selected layout object for compatibility
-  const selectedLayout = { id: 'layout1', name: 'Layout 1', image: '' };
+  // Layout state
+  const [selectedLayoutId, setSelectedLayoutId] = useState(LABEL_LAYOUTS[0].id);
+  const selectedLayout = LABEL_LAYOUTS.find(layout => layout.id === selectedLayoutId) || null;
   
   // Logo upload handler
   const handleLogoChange = (url: string) => {
@@ -146,6 +157,13 @@ const Index = () => {
                       />
                     </div>
                   </div>
+                  
+                  {/* Layout selector */}
+                  <LayoutSelector 
+                    layouts={LABEL_LAYOUTS}
+                    selectedLayoutId={selectedLayoutId}
+                    onLayoutChange={setSelectedLayoutId}
+                  />
                   
                   {/* Font Selection */}
                   <div className="space-y-4">
