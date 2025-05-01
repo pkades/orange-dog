@@ -2,7 +2,7 @@
 import React from 'react';
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ColorPicker } from "lucide-react";
+import { Palette } from "lucide-react"; // Replacing ColorPicker with Palette
 
 const PREDEFINED_COLORS = [
   "#222222", // black
@@ -37,7 +37,7 @@ const CustomColorPicker: React.FC<ColorPickerProps> = ({ label, color, onChange 
                 color: isLightColor(color) ? "#000000" : "#ffffff" 
               }}
             >
-              <ColorPicker className="h-4 w-4" />
+              <Palette className="h-4 w-4" />
             </button>
           </PopoverTrigger>
           <PopoverContent className="w-64 p-3">
