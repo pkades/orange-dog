@@ -2,8 +2,6 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import Layout1Design from './layout-designs/Layout1Design';
-import Layout2Design from './layout-designs/Layout2Design';
-import Layout3Design from './layout-designs/Layout3Design';
 
 interface LabelPreviewProps {
   logoUrl: string | null;
@@ -13,12 +11,20 @@ interface LabelPreviewProps {
   accentColor: string;
   selectedLayout: { id: string; name: string; image?: string; } | null;
   type: 'facingOut' | 'facingIn';
+  fontFamily: string;
+  phoneFont: string;
+  locationFont: string;
+  phoneFontSize: string;
+  locationFontSize: string;
+  fontWeight: string;
+  phoneFontWeight: string;
+  locationFontWeight: string;
 }
 
-// Label size constants (68x45mm with 2mm bleed = 72x49mm)
-const LABEL_WIDTH = 193; // 68mm at ~72 DPI
-const LABEL_HEIGHT = 128; // 45mm at ~72 DPI
-const BLEED = 6; // 2mm at ~72 DPI
+// Label size constants (68x45mm)
+const LABEL_WIDTH = 193; // ~68mm at 72 DPI
+const LABEL_HEIGHT = 128; // ~45mm at 72 DPI
+const BLEED = 11; // ~4mm at 72 DPI
 
 const LabelPreview: React.FC<LabelPreviewProps> = ({
   logoUrl,
@@ -28,7 +34,18 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   accentColor,
   selectedLayout,
   type,
+  fontFamily,
+  phoneFont,
+  locationFont,
+  phoneFontSize,
+  locationFontSize,
+  fontWeight,
+  phoneFontWeight,
+  locationFontWeight,
 }) => {
+  // Debug selected layout information
+  console.log("Selected layout:", selectedLayout);
+  
   const renderFacingOut = () => (
     <div 
       className="w-full h-full flex items-center justify-center"
@@ -53,45 +70,23 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
     </div>
   );
 
-  const renderFacingIn = () => {
-    switch(selectedLayout?.id) {
-      case 'layout1':
-        return (
-          <Layout1Design
-            logoUrl={logoUrl}
-            phoneNumber={phoneNumber}
-            location={location}
-            accentColor={accentColor}
-          />
-        );
-      case 'layout2':
-        return (
-          <Layout2Design
-            logoUrl={logoUrl}
-            phoneNumber={phoneNumber}
-            location={location}
-          />
-        );
-      case 'layout3':
-        return (
-          <Layout3Design
-            logoUrl={logoUrl}
-            phoneNumber={phoneNumber}
-            location={location}
-            accentColor={accentColor}
-          />
-        );
-      default:
-        return (
-          <Layout1Design
-            logoUrl={logoUrl}
-            phoneNumber={phoneNumber}
-            location={location}
-            accentColor={accentColor}
-          />
-        );
-    }
-  };
+  const renderFacingIn = () => (
+    <Layout1Design
+      logoUrl={logoUrl}
+      phoneNumber={phoneNumber}
+      location={location}
+      backgroundColor={backgroundColor}
+      accentColor={accentColor}
+      layoutId={selectedLayout?.id || 'layout1'}
+      layoutImage={selectedLayout?.image || ''}
+      phoneFont={phoneFont || fontFamily}
+      locationFont={locationFont || fontFamily}
+      phoneFontSize={phoneFontSize}
+      locationFontSize={locationFontSize}
+      phoneFontWeight={phoneFontWeight || fontWeight}
+      locationFontWeight={locationFontWeight || fontWeight}
+    />
+  );
   
   return (
     <Card className="overflow-hidden">
@@ -111,11 +106,11 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
           className="mx-auto my-4 border border-gray-300"
         >
           {/* Bleed indicator */}
-          <div className="absolute inset-0 border border-dashed border-red-400 m-[6px] pointer-events-none z-10" />
+          <div className="absolute inset-0 border border-dashed border-red-400 m-[11px] pointer-events-none z-10" />
           
           {/* Actual label content */}
           <div 
-            className="absolute inset-0 m-[6px]"
+            className="absolute inset-0 m-[11px]"
             style={{ 
               width: `${LABEL_WIDTH}px`,
               height: `${LABEL_HEIGHT}px`,
@@ -127,7 +122,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
         </div>
         
         <div className="p-2 bg-gray-50 text-xs text-gray-500 text-center border-t">
-          Label size: 68x45mm (with 2mm bleed)
+          Label size: 68x45mm (with 4mm bleed)
         </div>
       </CardContent>
     </Card>
