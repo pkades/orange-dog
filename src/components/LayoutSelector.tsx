@@ -33,11 +33,11 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
         return (
           <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
             {/* Grey Box */}
-            <div className="absolute h-8 left-2 right-2 top-14 bg-gray-200 rounded-xl"></div>
+            <div className="absolute h-8 left-2 right-2 top-16 bg-gray-200 rounded-xl"></div>
             {/* Orange Circle */}
-            <div className="absolute w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center top-[54px] left-3">🔧</div>
+            <div className="absolute w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center top-[62px] left-3">🔧</div>
             {/* Service Text */}
-            <div className="absolute top-14 left-12 text-xs font-bebas">
+            <div className="absolute top-16 left-12 text-xs font-bebas">
               SERVICE<br/>NEXT DUE:
             </div>
             {/* Demo contact info */}
@@ -55,9 +55,9 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
         return (
           <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
             {/* Write Box */}
-            <div className="absolute h-6 left-2 right-2 top-14 bg-gray-100 rounded-md"></div>
+            <div className="absolute h-8 left-2 right-2 top-16 bg-gray-100 rounded-md"></div>
             {/* Black Label */}
-            <div className="absolute h-6 w-16 top-14 left-2 bg-black text-white text-xs flex items-center justify-center font-bebas">
+            <div className="absolute h-6 w-16 top-16 left-2 bg-black text-white text-xs flex items-center justify-center font-bebas">
               SERVICE
             </div>
             {/* Demo contact info */}

@@ -108,10 +108,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Grey Background Box */}
         <div style={{
           position: 'absolute',
-          top: '70px',
+          top: '75px',
           left: '10px',
           right: '10px',
-          height: '30px',
+          height: '35px',
           backgroundColor: '#e6e6e6',
           borderRadius: '15px',
         }}></div>
@@ -119,17 +119,17 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Accent Circle */}
         <div style={{
           position: 'absolute',
-          top: '69px',
+          top: '74px',
           left: '12px',
-          width: '25px',
-          height: '25px',
+          width: '30px',
+          height: '30px',
           backgroundColor: accentColor || '#f58220',
           borderRadius: '50%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: 'white',
-          fontSize: '14px',
+          fontSize: '16px',
         }}>
           🔧
         </div>
@@ -137,8 +137,8 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Service Text */}
         <div style={{
           position: 'absolute',
-          top: '73px',
-          left: '45px',
+          top: '78px',
+          left: '50px',
           fontSize: '16px',
           color: '#000',
         }}>
@@ -148,8 +148,8 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Date Slashes */}
         <div style={{
           position: 'absolute',
-          top: '90px',
-          left: '45px',
+          top: '95px',
+          left: '50px',
           fontSize: '16px',
           letterSpacing: '10px',
           color: '#000',
@@ -221,23 +221,23 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         <div style={{
           position: 'absolute',
           width: 'calc(100% - 20px)',
-          height: '35px',
+          height: '40px',
           backgroundColor: '#f0f0f0',
           left: '10px',
-          top: '70px',
+          top: '75px',
           borderRadius: '5px',
         }}></div>
         
         {/* Black Label */}
         <div style={{
           position: 'absolute',
-          top: '70px',
+          top: '75px',
           left: '10px',
           width: '70px',
-          height: '20px',
+          height: '24px',
           backgroundColor: '#000',
           color: '#fff',
-          fontSize: '16px',
+          fontSize: '14px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -326,7 +326,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           <div>
             <div style={{
               width: '80px',
-              height: '15px',
+              height: '20px',
               backgroundColor: '#000',
               color: '#fff',
               fontSize: '14px',
@@ -339,7 +339,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
             </div>
             <div style={{
               width: '100%',
-              height: '25px',
+              height: '30px',
               border: '1px solid #000',
             }}></div>
           </div>
@@ -348,7 +348,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           <div>
             <div style={{
               width: '80px',
-              height: '15px',
+              height: '20px',
               backgroundColor: '#000',
               color: '#fff',
               fontSize: '14px',
@@ -361,7 +361,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
             </div>
             <div style={{
               width: '100%',
-              height: '25px',
+              height: '30px',
               border: '1px solid #000',
             }}></div>
           </div>
