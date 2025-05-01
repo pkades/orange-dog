@@ -48,28 +48,28 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
     <div className="w-full h-full flex flex-col">
       <div className="flex w-full" style={{ backgroundColor }}>
         {/* Logo area */}
-        <div className="w-1/2 p-2 flex items-center justify-center" style={{ backgroundColor: '#9e9e9e' }}>
-          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[80px] object-contain" />}
-          {!logoUrl && <div className="text-white text-xl font-bold">LOGO</div>}
+        <div className="w-1/2 p-2 flex items-center justify-center">
+          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[40px] object-contain" />}
+          {!logoUrl && <div className="text-white text-sm font-bold">LOGO</div>}
         </div>
         
         {/* Contact area */}
-        <div className="w-1/2 p-2 flex flex-col items-end justify-center" style={{ backgroundColor: '#e0e0e0' }}>
-          <div className="text-right font-bold">{phoneNumber || 'XX XXX XXXX'}</div>
-          <div className="text-right">{location || 'CITY TOWN'}</div>
+        <div className="w-1/2 p-2 flex flex-col items-end justify-center" style={{ backgroundColor: accentColor }}>
+          <div className="text-right text-xs font-bold">{phoneNumber || 'XX XXX XXXX'}</div>
+          <div className="text-right text-xs">{location || 'CITY TOWN'}</div>
         </div>
       </div>
       
       {/* Service rows */}
-      <div className="flex flex-col gap-1 p-1 flex-grow">
+      <div className="flex flex-col gap-1 p-1 flex-grow bg-gray-100">
         {[
           { label: 'DATE SERVICED', dark: true },
           { label: 'NEXT SERVICE', dark: true },
           { label: 'OR AT (KM)', dark: true }
         ].map((row, i) => (
-          <div key={i} className="flex h-[25px] rounded overflow-hidden">
+          <div key={i} className="flex h-[20px] rounded overflow-hidden">
             <div 
-              className="w-1/3 flex items-center justify-center text-xs text-white font-bold"
+              className="w-1/3 flex items-center justify-center text-[8px] text-white font-bold"
               style={{ backgroundColor: '#333333' }}
             >
               {row.label}
@@ -85,34 +85,34 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
     <div className="w-full h-full flex flex-col">
       <div className="flex w-full" style={{ backgroundColor }}>
         {/* Logo area */}
-        <div className="w-1/2 p-2 flex items-center justify-center" style={{ backgroundColor: '#9e9e9e' }}>
-          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[80px] object-contain" />}
-          {!logoUrl && <div className="text-white text-xl font-bold">LOGO</div>}
+        <div className="w-1/2 p-2 flex items-center justify-center">
+          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[40px] object-contain" />}
+          {!logoUrl && <div className="text-white text-sm font-bold">LOGO</div>}
         </div>
         
         {/* Contact info */}
-        <div className="w-1/2 p-2 flex flex-col items-center justify-center bg-gray-300">
-          <div className="text-black text-sm font-bold mb-1">
+        <div className="w-1/2 p-2 flex flex-col items-center justify-center" style={{ backgroundColor: accentColor }}>
+          <div className="text-white text-[8px] font-bold mb-1">
             {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
           </div>
-          <div className="text-black text-sm text-center">
+          <div className="text-white text-[8px] text-center">
             {location ? location : '123 STREET\nCITY'}
           </div>
         </div>
       </div>
       
       {/* Service panels */}
-      <div className="flex-grow bg-gray-500 p-1 flex flex-col gap-1">
+      <div className="flex-grow p-1 flex flex-col gap-1 bg-gray-100">
         {['DATE SERVICED', 'NEXT DUE', 'OIL TYPE'].map((label, i) => (
           <div key={i} className="relative bg-white rounded h-[22px] overflow-hidden">
             <div
-              className="absolute top-0 left-0 px-2 py-0.5 text-xs text-white font-bold"
-              style={{ backgroundColor: '#333' }}
+              className="absolute top-0 left-0 px-2 py-0.5 text-[8px] text-white font-bold"
+              style={{ backgroundColor: accentColor }}
             >
               {label}
             </div>
             {label === 'NEXT DUE' && (
-              <div className="absolute bottom-1 right-2 text-xs">
+              <div className="absolute bottom-1 right-2 text-[8px]">
                 date / km
               </div>
             )}
@@ -127,45 +127,45 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
       {/* Logo and contact area */}
       <div className="w-full flex">
         {/* Logo area */}
-        <div className="w-1/2 p-2 flex items-center justify-center" style={{ backgroundColor: '#9e9e9e' }}>
-          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[80px] object-contain" />}
-          {!logoUrl && <div className="text-white text-xl font-bold">LOGO</div>}
+        <div className="w-1/2 p-2 flex items-center justify-center">
+          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[40px] object-contain" />}
+          {!logoUrl && <div className="text-white text-sm font-bold">LOGO</div>}
         </div>
         
-        {/* Right panel with date fields */}
-        <div className="w-1/2 p-2 flex flex-col items-center justify-center" style={{ backgroundColor: '#e0e0e0' }}>
-          <div className="text-right mb-1">
-            <div className="font-bold text-base">{phoneNumber || 'XX XXX XXXX'}</div>
-            <div className="text-sm">{location || 'STREET\nCITY TOWN'}</div>
+        {/* Right panel with contact info */}
+        <div className="w-1/2 p-2 flex flex-col items-center justify-center" style={{ backgroundColor: accentColor }}>
+          <div className="text-white">
+            <div className="font-bold text-[10px]">{phoneNumber || 'XX XXX XXXX'}</div>
+            <div className="text-[8px]">{location || 'STREET\nCITY TOWN'}</div>
           </div>
         </div>
       </div>
       
       {/* Service section */}
-      <div className="flex-grow bg-gray-200 p-2">
+      <div className="flex-grow bg-gray-100 p-2">
         <div className="flex items-center gap-2 mb-2">
           <div 
-            className="rounded-full p-1.5"
+            className="rounded-full p-1"
             style={{ backgroundColor: accentColor || '#f97316' }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="white" strokeWidth="2" />
               <polyline points="9 22 9 12 15 12 15 22" stroke="white" strokeWidth="2" />
             </svg>
           </div>
-          <div className="font-bold">
+          <div className="font-bold text-[8px]">
             SERVICE<br />NEXT DUE:
           </div>
           <div className="flex-grow" />
-          <div className="text-xl">/</div>
-          <div className="text-xl">/</div>
+          <div className="text-[10px]">/</div>
+          <div className="text-[10px]">/</div>
         </div>
         
-        <div className="flex items-center bg-gray-100 rounded-full px-3 py-1">
-          <div className="font-bold mr-2">OR AT:</div>
+        <div className="flex items-center bg-gray-50 rounded-full px-2 py-1">
+          <div className="font-bold text-[8px] mr-1">OR AT:</div>
           <div className="flex-grow" />
           <div 
-            className="rounded-full flex items-center justify-center w-8 h-8 text-white font-bold"
+            className="rounded-full flex items-center justify-center w-5 h-5 text-white font-bold text-[8px]"
             style={{ backgroundColor: accentColor || '#f97316' }}
           >
             KM
@@ -176,7 +176,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   );
 
   const renderFacingIn = () => {
-    if (!selectedLayout) return <div>Please select a layout</div>;
+    if (!selectedLayout) return <div className="w-full h-full flex items-center justify-center">Please select a layout</div>;
     
     switch (selectedLayout.id) {
       case 'layout1':
@@ -186,7 +186,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
       case 'layout3':
         return renderLayout3();
       default:
-        return <div>Invalid layout selected</div>;
+        return <div className="w-full h-full flex items-center justify-center">Invalid layout selected</div>;
     }
   };
   
