@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,6 +21,13 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
   selectedLayoutId,
   onLayoutChange,
 }) => {
+  // Debug images on component mount
+  useEffect(() => {
+    layouts.forEach(layout => {
+      console.log("Layout image URL:", layout.image);
+    });
+  }, [layouts]);
+
   return (
     <div className="flex flex-col gap-4">
       <h3 className="font-medium text-lg">Select Label Layout</h3>
@@ -36,8 +43,7 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
             <Label htmlFor={`layout-${layout.id}`} className="w-full cursor-pointer">
               <Card className={`overflow-hidden transition-all ${selectedLayoutId === layout.id ? 'ring-2 ring-primary' : ''}`}>
                 <CardContent className="p-2">
-                  {/* Debug info to check image URL */}
-                  {console.log("Layout image URL:", layout.image)}
+                  {/* Image with error handling */}
                   <img
                     src={layout.image}
                     alt={layout.name}
