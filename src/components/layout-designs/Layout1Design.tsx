@@ -34,7 +34,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
 }) => {
   // Split location into lines if it contains newlines
   const locationLines = location ? location.split('\n') : [];
-
+  
+  // Debug the image URL
+  console.log("Layout1Design - layoutImage:", layoutImage);
+  
   const renderContentBasedOnLayout = () => {
     // For layouts that use the uploaded image templates
     if (layoutImage) {
@@ -52,7 +55,12 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
               top: 0,
               left: 0,
               objectFit: 'cover'
-            }} 
+            }}
+            onError={(e) => {
+              console.error(`Failed to load layout image: ${layoutImage}`);
+              e.currentTarget.style.backgroundColor = "#f0f0f0";
+              e.currentTarget.style.border = "1px dashed #ccc";
+            }}
           />
           
           {/* Content overlay for the left side of the layout */}

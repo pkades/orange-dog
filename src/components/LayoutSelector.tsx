@@ -36,10 +36,16 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
             <Label htmlFor={`layout-${layout.id}`} className="w-full cursor-pointer">
               <Card className={`overflow-hidden transition-all ${selectedLayoutId === layout.id ? 'ring-2 ring-primary' : ''}`}>
                 <CardContent className="p-2">
+                  {/* Debug info to check image URL */}
+                  {console.log("Layout image URL:", layout.image)}
                   <img
                     src={layout.image}
                     alt={layout.name}
-                    className="w-full h-32 object-contain"
+                    className="w-full h-32 object-contain border border-gray-200"
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${layout.image}`);
+                      e.currentTarget.src = "/placeholder.svg";
+                    }}
                   />
                   <p className="text-center text-sm mt-2">{layout.name}</p>
                 </CardContent>

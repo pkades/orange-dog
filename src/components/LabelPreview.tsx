@@ -43,6 +43,9 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   phoneFontWeight,
   locationFontWeight,
 }) => {
+  // Debug selected layout information
+  console.log("Selected layout:", selectedLayout);
+  
   const renderFacingOut = () => (
     <div 
       className="w-full h-full flex items-center justify-center"
