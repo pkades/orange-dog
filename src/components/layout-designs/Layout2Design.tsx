@@ -1,18 +1,16 @@
 
 import React from 'react';
 
-interface Layout1Props {
+interface Layout2Props {
   logoUrl: string | null;
   phoneNumber: string;
   location: string;
-  accentColor: string;
 }
 
-const Layout1Design: React.FC<Layout1Props> = ({
+const Layout2Design: React.FC<Layout2Props> = ({
   logoUrl,
   phoneNumber,
   location,
-  accentColor,
 }) => {
   // Convert location string to array of lines
   const locationLines = location ? location.split('\n') : [];
@@ -78,61 +76,36 @@ const Layout1Design: React.FC<Layout1Props> = ({
         )}
       </div>
       
-      {/* Grey Background Box */}
+      {/* Write-on Box */}
+      <div style={{
+        position: 'absolute',
+        width: '174px', // 674.43px scaled down
+        height: '19px', // 74.59px scaled down 
+        backgroundColor: '#f0f0f0',
+        left: '10px',
+        top: '70px',
+        borderRadius: '3px',
+      }}></div>
+      
+      {/* Black Label */}
       <div style={{
         position: 'absolute',
         top: '70px',
         left: '10px',
-        width: '174px', // 674.43px scaled down
-        height: '23px', // 89.59px scaled down
-        backgroundColor: '#e6e6e6',
-        borderRadius: '10px',
-      }}></div>
-      
-      {/* Accent Circle */}
-      <div style={{
-        position: 'absolute',
-        top: '68px',
-        left: '14px',
-        width: '20px', // 77.88px scaled down
-        height: '20px', // 77.88px scaled down
-        backgroundColor: accentColor || '#f58220',
-        borderRadius: '50%',
+        width: '53px', // 204.12px scaled down
+        height: '9px', // 34px scaled down
+        backgroundColor: '#000',
+        color: '#fff',
+        fontSize: '8px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: 'white',
-        fontSize: '12px',
-      }}>
-        🔧
-      </div>
-      
-      {/* Service Text */}
-      <div style={{
-        position: 'absolute',
-        top: '70px',
-        left: '38px',
-        fontSize: '10px',
         fontFamily: "'Bebas Neue', sans-serif",
-        color: '#000',
       }}>
-        SERVICE<br/>NEXT DUE:
-      </div>
-      
-      {/* Date Slashes */}
-      <div style={{
-        position: 'absolute',
-        top: '82px',
-        left: '38px',
-        fontSize: '10px',
-        letterSpacing: '8px',
-        fontFamily: "'Bebas Neue', sans-serif",
-        color: '#000',
-      }}>
-        /&nbsp;/
+        SERVICE
       </div>
     </div>
   );
 };
 
-export default Layout1Design;
+export default Layout2Design;

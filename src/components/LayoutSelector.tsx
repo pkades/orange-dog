@@ -1,13 +1,18 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent } from "@/components/ui/card";
 
+// Import layout designs for preview
+import Layout1Design from './layout-designs/Layout1Design';
+import Layout2Design from './layout-designs/Layout2Design';
+import Layout3Design from './layout-designs/Layout3Design';
+
 export interface Layout {
   id: string;
   name: string;
-  image?: string; // Optional now as we'll render previews directly
+  image?: string;
 }
 
 interface LayoutSelectorProps {
@@ -21,88 +26,44 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
   selectedLayoutId,
   onLayoutChange,
 }) => {
-  // Debug layouts on component mount
-  useEffect(() => {
-    console.log("Available layouts:", layouts);
-  }, [layouts]);
-
   // Render the layout preview based on layout ID
   const renderLayoutPreview = (layoutId: string) => {
+    const dummyPhoneNumber = '123-456-7890';
+    const dummyLocation = 'Wellington, NZ';
+    const dummyLogo = null;
+    const dummyAccentColor = layoutId === 'layout1' ? '#f58220' : '#dcdcdc';
+    
     switch(layoutId) {
       case 'layout1':
         return (
-          <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
-            {/* Grey Box */}
-            <div className="absolute h-8 left-2 right-2 top-16 bg-gray-200 rounded-xl"></div>
-            {/* Orange Circle */}
-            <div className="absolute w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center top-[62px] left-3">🔧</div>
-            {/* Service Text */}
-            <div className="absolute top-16 left-12 text-xs font-bebas">
-              SERVICE<br/>NEXT DUE:
-            </div>
-            {/* Demo contact info */}
-            <div className="absolute top-2 right-2 text-right text-xs">
-              <div className="font-bold">PHONE</div>
-              <div>LOCATION</div>
-            </div>
-            {/* Demo logo */}
-            <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center">
-              <span className="text-[8px]">LOGO</span>
-            </div>
+          <div className="w-full h-32 overflow-hidden border border-gray-200 bg-white">
+            <Layout1Design 
+              logoUrl={dummyLogo}
+              phoneNumber={dummyPhoneNumber}
+              location={dummyLocation}
+              accentColor={dummyAccentColor}
+            />
           </div>
         );
       case 'layout2':
         return (
-          <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
-            {/* Write Box */}
-            <div className="absolute h-8 left-2 right-2 top-16 bg-gray-100 rounded-md"></div>
-            {/* Black Label */}
-            <div className="absolute h-6 w-16 top-16 left-2 bg-black text-white text-xs flex items-center justify-center font-bebas">
-              SERVICE
-            </div>
-            {/* Demo contact info */}
-            <div className="absolute top-2 right-2 text-right text-xs">
-              <div className="font-bold">PHONE</div>
-              <div>LOCATION</div>
-            </div>
-            {/* Demo logo */}
-            <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center">
-              <span className="text-[8px]">LOGO</span>
-            </div>
+          <div className="w-full h-32 overflow-hidden border border-gray-200 bg-white">
+            <Layout2Design 
+              logoUrl={dummyLogo}
+              phoneNumber={dummyPhoneNumber}
+              location={dummyLocation}
+            />
           </div>
         );
       case 'layout3':
         return (
-          <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden flex">
-            {/* Left accent panel */}
-            <div className="w-2/5 h-full bg-gray-200 p-2">
-              {/* Demo logo */}
-              <div className="w-full h-8 flex items-center justify-center mb-1">
-                <div className="w-12 h-6 bg-white flex items-center justify-center">
-                  <span className="text-[8px]">LOGO</span>
-                </div>
-              </div>
-              {/* Demo contact */}
-              <div className="text-xs">
-                <div className="font-bold">PHONE</div>
-                <div>LOCATION</div>
-              </div>
-            </div>
-            {/* Right fields */}
-            <div className="flex-1 p-2 flex flex-col justify-center space-y-3">
-              <div>
-                <div className="h-4 w-14 bg-black text-white text-[8px] flex items-center justify-center">
-                  DATE
-                </div>
-                <div className="h-5 border border-black"></div>
-              </div>
-              <div>
-                <div className="h-4 w-14 bg-black text-white text-[8px] flex items-center justify-center">
-                  KM
-                </div>
-                <div className="h-5 border border-black"></div>
-              </div>
-            </div>
+          <div className="w-full h-32 overflow-hidden border border-gray-200 bg-white">
+            <Layout3Design 
+              logoUrl={dummyLogo}
+              phoneNumber={dummyPhoneNumber}
+              location={dummyLocation}
+              accentColor={dummyAccentColor}
+            />
           </div>
         );
       default:

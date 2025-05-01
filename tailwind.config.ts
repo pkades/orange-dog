@@ -96,6 +96,7 @@ export default {
 				'montserrat': ['Montserrat', 'sans-serif'],
 				'impact': ['Impact', 'sans-serif'],
 				'arial': ['Arial', 'sans-serif'],
+				'arial-narrow': ['"Arial Narrow"', 'Arial', 'sans-serif'],
 				'gotham': ['"Gotham"', 'sans-serif'],
 				'futura': ['"Futura"', 'sans-serif'],
 			},
