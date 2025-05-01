@@ -11,6 +11,14 @@ interface LabelPreviewProps {
   accentColor: string;
   selectedLayout: Layout | null;
   type: 'facingOut' | 'facingIn';
+  fontFamily: string;
+  phoneFont: string;
+  locationFont: string;
+  phoneFontSize: string;
+  locationFontSize: string;
+  fontWeight: string;
+  phoneFontWeight: string;
+  locationFontWeight: string;
 }
 
 // Label size constants (60x40mm converted to pixels at 72 DPI)
@@ -26,6 +34,14 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   accentColor,
   selectedLayout,
   type,
+  fontFamily,
+  phoneFont,
+  locationFont,
+  phoneFontSize,
+  locationFontSize,
+  fontWeight,
+  phoneFontWeight,
+  locationFontWeight,
 }) => {
   const renderFacingOut = () => (
     <div 
@@ -45,130 +61,209 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   );
 
   const renderLayout1 = () => (
-    <div className="w-full h-full flex flex-col">
-      <div className="flex w-full" style={{ backgroundColor }}>
+    <div className="w-full h-full flex flex-col border border-gray-800">
+      {/* Top section with logo and contact info */}
+      <div className="flex w-full">
         {/* Logo area */}
-        <div className="w-1/2 p-2 flex items-center justify-center">
-          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[40px] object-contain" />}
-          {!logoUrl && <div className="text-white text-sm font-bold">LOGO</div>}
-        </div>
-        
-        {/* Contact area */}
-        <div className="w-1/2 p-2 flex flex-col items-end justify-center" style={{ backgroundColor: accentColor }}>
-          <div className="text-right text-xs font-bold">{phoneNumber || 'XX XXX XXXX'}</div>
-          <div className="text-right text-xs">{location || 'CITY TOWN'}</div>
-        </div>
-      </div>
-      
-      {/* Service rows */}
-      <div className="flex flex-col gap-1 p-1 flex-grow bg-gray-100">
-        {[
-          { label: 'DATE SERVICED', dark: true },
-          { label: 'NEXT SERVICE', dark: true },
-          { label: 'OR AT (KM)', dark: true }
-        ].map((row, i) => (
-          <div key={i} className="flex h-[20px] rounded overflow-hidden">
-            <div 
-              className="w-1/3 flex items-center justify-center text-[8px] text-white font-bold"
-              style={{ backgroundColor: '#333333' }}
-            >
-              {row.label}
-            </div>
-            <div className="w-2/3 bg-white border border-gray-200"></div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderLayout2 = () => (
-    <div className="w-full h-full flex flex-col">
-      <div className="flex w-full" style={{ backgroundColor }}>
-        {/* Logo area */}
-        <div className="w-1/2 p-2 flex items-center justify-center">
-          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[40px] object-contain" />}
-          {!logoUrl && <div className="text-white text-sm font-bold">LOGO</div>}
+        <div className="w-1/2 bg-gray-400 p-2 flex items-center justify-center">
+          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[50px] object-contain" />}
+          {!logoUrl && <div className="text-white text-2xl font-bold">LOGO</div>}
         </div>
         
         {/* Contact info */}
-        <div className="w-1/2 p-2 flex flex-col items-center justify-center" style={{ backgroundColor: accentColor }}>
-          <div className="text-white text-[8px] font-bold mb-1">
-            {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
+        <div className="w-1/2 p-2 flex flex-col justify-between">
+          <div 
+            className="text-right font-bold" 
+            style={{ 
+              fontFamily: phoneFont || fontFamily, 
+              fontSize: phoneFontSize, 
+              fontWeight: phoneFontWeight || fontWeight
+            }}
+          >
+            {phoneNumber || 'XX XXX XXXX'}
           </div>
-          <div className="text-white text-[8px] text-center">
-            {location ? location : '123 STREET\nCITY'}
-          </div>
-        </div>
-      </div>
-      
-      {/* Service panels */}
-      <div className="flex-grow p-1 flex flex-col gap-1 bg-gray-100">
-        {['DATE SERVICED', 'NEXT DUE', 'OIL TYPE'].map((label, i) => (
-          <div key={i} className="relative bg-white rounded h-[22px] overflow-hidden">
-            <div
-              className="absolute top-0 left-0 px-2 py-0.5 text-[8px] text-white font-bold"
-              style={{ backgroundColor: accentColor }}
-            >
-              {label}
-            </div>
-            {label === 'NEXT DUE' && (
-              <div className="absolute bottom-1 right-2 text-[8px]">
-                date / km
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderLayout3 = () => (
-    <div className="w-full h-full flex flex-col">
-      {/* Logo and contact area */}
-      <div className="w-full flex">
-        {/* Logo area */}
-        <div className="w-1/2 p-2 flex items-center justify-center">
-          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[40px] object-contain" />}
-          {!logoUrl && <div className="text-white text-sm font-bold">LOGO</div>}
-        </div>
-        
-        {/* Right panel with contact info */}
-        <div className="w-1/2 p-2 flex flex-col items-center justify-center" style={{ backgroundColor: accentColor }}>
-          <div className="text-white">
-            <div className="font-bold text-[10px]">{phoneNumber || 'XX XXX XXXX'}</div>
-            <div className="text-[8px]">{location || 'STREET\nCITY TOWN'}</div>
+          <div 
+            className="text-right" 
+            style={{ 
+              fontFamily: locationFont || fontFamily, 
+              fontSize: locationFontSize, 
+              fontWeight: locationFontWeight || fontWeight
+            }}
+          >
+            {location || 'STREET\nCITY TOWN'}
           </div>
         </div>
       </div>
       
       {/* Service section */}
       <div className="flex-grow bg-gray-100 p-2">
-        <div className="flex items-center gap-2 mb-2">
-          <div 
-            className="rounded-full p-1"
-            style={{ backgroundColor: accentColor || '#f97316' }}
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="white" strokeWidth="2" />
-              <polyline points="9 22 9 12 15 12 15 22" stroke="white" strokeWidth="2" />
+        {/* Service next due section */}
+        <div className="bg-gray-200 rounded-full mb-2 flex items-center">
+          <div className="bg-gray-800 rounded-full p-1 flex items-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 7h-1V4H6v3H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z" stroke="white" strokeWidth="2" />
+              <path d="M9 14v-5h3m0 0h-3m3 0 3 5" stroke="white" strokeWidth="2" />
             </svg>
+            <span className="ml-1 text-white text-xs font-bold">SERVICE NEXT DUE:</span>
           </div>
-          <div className="font-bold text-[8px]">
-            SERVICE<br />NEXT DUE:
+          <div className="flex-grow flex justify-end items-center pr-4">
+            <span className="font-mono">/</span>
+            <span className="w-6"></span>
+            <span className="font-mono">/</span>
           </div>
-          <div className="flex-grow" />
-          <div className="text-[10px]">/</div>
-          <div className="text-[10px]">/</div>
         </div>
         
-        <div className="flex items-center bg-gray-50 rounded-full px-2 py-1">
-          <div className="font-bold text-[8px] mr-1">OR AT:</div>
-          <div className="flex-grow" />
-          <div 
-            className="rounded-full flex items-center justify-center w-5 h-5 text-white font-bold text-[8px]"
-            style={{ backgroundColor: accentColor || '#f97316' }}
-          >
+        {/* OR AT km section */}
+        <div className="bg-gray-200 rounded-full flex items-center">
+          <div className="px-2 py-1 font-bold text-xs">
+            OR AT:
+          </div>
+          <div className="flex-grow"></div>
+          <div className="bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold">
             KM
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderLayout2 = () => (
+    <div className="w-full h-full flex flex-col border border-gray-800">
+      {/* Left side - logo and contact */}
+      <div className="flex w-full h-full">
+        <div className="w-1/2 flex flex-col">
+          {/* Logo area */}
+          <div className="bg-gray-400 flex-1 flex items-center justify-center">
+            {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[80px] object-contain" />}
+            {!logoUrl && <div className="text-white text-3xl font-bold">LOGO</div>}
+          </div>
+        </div>
+        
+        {/* Right side - service panels */}
+        <div className="w-1/2 bg-gray-500">
+          <div className="h-full flex flex-col p-2 justify-between">
+            {/* Contact info at the bottom */}
+            <div className="flex flex-col space-y-0">
+              <div 
+                className="font-bold text-lg"
+                style={{ 
+                  fontFamily: phoneFont || fontFamily, 
+                  fontSize: phoneFontSize, 
+                  fontWeight: phoneFontWeight || fontWeight
+                }}
+              >
+                {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
+              </div>
+              <div 
+                className="whitespace-pre-line"
+                style={{ 
+                  fontFamily: locationFont || fontFamily, 
+                  fontSize: locationFontSize, 
+                  fontWeight: locationFontWeight || fontWeight
+                }}
+              >
+                {location || '123 STREET\nCITY'}
+              </div>
+            </div>
+            
+            {/* Service panels */}
+            <div className="space-y-2 mt-4">
+              <div className="bg-white rounded border border-gray-800 p-1 relative h-12">
+                <div className="absolute top-0 left-0 bg-gray-800 text-white px-2 text-xs font-bold">
+                  DATE SERVICED
+                </div>
+                <div className="flex justify-end items-center h-full pr-2">
+                  <span className="font-mono">/</span>
+                  <span className="w-6"></span>
+                  <span className="font-mono">/</span>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded border border-gray-800 p-1 relative h-12">
+                <div className="absolute top-0 left-0 bg-gray-800 text-white px-2 text-xs font-bold">
+                  NEXT DUE
+                </div>
+                <div className="absolute bottom-1 right-2 text-[8px]">
+                  date / km
+                </div>
+              </div>
+              
+              <div className="bg-white rounded border border-gray-800 p-1 relative h-12">
+                <div className="absolute top-0 left-0 bg-gray-800 text-white px-2 text-xs font-bold">
+                  OIL TYPE
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderLayout3 = () => (
+    <div className="w-full h-full flex flex-col border border-gray-800">
+      <div className="flex h-full">
+        {/* Left side - Logo and contact info */}
+        <div className="w-1/2 flex flex-col p-2 space-y-2">
+          {/* Logo area */}
+          <div className="bg-gray-400 flex-grow flex items-center justify-center p-4">
+            {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />}
+            {!logoUrl && <div className="text-white text-3xl font-bold">LOGO</div>}
+          </div>
+          
+          {/* Contact info */}
+          <div className="flex flex-col items-start space-y-1">
+            <div 
+              className="font-bold text-lg"
+              style={{ 
+                fontFamily: phoneFont || fontFamily, 
+                fontSize: phoneFontSize, 
+                fontWeight: phoneFontWeight || fontWeight
+              }}
+            >
+              {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
+            </div>
+            <div 
+              className="whitespace-pre-line"
+              style={{ 
+                fontFamily: locationFont || fontFamily, 
+                fontSize: locationFontSize, 
+                fontWeight: locationFontWeight || fontWeight
+              }}
+            >
+              {location || '123 STREET\nCITY'}
+            </div>
+          </div>
+        </div>
+        
+        {/* Right side - Date boxes */}
+        <div className="w-1/2 bg-gray-300 p-2 flex flex-col justify-center space-y-3">
+          {/* Date serviced box */}
+          <div className="bg-white rounded-lg border border-gray-800 p-2 relative">
+            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 text-xs font-bold rounded">
+              DATE SERVICED
+            </div>
+            <div className="h-8 flex justify-center items-center">
+              <span className="font-mono">/</span>
+              <span className="w-6"></span>
+              <span className="font-mono">/</span>
+            </div>
+          </div>
+          
+          {/* Next due box */}
+          <div className="bg-white rounded-lg border border-gray-800 p-2 relative">
+            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 text-xs font-bold rounded">
+              NEXT DUE
+            </div>
+            <div className="h-8"></div>
+          </div>
+          
+          {/* Oil type box */}
+          <div className="bg-white rounded-lg border border-gray-800 p-2 relative">
+            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 text-xs font-bold rounded">
+              OIL TYPE
+            </div>
+            <div className="h-8"></div>
           </div>
         </div>
       </div>

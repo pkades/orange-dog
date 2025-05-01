@@ -1,13 +1,69 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Palette } from "lucide-react"; // Replacing ColorPicker with Palette
+import { Palette } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+// CMYK conversion utilities
+const rgbToCmyk = (r: number, g: number, b: number): [number, number, number, number] => {
+  r = r / 255;
+  g = g / 255;
+  b = b / 255;
+  
+  const k = 1 - Math.max(r, g, b);
+  
+  if (k === 1) {
+    return [0, 0, 0, 1];
+  }
+  
+  const c = (1 - r - k) / (1 - k);
+  const m = (1 - g - k) / (1 - k);
+  const y = (1 - b - k) / (1 - k);
+  
+  return [
+    Math.round(c * 100),
+    Math.round(m * 100),
+    Math.round(y * 100),
+    Math.round(k * 100)
+  ];
+};
+
+const cmykToRgb = (c: number, m: number, y: number, k: number): [number, number, number] => {
+  c = c / 100;
+  m = m / 100;
+  y = y / 100;
+  k = k / 100;
+  
+  const r = 255 * (1 - c) * (1 - k);
+  const g = 255 * (1 - m) * (1 - k);
+  const b = 255 * (1 - y) * (1 - k);
+  
+  return [Math.round(r), Math.round(g), Math.round(b)];
+};
+
+const hexToRgb = (hex: string): [number, number, number] => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    return [
+      parseInt(result[1], 16),
+      parseInt(result[2], 16),
+      parseInt(result[3], 16)
+    ];
+  }
+  return [0, 0, 0];
+};
+
+const rgbToHex = (r: number, g: number, b: number): string => {
+  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+};
+
+// Brand colors palette
 const PREDEFINED_COLORS = [
   "#222222", // black
   "#ffffff", // white
-  "#F97316", // orange
+  "#FF7A00", // Orange Dog orange
   "#0EA5E9", // blue
   "#8B5CF6", // purple
   "#22C55E", // green
@@ -19,9 +75,42 @@ interface ColorPickerProps {
   label: string;
   color: string;
   onChange: (color: string) => void;
+  useCmyk?: boolean;
 }
 
-const CustomColorPicker: React.FC<ColorPickerProps> = ({ label, color, onChange }) => {
+const CustomColorPicker: React.FC<ColorPickerProps> = ({ 
+  label, 
+  color, 
+  onChange,
+  useCmyk = false 
+}) => {
+  const [cmykValues, setCmykValues] = useState<[number, number, number, number]>([0, 0, 0, 0]);
+  
+  // Initialize CMYK values from the current color
+  useEffect(() => {
+    const [r, g, b] = hexToRgb(color);
+    setCmykValues(rgbToCmyk(r, g, b));
+  }, [color]);
+  
+  // Handle CMYK input changes
+  const handleCmykChange = (component: 'c' | 'm' | 'y' | 'k', value: number) => {
+    let newValue = Math.max(0, Math.min(100, value));
+    
+    const newCmyk = [...cmykValues] as [number, number, number, number];
+    
+    switch (component) {
+      case 'c': newCmyk[0] = newValue; break;
+      case 'm': newCmyk[1] = newValue; break;
+      case 'y': newCmyk[2] = newValue; break;
+      case 'k': newCmyk[3] = newValue; break;
+    }
+    
+    setCmykValues(newCmyk);
+    
+    const [r, g, b] = cmykToRgb(...newCmyk);
+    onChange(rgbToHex(r, g, b));
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor={`color-${label}`}>{label}</Label>
@@ -40,7 +129,7 @@ const CustomColorPicker: React.FC<ColorPickerProps> = ({ label, color, onChange 
               <Palette className="h-4 w-4" />
             </button>
           </PopoverTrigger>
-          <PopoverContent className="w-64 p-3">
+          <PopoverContent className="w-72 p-3">
             <div className="flex flex-col gap-3">
               <div className="grid grid-cols-4 gap-2">
                 {PREDEFINED_COLORS.map((presetColor) => (
@@ -53,16 +142,82 @@ const CustomColorPicker: React.FC<ColorPickerProps> = ({ label, color, onChange 
                 ))}
               </div>
               
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="custom-color">Custom Color</Label>
-                <input
-                  id="custom-color"
-                  type="color"
-                  value={color}
-                  onChange={(e) => onChange(e.target.value)}
-                  className="w-full h-10"
-                />
-              </div>
+              <Tabs defaultValue={useCmyk ? "cmyk" : "rgb"}>
+                <TabsList className="grid grid-cols-2 w-full">
+                  <TabsTrigger value="rgb">RGB</TabsTrigger>
+                  <TabsTrigger value="cmyk">CMYK</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="rgb" className="mt-2">
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="custom-color">Custom Colour</Label>
+                    <input
+                      id="custom-color"
+                      type="color"
+                      value={color}
+                      onChange={(e) => onChange(e.target.value)}
+                      className="w-full h-10"
+                    />
+                    <div className="text-sm font-mono mt-1">{color.toUpperCase()}</div>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="cmyk" className="mt-2">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor="cmyk-c" className="w-10">C:</Label>
+                      <Input
+                        id="cmyk-c"
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={cmykValues[0]}
+                        onChange={(e) => handleCmykChange('c', parseInt(e.target.value || '0'))}
+                      />
+                      <span>%</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor="cmyk-m" className="w-10">M:</Label>
+                      <Input
+                        id="cmyk-m"
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={cmykValues[1]}
+                        onChange={(e) => handleCmykChange('m', parseInt(e.target.value || '0'))}
+                      />
+                      <span>%</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor="cmyk-y" className="w-10">Y:</Label>
+                      <Input
+                        id="cmyk-y"
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={cmykValues[2]}
+                        onChange={(e) => handleCmykChange('y', parseInt(e.target.value || '0'))}
+                      />
+                      <span>%</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor="cmyk-k" className="w-10">K:</Label>
+                      <Input
+                        id="cmyk-k"
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={cmykValues[3]}
+                        onChange={(e) => handleCmykChange('k', parseInt(e.target.value || '0'))}
+                      />
+                      <span>%</span>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </div>
           </PopoverContent>
         </Popover>

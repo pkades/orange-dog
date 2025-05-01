@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -89,7 +90,15 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+			},
+			fontFamily: {
+				'bebas': ['"Bebas Neue"', 'sans-serif'],
+				'montserrat': ['Montserrat', 'sans-serif'],
+				'impact': ['Impact', 'sans-serif'],
+				'arial': ['Arial', 'sans-serif'],
+				'gotham': ['"Gotham"', 'sans-serif'],
+				'futura': ['"Futura"', 'sans-serif'],
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

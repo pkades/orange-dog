@@ -6,7 +6,7 @@ import { isJpegImage, removeImageBackground } from '@/utils/imageUtils';
 import { toast } from "@/components/ui/sonner";
 
 interface LogoUploaderProps {
-  onLogoChange: (logoUrl: string, needsBackgroundRemoval: boolean) => void;
+  onLogoChange: (logoUrl: string) => void;
 }
 
 const LogoUploader: React.FC<LogoUploaderProps> = ({ onLogoChange }) => {
@@ -26,19 +26,19 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({ onLogoChange }) => {
         try {
           // Process JPEG to remove background
           const processedUrl = await removeImageBackground(file);
-          onLogoChange(processedUrl, true);
+          onLogoChange(processedUrl);
           toast.success("Logo uploaded with background removed");
         } catch (error) {
           console.error("Error removing background:", error);
           // Fallback to original image if background removal fails
           const originalUrl = URL.createObjectURL(file);
-          onLogoChange(originalUrl, false);
+          onLogoChange(originalUrl);
           toast.info("Logo uploaded without background removal");
         }
       } else {
         // Use original file for PNG (assuming it already has transparency)
         const imageUrl = URL.createObjectURL(file);
-        onLogoChange(imageUrl, false);
+        onLogoChange(imageUrl);
         toast.success("Logo uploaded successfully");
       }
     } catch (error) {
