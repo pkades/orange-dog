@@ -20,6 +20,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   phoneNumber,
   location,
   backgroundColor,
+  accentColor,
   phoneFont,
   locationFont,
   phoneFontSize,
@@ -38,51 +39,58 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   const blackLabelWidth = mmToPx(19.6);
   const textHeight = mmToPx(2.2);
 
+  // Split location into lines if it contains newlines
+  const locationLines = location ? location.split('\n') : ['123 STREET', 'CITY'];
+
   return (
-    <div className="w-full h-full flex" style={{ backgroundColor }}>
+    <div className="w-full h-full flex">
       {/* Left side - Logo and contact info */}
-      <div className="w-1/2 flex flex-col p-2">
-        {/* Logo area - no background color */}
-        <div className="flex-1 flex items-center justify-center">
-          {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[80px] object-contain" />}
-          {!logoUrl && <div className="text-5xl font-bold text-gray-400">LOGO</div>}
-        </div>
-        
-        {/* Contact info */}
-        <div className="mt-2">
-          <div 
-            className="text-left font-bold"
-            style={{ 
-              fontFamily: phoneFont, 
-              fontSize: phoneFontSize, 
-              fontWeight: phoneFontWeight
-            }}
-          >
-            {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
+      <div className="w-1/2 h-full" style={{ backgroundColor }}>
+        <div className="flex flex-col h-full p-2">
+          {/* Logo area */}
+          <div className="flex-1 flex items-center justify-center p-1 mb-2">
+            {logoUrl && <img src={logoUrl} alt="Logo" className="max-w-full max-h-[80px] object-contain" />}
+            {!logoUrl && <div className="text-3xl font-bold">LOGO</div>}
           </div>
-          <div 
-            className="text-left whitespace-pre-line"
-            style={{ 
-              fontFamily: locationFont,
-              fontSize: locationFontSize, 
-              fontWeight: locationFontWeight
-            }}
-          >
-            {location || '123 STREET\nCITY'}
+          
+          {/* Contact info */}
+          <div className="flex flex-col items-center mb-3">
+            <div 
+              className="text-center font-bold"
+              style={{ 
+                fontFamily: phoneFont, 
+                fontSize: phoneFontSize, 
+                fontWeight: phoneFontWeight
+              }}
+            >
+              {phoneNumber ? `PH ${phoneNumber}` : 'PH 12 345 6789'}
+            </div>
+            <div 
+              className="text-center"
+              style={{ 
+                fontFamily: locationFont,
+                fontSize: locationFontSize, 
+                fontWeight: locationFontWeight
+              }}
+            >
+              {locationLines.map((line, index) => (
+                <div key={index}>{line}</div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
       
       {/* Right side - Service boxes */}
       <div className="w-1/2 bg-gray-400 flex flex-col p-3 justify-center space-y-3">
-        {/* Date serviced box */}
+        {/* DATE SERVICED box */}
         <div className="relative">
           <div 
-            className="bg-white rounded border border-gray-300" 
+            className="bg-white rounded" 
             style={{ height: `${whiteBoxHeight}px`, width: `${whiteBoxWidth}px` }}
           >
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white px-2 rounded"
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white rounded"
               style={{ height: `${blackLabelHeight}px`, width: `${blackLabelWidth}px`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               <span style={{ fontSize: `${textHeight}px` }} className="font-bold">DATE SERVICED</span>
@@ -95,32 +103,32 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           </div>
         </div>
         
-        {/* Next due box */}
+        {/* NEXT DUE box */}
         <div className="relative">
           <div 
-            className="bg-white rounded border border-gray-300" 
+            className="bg-white rounded" 
             style={{ height: `${whiteBoxHeight}px`, width: `${whiteBoxWidth}px` }}
           >
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white px-2 rounded"
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white rounded"
               style={{ height: `${blackLabelHeight}px`, width: `${blackLabelWidth}px`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               <span style={{ fontSize: `${textHeight}px` }} className="font-bold">NEXT DUE</span>
             </div>
-            <div className="flex justify-end items-end h-full p-1">
-              <span className="text-xs">date / km</span>
+            <div className="flex justify-center items-center h-full text-sm">
+              date / km
             </div>
           </div>
         </div>
         
-        {/* Oil type box */}
+        {/* OIL TYPE box */}
         <div className="relative">
           <div 
-            className="bg-white rounded border border-gray-300" 
+            className="bg-white rounded" 
             style={{ height: `${whiteBoxHeight}px`, width: `${whiteBoxWidth}px` }}
           >
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white px-2 rounded"
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white rounded"
               style={{ height: `${blackLabelHeight}px`, width: `${blackLabelWidth}px`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               <span style={{ fontSize: `${textHeight}px` }} className="font-bold">OIL TYPE</span>
