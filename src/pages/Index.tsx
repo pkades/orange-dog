@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Phone, Download, ArrowLeftRight, ArrowUpDown, FilePdf, Upload } from "lucide-react";
+import { MapPin, Phone, Download, ArrowLeftRight, ArrowUpDown, FileText, Upload } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import LogoUploader from '@/components/LogoUploader';
 import CustomColorPicker from '@/components/ColorPicker';
@@ -532,7 +532,7 @@ const Index = () => {
                       className="w-full"
                       style={{ backgroundColor: ORANGE_DOG_COLOR }}
                     >
-                      <FilePdf className="mr-2 h-4 w-4" />
+                      <FileText className="mr-2 h-4 w-4" />
                       Export Label Design as PDF
                     </Button>
                     
