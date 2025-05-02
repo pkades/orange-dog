@@ -8,7 +8,12 @@ interface LabelPreviewProps {
   location: string;
   backgroundColor: string;
   accentColor: string;
-  selectedLayout: { id: string; name: string; image?: string; } | null;
+  selectedLayout: { 
+    id: string; 
+    name: string; 
+    image?: string;
+    svgUrl: string; 
+  } | null;
   type: 'facingOut' | 'facingIn';
   fontFamily: string;
   phoneFont: string;
@@ -45,62 +50,6 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   // Debug selected layout information
   console.log("Selected layout:", selectedLayout);
   
-  const svgRef = useRef<HTMLImageElement>(null);
-  
-  // Effect to modify SVG colors when it loads or when colors change
-  useEffect(() => {
-    if (svgRef.current) {
-      const img = svgRef.current;
-      
-      // When the SVG is loaded, modify its content
-      img.onload = () => {
-        try {
-          // Create a helper function to fetch and modify the SVG
-          const updateSvgColors = async () => {
-            const response = await fetch(img.src);
-            const svgText = await response.text();
-            
-            // Create a DOM parser
-            const parser = new DOMParser();
-            const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
-            
-            // Find background elements (assuming they're white)
-            const backgroundElements = svgDoc.querySelectorAll('[fill="#FFFFFF"], [fill="#ffffff"], [fill="white"]');
-            backgroundElements.forEach(element => {
-              element.setAttribute('fill', backgroundColor);
-            });
-            
-            // Find accent elements (assuming they're orange)
-            const accentElements = svgDoc.querySelectorAll('[fill="#F97316"], [fill="#f97316"], [fill="#FF7A00"], [fill="#ff7a00"]');
-            accentElements.forEach(element => {
-              element.setAttribute('fill', accentColor);
-            });
-            
-            // Convert the modified SVG back to text
-            const serializer = new XMLSerializer();
-            const modifiedSvgText = serializer.serializeToString(svgDoc);
-            
-            // Create a blob URL for the modified SVG
-            const blob = new Blob([modifiedSvgText], {type: 'image/svg+xml'});
-            const url = URL.createObjectURL(blob);
-            
-            // Update the image source
-            img.src = url;
-            
-            // Clean up the blob URL when the image is loaded
-            img.onload = () => {
-              URL.revokeObjectURL(url);
-            };
-          };
-          
-          updateSvgColors();
-        } catch (error) {
-          console.error('Error modifying SVG:', error);
-        }
-      };
-    }
-  }, [backgroundColor, accentColor]);
-
   const renderFacingOut = () => (
     <div 
       className="w-full h-full flex items-center justify-center"
@@ -126,17 +75,24 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   );
 
   const renderFacingIn = () => {
-    const svgUrl = "https://raw.githubusercontent.com/pkades/orangedog/main/service%20label%20option%201%20test.svg";
+    if (!selectedLayout) {
+      return <div className="w-full h-full flex items-center justify-center">No layout selected</div>;
+    }
+
+    const svgUrl = selectedLayout.svgUrl;
     
     return (
       <div className="w-full h-full relative">
         {/* SVG background - positioned at the back with z-index 0 */}
         <div className="absolute inset-0 w-full h-full z-0">
           <img 
-            ref={svgRef}
             src={svgUrl} 
             alt="Service Label Template" 
-            className="w-full h-full object-contain"
+            className="w-full h-full object-fill"
+            style={{ 
+              backgroundColor: backgroundColor,
+              filter: `drop-shadow(0 0 0 ${accentColor}) saturate(100%)` 
+            }}
             onError={(e) => {
               console.error(`Failed to load SVG: ${svgUrl}`);
               e.currentTarget.style.display = 'none';
@@ -227,7 +183,16 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
           )}
           
           {/* Bleed indicator - 3mm */}
-          <div className="absolute inset-0 border border-dashed border-red-400 m-[8.5px] pointer-events-none z-20" />
+          <div 
+            className="absolute pointer-events-none z-20" 
+            style={{
+              top: `${BLEED}px`,
+              left: `${BLEED}px`,
+              width: `${LABEL_WIDTH}px`,
+              height: `${LABEL_HEIGHT}px`,
+              border: '1px dashed red',
+            }}
+          />
         </div>
         
         <div className="p-2 bg-gray-50 text-xs text-gray-500 text-center border-t">

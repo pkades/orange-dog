@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,19 +17,22 @@ import LayoutSelector, { Layout } from '@/components/LayoutSelector';
 // Orange Dog logo
 const ORANGE_DOG_LOGO = '/lovable-uploads/595ae1dd-8573-4284-a957-b07ca48f511c.png';
 
-// Define the available layouts with new descriptions
+// Define the available layouts with new SVG URLs
 const LABEL_LAYOUTS: Layout[] = [
   { 
     id: 'layout1', 
     name: 'Orange Circle Service Label', 
+    svgUrl: 'https://raw.githubusercontent.com/pkades/orangedogv2/main/option%201%20svg.svg'
   },
   {
     id: 'layout2',
     name: 'Black Banner Service Label',
+    svgUrl: 'https://raw.githubusercontent.com/pkades/orangedogv2/main/option%202%20svg.svg'
   },
   {
     id: 'layout3',
     name: 'Split Panel Service Label',
+    svgUrl: 'https://raw.githubusercontent.com/pkades/orangedogv2/main/option%203%20svg.svg'
   }
 ];
 
@@ -178,11 +182,13 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  {/* Layout selector */}
+                  {/* Layout selector - Updated with backgroundColor and accentColor */}
                   <LayoutSelector 
                     layouts={LABEL_LAYOUTS}
                     selectedLayoutId={selectedLayoutId}
                     onLayoutChange={setSelectedLayoutId}
+                    backgroundColor={backgroundColor}
+                    accentColor={accentColor}
                   />
                   
                   {/* Font Selection */}
@@ -413,8 +419,8 @@ const Index = () => {
                 <h3 className="font-medium mb-2">Specifications</h3>
                 <ul className="text-sm text-gray-600 space-y-1">
                   <li>• Label size: 68x45mm</li>
-                  <li>• Bleed area: 4mm</li>
-                  <li>• Print-ready dimensions: 72x49mm</li>
+                  <li>• Bleed area: 3mm</li>
+                  <li>• Print-ready dimensions: 74x51mm</li>
                   <li>• Export format: Vector (CMYK color mode)</li>
                 </ul>
               </CardContent>
