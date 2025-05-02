@@ -42,6 +42,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
 }) => {
   // Removed the split logic for location to keep it on one line
   
+  // Debug font information
+  console.log("Layout1Design - Phone font:", phoneFont);
+  console.log("Layout1Design - Location font:", locationFont);
+  
   const renderLayout = () => {
     // Determine which layout to render based on layoutId
     switch(layoutId) {
@@ -119,7 +123,9 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           zIndex: 10,
           whiteSpace: 'nowrap', // Added to prevent text wrapping
         }}>
-          <div>{phoneNumber || ''}</div>
+          <div style={{ fontFamily: phoneFont || "'Bebas Neue', sans-serif" }}>
+            {phoneNumber || ''}
+          </div>
           <div 
             style={{ 
               fontFamily: locationFont || "'Bebas Neue', sans-serif",
@@ -204,7 +210,9 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           width: '40%',
           whiteSpace: 'nowrap', // Ensures text doesn't wrap
         }}>
-          <div>{phoneNumber || ''}</div>
+          <div style={{ fontFamily: phoneFont || "'Bebas Neue', sans-serif" }}>
+            {phoneNumber || ''}
+          </div>
           <div 
             style={{ 
               fontFamily: locationFont || "'Bebas Neue', sans-serif",
@@ -283,7 +291,9 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           zIndex: 10,
           whiteSpace: 'nowrap', // Ensures text doesn't wrap
         }}>
-          <div>{phoneNumber || ''}</div>
+          <div style={{ fontFamily: phoneFont || "'Bebas Neue', sans-serif" }}>
+            {phoneNumber || ''}
+          </div>
           <div 
             style={{ 
               fontFamily: locationFont || "'Bebas Neue', sans-serif",

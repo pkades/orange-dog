@@ -66,6 +66,10 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   // Debug selected layout information
   console.log("Selected layout:", selectedLayout);
   
+  // Debug font information
+  console.log("Phone font:", phoneFont);
+  console.log("Location font:", locationFont);
+  
   const renderFacingOut = () => (
     <div 
       className="w-full h-full flex items-center justify-center"
@@ -164,7 +168,8 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
           >
             <div style={{ 
               fontSize: phoneFontSize || '16px',
-              fontWeight: phoneFontWeight || 'bold' 
+              fontWeight: phoneFontWeight || 'bold',
+              fontFamily: phoneFont || "'Bebas Neue', sans-serif",
             }}>
               {phoneNumber}
             </div>
@@ -184,7 +189,8 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
           >
             <div style={{ 
               fontSize: locationFontSize || '12px',
-              fontWeight: locationFontWeight || 'normal'
+              fontWeight: locationFontWeight || 'normal',
+              fontFamily: locationFont || "'Bebas Neue', sans-serif",
             }}>
               {location}
             </div>
