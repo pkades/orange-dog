@@ -14,10 +14,34 @@ interface FontSelectorProps {
 }
 
 const FontSelector: React.FC<FontSelectorProps> = ({ value, onChange, options }) => {
+  // First, ensure the necessary Google Fonts are loaded
+  React.useEffect(() => {
+    // Add Google Fonts links for all font options
+    const fontFamilies = options
+      .filter(font => !['Arial', 'Impact'].includes(font.name)) // Skip system fonts
+      .map(font => font.name.replace(/\s+/g, '+'))
+      .join('|');
+    
+    if (fontFamilies) {
+      const link = document.createElement('link');
+      link.href = `https://fonts.googleapis.com/css2?family=${fontFamilies}&display=swap`;
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+      
+      return () => {
+        // Clean up if component unmounts
+        document.head.removeChild(link);
+      };
+    }
+  }, [options]);
+
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full">
-        <SelectValue placeholder="Select font" />
+        <SelectValue 
+          placeholder="Select font" 
+          style={{ fontFamily: value || 'inherit' }}
+        />
       </SelectTrigger>
       <SelectContent>
         {options.map((font) => (
