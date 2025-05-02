@@ -85,9 +85,9 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
             <RadioGroupItem value={layout.id} id={`layout-${layout.id}`} className="mt-1" />
             <Label htmlFor={`layout-${layout.id}`} className="w-full cursor-pointer">
               <Card className={`overflow-hidden transition-all ${selectedLayoutId === layout.id ? 'ring-2 ring-primary' : ''}`}>
-                <CardContent className="p-2">
+                <CardContent className="p-2 bg-orangedog text-white">
                   {renderLayoutPreview(layout)}
-                  <p className="text-center text-sm mt-2">{layout.name}</p>
+                  <p className="text-center text-sm mt-2 text-white">{layout.name}</p>
                 </CardContent>
               </Card>
             </Label>

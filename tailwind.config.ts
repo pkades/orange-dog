@@ -62,7 +62,8 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				orangedog: '#FF6600',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -92,6 +93,7 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			},
 			fontFamily: {
+				'poppins': ['Poppins', 'sans-serif'],
 				'bebas': ['"Bebas Neue"', 'sans-serif'],
 				'montserrat': ['Montserrat', 'sans-serif'],
 				'impact': ['Impact', 'sans-serif'],

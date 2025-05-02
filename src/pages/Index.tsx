@@ -62,7 +62,7 @@ const FONT_WEIGHTS = [
 ];
 
 // Orange Dog brand color (from logo)
-const ORANGE_DOG_COLOR = '#FF7A00';
+const ORANGE_DOG_COLOR = '#FF6600';
 
 const Index = () => {
   // Add Bebas Neue font to the document
@@ -137,7 +137,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 font-poppins">
       <div className="container mx-auto px-4">
         <header className="mb-8">
           <div className="flex justify-between items-center mb-6">
@@ -158,9 +158,9 @@ const Index = () => {
           <div className="lg:col-span-2">
             <form onSubmit={(e) => { e.preventDefault(); handleExportLabel(); }} className="space-y-6">
               <Card>
-                <CardHeader>
+                <CardHeader className="bg-orangedog text-white text-center">
                   <CardTitle>Design Your Label</CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-white">
                     Upload your logo and fill in your business information
                   </CardDescription>
                 </CardHeader>
@@ -169,7 +169,7 @@ const Index = () => {
                   {/* Logo Upload */}
                   <LogoUploader onLogoChange={handleLogoChange} />
                   
-                  {/* MOVED: Layout selector moved under logo upload */}
+                  {/* MOVED: Layout selector under logo upload */}
                   <LayoutSelector 
                     layouts={LABEL_LAYOUTS}
                     selectedLayoutId={selectedLayoutId}
