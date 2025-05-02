@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -528,139 +529,141 @@ const Index = () => {
             </form>
           </div>
           
-          {/* Preview Section */}
+          {/* Preview Section - Adding sticky positioning */}
           <div className="space-y-6">
-            <h2 className="text-xl font-bold mb-4">Label Preview</h2>
-            
-            <Tabs defaultValue="both" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-4">
-                <TabsTrigger value="both">Both Sides</TabsTrigger>
-                <TabsTrigger value="out">Facing Out</TabsTrigger>
-                <TabsTrigger value="in">Facing In</TabsTrigger>
-              </TabsList>
+            <div className="sticky top-4">
+              <h2 className="text-xl font-bold mb-4">Label Preview</h2>
               
-              <TabsContent value="both" className="space-y-4">
-                <LabelPreview 
-                  logoUrl={logoUrl}
-                  phoneNumber={phoneNumber}
-                  location={location}
-                  backgroundColor={backgroundColor}
-                  accentColor={accentColor}
-                  selectedLayout={selectedLayout}
-                  type="facingOut"
-                  facingOutLogoSize={facingOutLogoSize}
-                  facingInLogoSize={facingInLogoSize}
-                  logoPositionX={logoPositionX}
-                  logoPositionY={logoPositionY}
-                  phonePositionX={phonePositionX}
-                  phonePositionY={phonePositionY}
-                  locationPositionX={locationPositionX}
-                  locationPositionY={locationPositionY}
-                  fontFamily={fontFamily}
-                  phoneFont={phoneFont}
-                  locationFont={locationFont}
-                  phoneFontSize={phoneFontSize}
-                  locationFontSize={locationFontSize}
-                  fontWeight={fontWeight}
-                  phoneFontWeight={phoneFontWeight}
-                  locationFontWeight={locationFontWeight}
-                />
-                <LabelPreview 
-                  logoUrl={logoUrl}
-                  phoneNumber={phoneNumber}
-                  location={location}
-                  backgroundColor={backgroundColor}
-                  accentColor={accentColor}
-                  selectedLayout={selectedLayout}
-                  type="facingIn"
-                  facingOutLogoSize={facingOutLogoSize}
-                  facingInLogoSize={facingInLogoSize}
-                  logoPositionX={logoPositionX}
-                  logoPositionY={logoPositionY}
-                  phonePositionX={phonePositionX}
-                  phonePositionY={phonePositionY}
-                  locationPositionX={locationPositionX}
-                  locationPositionY={locationPositionY}
-                  fontFamily={fontFamily}
-                  phoneFont={phoneFont}
-                  locationFont={locationFont}
-                  phoneFontSize={phoneFontSize}
-                  locationFontSize={locationFontSize}
-                  fontWeight={fontWeight}
-                  phoneFontWeight={phoneFontWeight}
-                  locationFontWeight={locationFontWeight}
-                />
-              </TabsContent>
+              <Tabs defaultValue="both" className="w-full">
+                <TabsList className="grid w-full grid-cols-3 mb-4">
+                  <TabsTrigger value="both">Both Sides</TabsTrigger>
+                  <TabsTrigger value="out">Facing Out</TabsTrigger>
+                  <TabsTrigger value="in">Facing In</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="both" className="space-y-4">
+                  <LabelPreview 
+                    logoUrl={logoUrl}
+                    phoneNumber={phoneNumber}
+                    location={location}
+                    backgroundColor={backgroundColor}
+                    accentColor={accentColor}
+                    selectedLayout={selectedLayout}
+                    type="facingOut"
+                    facingOutLogoSize={facingOutLogoSize}
+                    facingInLogoSize={facingInLogoSize}
+                    logoPositionX={logoPositionX}
+                    logoPositionY={logoPositionY}
+                    phonePositionX={phonePositionX}
+                    phonePositionY={phonePositionY}
+                    locationPositionX={locationPositionX}
+                    locationPositionY={locationPositionY}
+                    fontFamily={fontFamily}
+                    phoneFont={phoneFont}
+                    locationFont={locationFont}
+                    phoneFontSize={phoneFontSize}
+                    locationFontSize={locationFontSize}
+                    fontWeight={fontWeight}
+                    phoneFontWeight={phoneFontWeight}
+                    locationFontWeight={locationFontWeight}
+                  />
+                  <LabelPreview 
+                    logoUrl={logoUrl}
+                    phoneNumber={phoneNumber}
+                    location={location}
+                    backgroundColor={backgroundColor}
+                    accentColor={accentColor}
+                    selectedLayout={selectedLayout}
+                    type="facingIn"
+                    facingOutLogoSize={facingOutLogoSize}
+                    facingInLogoSize={facingInLogoSize}
+                    logoPositionX={logoPositionX}
+                    logoPositionY={logoPositionY}
+                    phonePositionX={phonePositionX}
+                    phonePositionY={phonePositionY}
+                    locationPositionX={locationPositionX}
+                    locationPositionY={locationPositionY}
+                    fontFamily={fontFamily}
+                    phoneFont={phoneFont}
+                    locationFont={locationFont}
+                    phoneFontSize={phoneFontSize}
+                    locationFontSize={locationFontSize}
+                    fontWeight={fontWeight}
+                    phoneFontWeight={phoneFontWeight}
+                    locationFontWeight={locationFontWeight}
+                  />
+                </TabsContent>
+                
+                <TabsContent value="out">
+                  <LabelPreview 
+                    logoUrl={logoUrl}
+                    phoneNumber={phoneNumber}
+                    location={location}
+                    backgroundColor={backgroundColor}
+                    accentColor={accentColor}
+                    selectedLayout={selectedLayout}
+                    type="facingOut"
+                    facingOutLogoSize={facingOutLogoSize}
+                    facingInLogoSize={facingInLogoSize}
+                    logoPositionX={logoPositionX}
+                    logoPositionY={logoPositionY}
+                    phonePositionX={phonePositionX}
+                    phonePositionY={phonePositionY}
+                    locationPositionX={locationPositionX}
+                    locationPositionY={locationPositionY}
+                    fontFamily={fontFamily}
+                    phoneFont={phoneFont}
+                    locationFont={locationFont}
+                    phoneFontSize={phoneFontSize}
+                    locationFontSize={locationFontSize}
+                    fontWeight={fontWeight}
+                    phoneFontWeight={phoneFontWeight}
+                    locationFontWeight={locationFontWeight}
+                  />
+                </TabsContent>
+                
+                <TabsContent value="in">
+                  <LabelPreview 
+                    logoUrl={logoUrl}
+                    phoneNumber={phoneNumber}
+                    location={location}
+                    backgroundColor={backgroundColor}
+                    accentColor={accentColor}
+                    selectedLayout={selectedLayout}
+                    type="facingIn"
+                    facingOutLogoSize={facingOutLogoSize}
+                    facingInLogoSize={facingInLogoSize}
+                    logoPositionX={logoPositionX}
+                    logoPositionY={logoPositionY}
+                    phonePositionX={phonePositionX}
+                    phonePositionY={phonePositionY}
+                    locationPositionX={locationPositionX}
+                    locationPositionY={locationPositionY}
+                    fontFamily={fontFamily}
+                    phoneFont={phoneFont}
+                    locationFont={locationFont}
+                    phoneFontSize={phoneFontSize}
+                    locationFontSize={locationFontSize}
+                    fontWeight={fontWeight}
+                    phoneFontWeight={phoneFontWeight}
+                    locationFontWeight={locationFontWeight}
+                  />
+                </TabsContent>
+              </Tabs>
               
-              <TabsContent value="out">
-                <LabelPreview 
-                  logoUrl={logoUrl}
-                  phoneNumber={phoneNumber}
-                  location={location}
-                  backgroundColor={backgroundColor}
-                  accentColor={accentColor}
-                  selectedLayout={selectedLayout}
-                  type="facingOut"
-                  facingOutLogoSize={facingOutLogoSize}
-                  facingInLogoSize={facingInLogoSize}
-                  logoPositionX={logoPositionX}
-                  logoPositionY={logoPositionY}
-                  phonePositionX={phonePositionX}
-                  phonePositionY={phonePositionY}
-                  locationPositionX={locationPositionX}
-                  locationPositionY={locationPositionY}
-                  fontFamily={fontFamily}
-                  phoneFont={phoneFont}
-                  locationFont={locationFont}
-                  phoneFontSize={phoneFontSize}
-                  locationFontSize={locationFontSize}
-                  fontWeight={fontWeight}
-                  phoneFontWeight={phoneFontWeight}
-                  locationFontWeight={locationFontWeight}
-                />
-              </TabsContent>
-              
-              <TabsContent value="in">
-                <LabelPreview 
-                  logoUrl={logoUrl}
-                  phoneNumber={phoneNumber}
-                  location={location}
-                  backgroundColor={backgroundColor}
-                  accentColor={accentColor}
-                  selectedLayout={selectedLayout}
-                  type="facingIn"
-                  facingOutLogoSize={facingOutLogoSize}
-                  facingInLogoSize={facingInLogoSize}
-                  logoPositionX={logoPositionX}
-                  logoPositionY={logoPositionY}
-                  phonePositionX={phonePositionX}
-                  phonePositionY={phonePositionY}
-                  locationPositionX={locationPositionX}
-                  locationPositionY={locationPositionY}
-                  fontFamily={fontFamily}
-                  phoneFont={phoneFont}
-                  locationFont={locationFont}
-                  phoneFontSize={phoneFontSize}
-                  locationFontSize={locationFontSize}
-                  fontWeight={fontWeight}
-                  phoneFontWeight={phoneFontWeight}
-                  locationFontWeight={locationFontWeight}
-                />
-              </TabsContent>
-            </Tabs>
-            
-            {/* Specifications Card */}
-            <Card className="mt-4">
-              <CardContent className="p-4">
-                <h3 className="font-medium mb-2">Specifications</h3>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Label size: 68x45mm</li>
-                  <li>• Bleed area: 3mm</li>
-                  <li>• Print-ready dimensions: 74x51mm</li>
-                  <li>• Export format: Vector (CMYK color mode)</li>
-                </ul>
-              </CardContent>
-            </Card>
+              {/* Specifications Card */}
+              <Card className="mt-4">
+                <CardContent className="p-4">
+                  <h3 className="font-medium mb-2">Specifications</h3>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>• Label size: 68x45mm</li>
+                    <li>• Bleed area: 3mm</li>
+                    <li>• Print-ready dimensions: 74x51mm</li>
+                    <li>• Export format: Vector (CMYK color mode)</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
