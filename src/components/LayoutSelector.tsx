@@ -17,7 +17,7 @@ interface LayoutSelectorProps {
   onLayoutChange: (layoutId: string) => void;
   backgroundColor: string;
   accentColor: string;
-  hideTextPlaceholders?: boolean; // Added new prop
+  hideTextPlaceholders?: boolean;
 }
 
 const LayoutSelector: React.FC<LayoutSelectorProps> = ({
@@ -26,7 +26,7 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
   onLayoutChange,
   backgroundColor,
   accentColor,
-  hideTextPlaceholders = false, // Default to false to maintain backward compatibility
+  hideTextPlaceholders = false,
 }) => {
   // Debug layouts on component mount
   useEffect(() => {
@@ -85,7 +85,7 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
             <RadioGroupItem value={layout.id} id={`layout-${layout.id}`} className="mt-1" />
             <Label htmlFor={`layout-${layout.id}`} className="w-full cursor-pointer">
               <Card className={`overflow-hidden transition-all ${selectedLayoutId === layout.id ? 'ring-2 ring-primary' : ''}`}>
-                <CardContent className="p-2 bg-orangedog text-white">
+                <CardContent className="p-2 bg-black text-white">
                   {renderLayoutPreview(layout)}
                   <p className="text-center text-sm mt-2 text-white">{layout.name}</p>
                 </CardContent>

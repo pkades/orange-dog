@@ -196,7 +196,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   return (
     <Card className="overflow-hidden">
       <CardContent className="p-0">
-        <div className="p-3 bg-gray-100 border-b">
+        <div className="p-3 bg-orangedog text-white border-b text-center">
           <h3 className="font-bold text-lg">
             {type === 'facingOut' ? 'Facing Out' : 'Facing In'}
           </h3>

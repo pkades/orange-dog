@@ -158,14 +158,14 @@ const Index = () => {
           <div className="lg:col-span-2">
             <form onSubmit={(e) => { e.preventDefault(); handleExportLabel(); }} className="space-y-6">
               <Card>
-                <CardHeader className="bg-orangedog text-white text-center">
+                <CardHeader className="bg-orangedog text-white text-center rounded-t-lg">
                   <CardTitle>Design Your Label</CardTitle>
-                  <CardDescription className="text-white">
+                  <CardDescription className="text-white pb-2">
                     Upload your logo and fill in your business information
                   </CardDescription>
                 </CardHeader>
                 
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 pt-6">
                   {/* Logo Upload */}
                   <LogoUploader onLogoChange={handleLogoChange} />
                   
