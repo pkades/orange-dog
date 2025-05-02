@@ -13,6 +13,7 @@ import LabelPreview from '@/components/LabelPreview';
 import FontSelector from '@/components/FontSelector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LayoutSelector, { Layout } from '@/components/LayoutSelector';
+import { Slider } from "@/components/ui/slider";
 
 // Orange Dog logo
 const ORANGE_DOG_LOGO = '/lovable-uploads/595ae1dd-8573-4284-a957-b07ca48f511c.png';
@@ -27,7 +28,7 @@ const LABEL_LAYOUTS: Layout[] = [
   {
     id: 'layout2',
     name: 'Black Banner Service Label',
-    svgUrl: 'https://raw.githubusercontent.com/pkades/orangedogv2/main/option%202%20svg.svg'
+    svgUrl: 'https://raw.githubusercontent.com/pkades/orangedogv2/main/option%202%20svg%20fix.svg'
   },
   {
     id: 'layout3',
@@ -84,6 +85,7 @@ const Index = () => {
   const [location, setLocation] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
   const [accentColor, setAccentColor] = useState(ORANGE_DOG_COLOR);
+  const [logoSize, setLogoSize] = useState(70); // Default logo size (width in px)
   
   // Font state
   const [fontFamily, setFontFamily] = useState(FONT_OPTIONS[0].value);
@@ -152,6 +154,26 @@ const Index = () => {
                 <CardContent className="space-y-6">
                   {/* Logo Upload */}
                   <LogoUploader onLogoChange={handleLogoChange} />
+                  
+                  {/* Logo Size Adjustment */}
+                  <div className="space-y-2">
+                    <Label htmlFor="logo-size" className="flex items-center gap-2">
+                      Logo Size
+                    </Label>
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm">Small</span>
+                      <Slider
+                        id="logo-size"
+                        defaultValue={[logoSize]}
+                        max={120}
+                        min={30}
+                        step={1}
+                        onValueChange={(values) => setLogoSize(values[0])}
+                        className="flex-1"
+                      />
+                      <span className="text-sm">Large</span>
+                    </div>
+                  </div>
                   
                   {/* Business Information */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -345,6 +367,7 @@ const Index = () => {
                   accentColor={accentColor}
                   selectedLayout={selectedLayout}
                   type="facingOut"
+                  logoSize={logoSize}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -362,6 +385,7 @@ const Index = () => {
                   accentColor={accentColor}
                   selectedLayout={selectedLayout}
                   type="facingIn"
+                  logoSize={logoSize}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -382,6 +406,7 @@ const Index = () => {
                   accentColor={accentColor}
                   selectedLayout={selectedLayout}
                   type="facingOut"
+                  logoSize={logoSize}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -402,6 +427,7 @@ const Index = () => {
                   accentColor={accentColor}
                   selectedLayout={selectedLayout}
                   type="facingIn"
+                  logoSize={logoSize}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}

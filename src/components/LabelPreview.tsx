@@ -15,6 +15,7 @@ interface LabelPreviewProps {
     svgUrl: string; 
   } | null;
   type: 'facingOut' | 'facingIn';
+  logoSize: number; // Added logo size prop
   fontFamily: string;
   phoneFont: string;
   locationFont: string;
@@ -38,6 +39,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   accentColor,
   selectedLayout,
   type,
+  logoSize,
   fontFamily,
   phoneFont,
   locationFont,
@@ -61,6 +63,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             src={logoUrl} 
             alt="Business logo" 
             className="max-w-full max-h-full object-contain"
+            style={{ width: `${logoSize}%` }}
             onError={(e) => {
               console.error(`Failed to load logo: ${logoUrl}`);
               e.currentTarget.style.display = 'none';
@@ -81,6 +84,9 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
 
     const svgUrl = selectedLayout.svgUrl;
     
+    // Special layout adjustments for Option 2 (layout2)
+    const isLayout2 = selectedLayout.id === 'layout2';
+    
     return (
       <div className="w-full h-full relative">
         {/* SVG background - positioned at the back with z-index 0 */}
@@ -96,7 +102,6 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             onError={(e) => {
               console.error(`Failed to load SVG: ${svgUrl}`);
               e.currentTarget.style.display = 'none';
-              // Show fallback message
               const parent = e.currentTarget.parentElement;
               if (parent) {
                 const fallback = document.createElement('div');
@@ -110,9 +115,16 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
         
         {/* Logo and text overlay - positioned in front with z-index 10 */}
         <div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
-          {/* Logo placement */}
+          {/* Logo placement - adjusted for layout2 */}
           {logoUrl && (
-            <div className="absolute top-3 left-3 w-16 h-9 pointer-events-auto">
+            <div 
+              className={`absolute ${isLayout2 ? 'top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2' : 'top-3 left-3'} pointer-events-auto`}
+              style={{
+                width: `${logoSize}px`,
+                height: isLayout2 ? 'auto' : '40px',
+                maxHeight: isLayout2 ? '50px' : 'auto'
+              }}
+            >
               <img 
                 src={logoUrl} 
                 alt="Business logo" 
@@ -121,27 +133,50 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             </div>
           )}
           
-          {/* Contact info placement */}
-          <div 
-            className="absolute top-3 right-3 text-right pointer-events-auto" 
-            style={{ 
-              fontFamily: phoneFont || "'Bebas Neue', sans-serif",
-            }}
-          >
-            <div style={{ 
-              fontSize: phoneFontSize || '16px',
-              fontWeight: phoneFontWeight || 'bold' 
-            }}>
-              {phoneNumber}
+          {/* Contact info placement - adjusted for layout2 */}
+          {isLayout2 ? (
+            <div 
+              className="absolute bottom-3 left-1/4 transform -translate-x-1/2 text-center pointer-events-auto"
+              style={{ 
+                fontFamily: phoneFont || "'Bebas Neue', sans-serif",
+              }}
+            >
+              <div style={{ 
+                fontSize: phoneFontSize || '16px',
+                fontWeight: phoneFontWeight || 'bold' 
+              }}>
+                {phoneNumber}
+              </div>
+              <div style={{ 
+                fontFamily: locationFont || "'Bebas Neue', sans-serif",
+                fontSize: locationFontSize || '12px',
+                fontWeight: locationFontWeight || 'normal'
+              }}>
+                {location}
+              </div>
             </div>
-            <div style={{ 
-              fontFamily: locationFont || "'Bebas Neue', sans-serif",
-              fontSize: locationFontSize || '12px',
-              fontWeight: locationFontWeight || 'normal'
-            }}>
-              {location}
+          ) : (
+            <div 
+              className="absolute top-3 right-3 text-right pointer-events-auto" 
+              style={{ 
+                fontFamily: phoneFont || "'Bebas Neue', sans-serif",
+              }}
+            >
+              <div style={{ 
+                fontSize: phoneFontSize || '16px',
+                fontWeight: phoneFontWeight || 'bold' 
+              }}>
+                {phoneNumber}
+              </div>
+              <div style={{ 
+                fontFamily: locationFont || "'Bebas Neue', sans-serif",
+                fontSize: locationFontSize || '12px',
+                fontWeight: locationFontWeight || 'normal'
+              }}>
+                {location}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     );
@@ -162,25 +197,20 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             height: `${LABEL_HEIGHT + BLEED * 2}px`,
             position: 'relative',
           }}
-          className="mx-auto my-4 border border-gray-300"
+          className="mx-auto my-4"
         >
-          {/* Actual label content first (background) */}
-          {type === 'facingOut' ? (
-            <div 
-              style={{ 
-                width: `${LABEL_WIDTH + BLEED * 2}px`,
-                height: `${LABEL_HEIGHT + BLEED * 2}px`,
-                backgroundColor: type === 'facingOut' ? backgroundColor : 'transparent'
-              }}
-              className="absolute inset-0"
-            >
-              {renderFacingOut()}
-            </div>
-          ) : (
-            <div className="absolute inset-0">
-              {renderFacingIn()}
-            </div>
-          )}
+          {/* Actual label content first */}
+          <div 
+            style={{ 
+              width: `${LABEL_WIDTH + BLEED * 2}px`,
+              height: `${LABEL_HEIGHT + BLEED * 2}px`,
+              position: 'absolute',
+              top: 0,
+              left: 0
+            }}
+          >
+            {type === 'facingOut' ? renderFacingOut() : renderFacingIn()}
+          </div>
           
           {/* Bleed indicator - 3mm */}
           <div 

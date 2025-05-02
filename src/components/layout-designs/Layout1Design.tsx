@@ -10,6 +10,7 @@ interface Layout1DesignProps {
   layoutId: string;
   layoutImage: string;
   layoutSvgUrl: string;
+  logoSize: number; // Added logo size prop
   phoneFont: string;
   locationFont: string;
   phoneFontSize: string;
@@ -26,6 +27,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   accentColor,
   layoutId,
   layoutSvgUrl,
+  logoSize,
   phoneFont,
   locationFont,
   phoneFontSize,
@@ -83,8 +85,9 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           position: 'absolute',
           top: '10px',
           left: '10px',
-          width: '70px',
-          height: '40px',
+          width: `${logoSize}px`,
+          height: 'auto',
+          maxHeight: '40px',
           zIndex: 10,
         }}>
           {logoUrl ? (
@@ -130,7 +133,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   
   // Layout Option 2 - Updated with new SVG
   const renderLayout2 = () => {
-    const svgUrl = layoutSvgUrl || "https://raw.githubusercontent.com/pkades/orangedogv2/main/option%202%20svg.svg";
+    const svgUrl = layoutSvgUrl || "https://raw.githubusercontent.com/pkades/orangedogv2/main/option%202%20svg%20fix.svg";
     
     return (
       <div style={{
@@ -156,14 +159,20 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           }}
         />
         
-        {/* Logo */}
+        {/* Logo - centered in white left panel */}
         <div style={{
           position: 'absolute',
-          top: '10px',
-          left: '10px',
-          width: '70px',
-          height: '40px',
+          top: '25%',
+          left: '25%',
+          transform: 'translate(-50%, -50%)',
+          width: `${logoSize}px`,
+          maxWidth: '80px',
+          height: 'auto',
+          maxHeight: '50px',
           zIndex: 10,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
           {logoUrl ? (
             <img 
@@ -176,17 +185,19 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           )}
         </div>
         
-        {/* Contact Info */}
+        {/* Contact Info - centered at bottom of white panel */}
         <div style={{
           position: 'absolute',
-          top: '10px',
-          right: '10px',
-          textAlign: 'right',
+          bottom: '10px',
+          left: '25%',
+          transform: 'translateX(-50%)',
+          textAlign: 'center',
           fontFamily: phoneFont || "'Bebas Neue', sans-serif",
           fontSize: phoneFontSize || '16px',
           fontWeight: phoneFontWeight || 'bold',
           lineHeight: '1.2',
           zIndex: 10,
+          width: '40%',
         }}>
           <div>{phoneNumber || ''}</div>
           {locationLines.map((line, index) => (
@@ -239,8 +250,9 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           position: 'absolute',
           top: '10px',
           left: '10px',
-          width: '70px',
-          height: '40px',
+          width: `${logoSize}px`,
+          height: 'auto',
+          maxHeight: '40px',
           zIndex: 10,
         }}>
           {logoUrl ? (
