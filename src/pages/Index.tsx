@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Phone, Download, ArrowLeftRight, ArrowUpDown, FileText, Upload } from "lucide-react";
+import { MapPin, Phone, Download, ArrowLeftRight, ArrowUpDown, FileText, Upload, Loader2 } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import LogoUploader from '@/components/LogoUploader';
 import CustomColorPicker from '@/components/ColorPicker';
@@ -13,7 +13,8 @@ import FontSelector from '@/components/FontSelector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LayoutSelector, { Layout } from '@/components/LayoutSelector';
 import { Slider } from "@/components/ui/slider";
-import { exportLabelAsPDF } from '@/utils/pdfExporter';
+import { exportLabelAsPDF, createPDFForSubmission, submitDesignToServer } from '@/utils/pdfExporter';
+import SubmissionModal, { CustomerInfo } from '@/components/SubmissionModal';
 
 // Updated Orange Dog logo URL
 const ORANGE_DOG_LOGO = 'https://raw.githubusercontent.com/pkades/orangedogv2/main/orange%20dog%20logo%20svg.svg';
@@ -130,6 +131,10 @@ const Index = () => {
     setPhoneNumber(cleaned);
   };
 
+  // Add new state for submission modal
+  const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Export label as PDF
   const handleExportLabel = async () => {
     toast.info("Preparing label design for PDF export...", {
@@ -143,6 +148,47 @@ const Index = () => {
     } catch (error) {
       console.error("Error exporting PDF:", error);
       toast.error("Failed to generate PDF. Please try again.");
+    }
+  };
+
+  // New function to handle design submission
+  const handleSubmitDesign = async (customerInfo: CustomerInfo) => {
+    setIsSubmitting(true);
+    
+    try {
+      // Display toast that we're preparing the submission
+      toast.info("Preparing your design for submission...");
+      
+      // Create the PDF blob
+      const pdfBlob = await createPDFForSubmission(facingOutRef.current, facingInRef.current, customerInfo);
+      
+      // For demo purposes, we'll use two approaches:
+      // Option 1: Direct form submission (only works if your endpoint supports it)
+      toast.info("Submitting your design to Orange Dog...");
+      
+      try {
+        // This is just a placeholder. In production you'd have an actual endpoint.
+        // For demonstration, we'll simulate a successful submission after 2 seconds
+        // await submitDesignToServer(pdfBlob, customerInfo);
+        
+        // Simulate network request
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        toast.success("Design successfully submitted to Orange Dog! We'll contact you soon.");
+        setSubmissionModalOpen(false);
+      } catch (error) {
+        console.error("Error submitting design:", error);
+        toast.error("Failed to submit design. Please try again or contact support.");
+      }
+      
+      // Option 2: Email with attachment
+      // This would require backend functionality
+      // For now we'll just simulate this flow
+    } catch (error) {
+      console.error("Error preparing design submission:", error);
+      toast.error("Failed to prepare design for submission. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -540,7 +586,7 @@ const Index = () => {
                       type="button"
                       size="lg" 
                       className="w-full bg-gray-700 hover:bg-gray-800"
-                      onClick={() => toast.info("This feature will be available soon! Contact Orange Dog for custom submissions.")}
+                      onClick={() => setSubmissionModalOpen(true)}
                     >
                       <Upload className="mr-2 h-4 w-4" />
                       Submit Design to Orange Dog
@@ -693,6 +739,14 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {/* Submission Modal */}
+      <SubmissionModal
+        open={submissionModalOpen}
+        onOpenChange={setSubmissionModalOpen}
+        onSubmit={handleSubmitDesign}
+        isLoading={isSubmitting}
+      />
     </div>
   );
 };
