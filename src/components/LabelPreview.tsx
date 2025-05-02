@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 
 interface LabelPreviewProps {
@@ -38,7 +38,7 @@ const LABEL_WIDTH = 193; // ~68mm at 72 DPI
 const LABEL_HEIGHT = 128; // ~45mm at 72 DPI
 const BLEED = 8.5; // ~3mm at 72 DPI
 
-const LabelPreview: React.FC<LabelPreviewProps> = ({
+const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
   logoUrl,
   phoneNumber,
   location,
@@ -62,13 +62,19 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   fontWeight,
   phoneFontWeight,
   locationFontWeight,
-}) => {
+}, ref) => {
   // Debug selected layout information
   console.log("Selected layout:", selectedLayout);
   
   // Debug font information
   console.log("Phone font:", phoneFont);
   console.log("Location font:", locationFont);
+  
+  // Reference to the actual label content for exporting
+  const contentRef = useRef<HTMLDivElement>(null);
+  
+  // Expose the content ref via the forwarded ref
+  useImperativeHandle(ref, () => contentRef.current as HTMLDivElement);
   
   const renderFacingOut = () => (
     <div 
@@ -175,7 +181,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             </div>
           </div>
 
-          {/* Location info placement - UPDATED to add whiteSpace: 'nowrap' */}
+          {/* Location info placement - with nowrap */}
           <div 
             className="absolute pointer-events-auto"
             style={{
@@ -184,7 +190,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
               transform: 'translate(-50%, -50%)',
               textAlign: 'center',
               fontFamily: locationFont || "'Bebas Neue', sans-serif",
-              whiteSpace: 'nowrap', // Added to prevent text wrapping
+              whiteSpace: 'nowrap', // Prevents text wrapping
             }}
           >
             <div style={{ 
@@ -219,6 +225,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
         >
           {/* Actual label content first */}
           <div 
+            ref={contentRef}
             style={{ 
               width: `${LABEL_WIDTH + BLEED * 2}px`,
               height: `${LABEL_HEIGHT + BLEED * 2}px`,
@@ -249,6 +256,8 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
       </CardContent>
     </Card>
   );
-};
+});
+
+LabelPreview.displayName = 'LabelPreview';
 
 export default LabelPreview;

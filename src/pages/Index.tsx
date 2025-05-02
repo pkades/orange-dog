@@ -1,11 +1,10 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Phone, Download, ArrowLeftRight, ArrowUpDown } from "lucide-react";
+import { MapPin, Phone, Download, ArrowLeftRight, ArrowUpDown, FilePdf, Upload } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import LogoUploader from '@/components/LogoUploader';
 import CustomColorPicker from '@/components/ColorPicker';
@@ -14,6 +13,7 @@ import FontSelector from '@/components/FontSelector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LayoutSelector, { Layout } from '@/components/LayoutSelector';
 import { Slider } from "@/components/ui/slider";
+import { exportLabelAsPDF } from '@/utils/pdfExporter';
 
 // Updated Orange Dog logo URL
 const ORANGE_DOG_LOGO = 'https://raw.githubusercontent.com/pkades/orangedogv2/main/orange%20dog%20logo%20svg.svg';
@@ -119,6 +119,10 @@ const Index = () => {
     setLogoUrl(url);
   };
 
+  // References to label previews for PDF export
+  const facingOutRef = useRef<HTMLDivElement>(null);
+  const facingInRef = useRef<HTMLDivElement>(null);
+
   // Handle phone number formatting - UPDATED to allow spaces
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Only remove characters that are not numbers or spaces
@@ -126,18 +130,24 @@ const Index = () => {
     setPhoneNumber(cleaned);
   };
 
-  // Export label as vector
-  const handleExportLabel = () => {
-    // In a real implementation, this would generate an SVG/EPS/AI file
-    // and set up proper CMYK values for print
-    toast.success("Label design exported as vector in CMYK format!");
+  // Export label as PDF
+  const handleExportLabel = async () => {
+    toast.info("Preparing label design for PDF export...", {
+      duration: 2000, // 2 seconds
+    });
     
-    // For demonstration purposes, we'll just show a message
-    // In a production app, this would trigger a download of the vector file
+    try {
+      await exportLabelAsPDF(facingOutRef.current, facingInRef.current);
+      
+      toast.success("Label design exported as PDF. Check your downloads folder!");
+    } catch (error) {
+      console.error("Error exporting PDF:", error);
+      toast.error("Failed to generate PDF. Please try again.");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 font-poppins">
+    <div className="min-h-screen bg-gray-50 py-8" style={{ fontFamily: 'inherit' }}>
       <div className="container mx-auto px-4">
         <header className="mb-8">
           <div className="flex justify-between items-center mb-6">
@@ -515,15 +525,27 @@ const Index = () => {
                     </Card>
                   </div>
                   
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="w-full"
-                    style={{ backgroundColor: ORANGE_DOG_COLOR }}
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    Export Label Design (Vector CMYK)
-                  </Button>
+                  <div className="grid grid-cols-1 gap-4">
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full"
+                      style={{ backgroundColor: ORANGE_DOG_COLOR }}
+                    >
+                      <FilePdf className="mr-2 h-4 w-4" />
+                      Export Label Design as PDF
+                    </Button>
+                    
+                    <Button 
+                      type="button"
+                      size="lg" 
+                      className="w-full bg-gray-700 hover:bg-gray-800"
+                      onClick={() => toast.info("This feature will be available soon! Contact Orange Dog for custom submissions.")}
+                    >
+                      <Upload className="mr-2 h-4 w-4" />
+                      Submit Design to Orange Dog
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </form>
@@ -543,6 +565,7 @@ const Index = () => {
                 
                 <TabsContent value="both" className="space-y-4">
                   <LabelPreview 
+                    ref={facingOutRef}
                     logoUrl={logoUrl}
                     phoneNumber={phoneNumber}
                     location={location}
@@ -568,6 +591,7 @@ const Index = () => {
                     locationFontWeight={locationFontWeight}
                   />
                   <LabelPreview 
+                    ref={facingInRef}
                     logoUrl={logoUrl}
                     phoneNumber={phoneNumber}
                     location={location}
@@ -596,6 +620,7 @@ const Index = () => {
                 
                 <TabsContent value="out">
                   <LabelPreview 
+                    ref={facingOutRef}
                     logoUrl={logoUrl}
                     phoneNumber={phoneNumber}
                     location={location}
@@ -624,6 +649,7 @@ const Index = () => {
                 
                 <TabsContent value="in">
                   <LabelPreview 
+                    ref={facingInRef}
                     logoUrl={logoUrl}
                     phoneNumber={phoneNumber}
                     location={location}
@@ -659,7 +685,7 @@ const Index = () => {
                     <li>• Label size: 68x45mm</li>
                     <li>• Bleed area: 3mm</li>
                     <li>• Print-ready dimensions: 74x51mm</li>
-                    <li>• Export format: Vector (CMYK color mode)</li>
+                    <li>• Export format: PDF with embedded images</li>
                   </ul>
                 </CardContent>
               </Card>
