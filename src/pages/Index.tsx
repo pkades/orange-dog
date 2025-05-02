@@ -15,8 +15,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import LayoutSelector, { Layout } from '@/components/LayoutSelector';
 import { Slider } from "@/components/ui/slider";
 
-// Orange Dog logo
-const ORANGE_DOG_LOGO = '/lovable-uploads/595ae1dd-8573-4284-a957-b07ca48f511c.png';
+// Updated Orange Dog logo URL
+const ORANGE_DOG_LOGO = 'https://raw.githubusercontent.com/pkades/orangedogv2/main/orange%20dog%20logo%20svg.svg';
 
 // Define the available layouts with new SVG URLs
 const LABEL_LAYOUTS: Layout[] = [
@@ -169,6 +169,16 @@ const Index = () => {
                   {/* Logo Upload */}
                   <LogoUploader onLogoChange={handleLogoChange} />
                   
+                  {/* MOVED: Layout selector moved under logo upload */}
+                  <LayoutSelector 
+                    layouts={LABEL_LAYOUTS}
+                    selectedLayoutId={selectedLayoutId}
+                    onLayoutChange={setSelectedLayoutId}
+                    backgroundColor={backgroundColor}
+                    accentColor={accentColor}
+                    hideTextPlaceholders={true}
+                  />
+                  
                   {/* Logo Size Adjustment for Facing Out */}
                   <div className="space-y-2">
                     <Label htmlFor="facing-out-logo-size" className="flex items-center gap-2">
@@ -257,7 +267,7 @@ const Index = () => {
                     </div>
                   </Card>
                   
-                  {/* Business Information */}
+                  {/* Business Information - MOVED before Text Styling */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="phone" className="flex items-center gap-2">
@@ -286,116 +296,7 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  {/* NEW: Text Position Controls */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Phone Number Position */}
-                    <Card className="p-4">
-                      <h4 className="font-medium mb-4">Phone Number Position</h4>
-                      <div className="space-y-4">
-                        {/* Phone X Position */}
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <ArrowLeftRight className="h-4 w-4" />
-                            <Label htmlFor="phone-position-x">Horizontal Position</Label>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <span className="text-sm">Left</span>
-                            <Slider
-                              id="phone-position-x"
-                              defaultValue={[phonePositionX]}
-                              max={90}
-                              min={10}
-                              step={1}
-                              onValueChange={(values) => setPhonePositionX(values[0])}
-                              className="flex-1"
-                            />
-                            <span className="text-sm">Right</span>
-                          </div>
-                        </div>
-                        
-                        {/* Phone Y Position */}
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <ArrowUpDown className="h-4 w-4" />
-                            <Label htmlFor="phone-position-y">Vertical Position</Label>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <span className="text-sm">Top</span>
-                            <Slider
-                              id="phone-position-y"
-                              defaultValue={[phonePositionY]}
-                              max={90}
-                              min={10}
-                              step={1}
-                              onValueChange={(values) => setPhonePositionY(values[0])}
-                              className="flex-1"
-                            />
-                            <span className="text-sm">Bottom</span>
-                          </div>
-                        </div>
-                      </div>
-                    </Card>
-                    
-                    {/* Location Position */}
-                    <Card className="p-4">
-                      <h4 className="font-medium mb-4">Location Position</h4>
-                      <div className="space-y-4">
-                        {/* Location X Position */}
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <ArrowLeftRight className="h-4 w-4" />
-                            <Label htmlFor="location-position-x">Horizontal Position</Label>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <span className="text-sm">Left</span>
-                            <Slider
-                              id="location-position-x"
-                              defaultValue={[locationPositionX]}
-                              max={90}
-                              min={10}
-                              step={1}
-                              onValueChange={(values) => setLocationPositionX(values[0])}
-                              className="flex-1"
-                            />
-                            <span className="text-sm">Right</span>
-                          </div>
-                        </div>
-                        
-                        {/* Location Y Position */}
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <ArrowUpDown className="h-4 w-4" />
-                            <Label htmlFor="location-position-y">Vertical Position</Label>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <span className="text-sm">Top</span>
-                            <Slider
-                              id="location-position-y"
-                              defaultValue={[locationPositionY]}
-                              max={90}
-                              min={10}
-                              step={1}
-                              onValueChange={(values) => setLocationPositionY(values[0])}
-                              className="flex-1"
-                            />
-                            <span className="text-sm">Bottom</span>
-                          </div>
-                        </div>
-                      </div>
-                    </Card>
-                  </div>
-                  
-                  {/* Layout selector */}
-                  <LayoutSelector 
-                    layouts={LABEL_LAYOUTS}
-                    selectedLayoutId={selectedLayoutId}
-                    onLayoutChange={setSelectedLayoutId}
-                    backgroundColor={backgroundColor}
-                    accentColor={accentColor}
-                    hideTextPlaceholders={true} // NEW: Add prop to hide text placeholders
-                  />
-                  
-                  {/* Font Selection */}
+                  {/* MOVED: Text Styling section moved under the Phone/Location inputs */}
                   <div className="space-y-4">
                     <h3 className="font-medium text-lg">Text Styling</h3>
                     
@@ -498,6 +399,105 @@ const Index = () => {
                         </div>
                       </Card>
                     </div>
+                  </div>
+                  
+                  {/* MOVED: Text Position Controls after Text Styling  */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Phone Number Position */}
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Phone Number Position</h4>
+                      <div className="space-y-4">
+                        {/* Phone X Position */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <ArrowLeftRight className="h-4 w-4" />
+                            <Label htmlFor="phone-position-x">Horizontal Position</Label>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm">Left</span>
+                            <Slider
+                              id="phone-position-x"
+                              defaultValue={[phonePositionX]}
+                              max={90}
+                              min={10}
+                              step={1}
+                              onValueChange={(values) => setPhonePositionX(values[0])}
+                              className="flex-1"
+                            />
+                            <span className="text-sm">Right</span>
+                          </div>
+                        </div>
+                        
+                        {/* Phone Y Position */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <ArrowUpDown className="h-4 w-4" />
+                            <Label htmlFor="phone-position-y">Vertical Position</Label>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm">Top</span>
+                            <Slider
+                              id="phone-position-y"
+                              defaultValue={[phonePositionY]}
+                              max={90}
+                              min={10}
+                              step={1}
+                              onValueChange={(values) => setPhonePositionY(values[0])}
+                              className="flex-1"
+                            />
+                            <span className="text-sm">Bottom</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                    
+                    {/* Location Position */}
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Location Position</h4>
+                      <div className="space-y-4">
+                        {/* Location X Position */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <ArrowLeftRight className="h-4 w-4" />
+                            <Label htmlFor="location-position-x">Horizontal Position</Label>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm">Left</span>
+                            <Slider
+                              id="location-position-x"
+                              defaultValue={[locationPositionX]}
+                              max={90}
+                              min={10}
+                              step={1}
+                              onValueChange={(values) => setLocationPositionX(values[0])}
+                              className="flex-1"
+                            />
+                            <span className="text-sm">Right</span>
+                          </div>
+                        </div>
+                        
+                        {/* Location Y Position */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <ArrowUpDown className="h-4 w-4" />
+                            <Label htmlFor="location-position-y">Vertical Position</Label>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm">Top</span>
+                            <Slider
+                              id="location-position-y"
+                              defaultValue={[locationPositionY]}
+                              max={90}
+                              min={10}
+                              step={1}
+                              onValueChange={(values) => setLocationPositionY(values[0])}
+                              className="flex-1"
+                            />
+                            <span className="text-sm">Bottom</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
                   </div>
                   
                   {/* Color Selection */}
