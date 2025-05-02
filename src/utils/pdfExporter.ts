@@ -33,12 +33,15 @@ export const exportLabelAsPDF = async (facingOutRef: HTMLDivElement | null, faci
         
         // Set canvas size to match logo size but at high DPI
         const scaleFactor = IMAGE_DPI / 72; // Convert from PDF points to DPI
-        logoCanvas.width = logoImg.width * scaleFactor;
-        logoCanvas.height = logoImg.height * scaleFactor;
         
-        // Draw logo on canvas
+        // Cast Element to HTMLImageElement to access width and height properties
+        const logoImgElement = logoImg as HTMLImageElement;
+        logoCanvas.width = logoImgElement.width * scaleFactor;
+        logoCanvas.height = logoImgElement.height * scaleFactor;
+        
+        // Draw logo on canvas - use proper casting to HTMLImageElement
         if (ctx) {
-          ctx.drawImage(logoImg, 0, 0, logoCanvas.width, logoCanvas.height);
+          ctx.drawImage(logoImgElement, 0, 0, logoCanvas.width, logoCanvas.height);
           
           // Get logo position and size
           const logoRect = logoImg.getBoundingClientRect();
@@ -56,7 +59,7 @@ export const exportLabelAsPDF = async (facingOutRef: HTMLDivElement | null, faci
           const xPos = xPercent * (LABEL_WIDTH_MM + (BLEED_MM * 2));
           const yPos = yPercent * (LABEL_HEIGHT_MM + (BLEED_MM * 2));
           const width = widthPercent * (LABEL_WIDTH_MM + (BLEED_MM * 2));
-          const height = heightPercent * (LABEL_HEIGHT_MM + (BLEED_MM * 2));
+          const height = heightPercent * (LABEL_WIDTH_MM + (BLEED_MM * 2));
           
           // Add logo image to the PDF
           const logoData = logoCanvas.toDataURL('image/png');
@@ -144,12 +147,15 @@ export const exportLabelAsPDF = async (facingOutRef: HTMLDivElement | null, faci
         
         // Set canvas size to match logo size but at high DPI
         const scaleFactor = IMAGE_DPI / 72; // Convert from PDF points to DPI
-        logoCanvas.width = logoImg.width * scaleFactor;
-        logoCanvas.height = logoImg.height * scaleFactor;
         
-        // Draw logo on canvas
+        // Cast Element to HTMLImageElement to access width and height properties
+        const logoImgElement = logoImg as HTMLImageElement;
+        logoCanvas.width = logoImgElement.width * scaleFactor;
+        logoCanvas.height = logoImgElement.height * scaleFactor;
+        
+        // Draw logo on canvas - use proper casting to HTMLImageElement
         if (ctx) {
-          ctx.drawImage(logoImg, 0, 0, logoCanvas.width, logoCanvas.height);
+          ctx.drawImage(logoImgElement, 0, 0, logoCanvas.width, logoCanvas.height);
           
           // Get logo position and size
           const logoRect = logoImg.getBoundingClientRect();
@@ -221,12 +227,15 @@ export const createPDFForSubmission = async (
         
         // Set canvas size to match logo size but at high DPI
         const scaleFactor = IMAGE_DPI / 72; // Convert from PDF points to DPI
-        logoCanvas.width = logoImg.width * scaleFactor;
-        logoCanvas.height = logoImg.height * scaleFactor;
         
-        // Draw logo on canvas
+        // Cast Element to HTMLImageElement to access width and height properties
+        const logoImgElement = logoImg as HTMLImageElement;
+        logoCanvas.width = logoImgElement.width * scaleFactor;
+        logoCanvas.height = logoImgElement.height * scaleFactor;
+        
+        // Draw logo on canvas - use proper casting to HTMLImageElement
         if (ctx) {
-          ctx.drawImage(logoImg, 0, 0, logoCanvas.width, logoCanvas.height);
+          ctx.drawImage(logoImgElement, 0, 0, logoCanvas.width, logoCanvas.height);
           
           // Get logo position and size
           const logoRect = logoImg.getBoundingClientRect();
@@ -332,12 +341,15 @@ export const createPDFForSubmission = async (
         
         // Set canvas size to match logo size but at high DPI
         const scaleFactor = IMAGE_DPI / 72; // Convert from PDF points to DPI
-        logoCanvas.width = logoImg.width * scaleFactor;
-        logoCanvas.height = logoImg.height * scaleFactor;
         
-        // Draw logo on canvas
+        // Cast Element to HTMLImageElement to access width and height properties
+        const logoImgElement = logoImg as HTMLImageElement;
+        logoCanvas.width = logoImgElement.width * scaleFactor;
+        logoCanvas.height = logoImgElement.height * scaleFactor;
+        
+        // Draw logo on canvas - use proper casting to HTMLImageElement
         if (ctx) {
-          ctx.drawImage(logoImg, 0, 0, logoCanvas.width, logoCanvas.height);
+          ctx.drawImage(logoImgElement, 0, 0, logoCanvas.width, logoCanvas.height);
           
           // Get logo position and size
           const logoRect = logoImg.getBoundingClientRect();
