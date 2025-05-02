@@ -15,7 +15,10 @@ interface LabelPreviewProps {
     svgUrl: string; 
   } | null;
   type: 'facingOut' | 'facingIn';
-  logoSize: number; // Added logo size prop
+  facingOutLogoSize: number; // Renamed from logoSize to facingOutLogoSize
+  facingInLogoSize: number; // Added separate size for facing in
+  logoPositionX: number; // Added X position control
+  logoPositionY: number; // Added Y position control
   fontFamily: string;
   phoneFont: string;
   locationFont: string;
@@ -39,7 +42,10 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   accentColor,
   selectedLayout,
   type,
-  logoSize,
+  facingOutLogoSize, // Updated prop name
+  facingInLogoSize, // New prop
+  logoPositionX, // New prop
+  logoPositionY, // New prop
   fontFamily,
   phoneFont,
   locationFont,
@@ -63,7 +69,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             src={logoUrl} 
             alt="Business logo" 
             className="max-w-full max-h-full object-contain"
-            style={{ width: `${logoSize}%` }}
+            style={{ width: `${facingOutLogoSize}%` }} // Use facingOutLogoSize here
             onError={(e) => {
               console.error(`Failed to load logo: ${logoUrl}`);
               e.currentTarget.style.display = 'none';
@@ -115,14 +121,17 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
         
         {/* Logo and text overlay - positioned in front with z-index 10 */}
         <div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
-          {/* Logo placement - adjusted for layout2 */}
+          {/* Logo placement - adjusted for layout2 and adding position controls */}
           {logoUrl && (
             <div 
-              className={`absolute ${isLayout2 ? 'top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2' : 'top-3 left-3'} pointer-events-auto`}
+              className="absolute pointer-events-auto"
               style={{
-                width: `${logoSize}px`,
+                width: `${facingInLogoSize}px`, // Use facingInLogoSize here
                 height: isLayout2 ? 'auto' : '40px',
-                maxHeight: isLayout2 ? '50px' : 'auto'
+                maxHeight: isLayout2 ? '50px' : 'auto',
+                top: `${logoPositionY}%`, // Apply Y position as percentage
+                left: `${logoPositionX}%`, // Apply X position as percentage
+                transform: 'translate(-50%, -50%)', // Center the logo at the position point
               }}
             >
               <img 

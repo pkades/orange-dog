@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Phone, Download } from "lucide-react";
+import { MapPin, Phone, Download, ArrowLeftRight, ArrowUpDown } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import LogoUploader from '@/components/LogoUploader';
 import CustomColorPicker from '@/components/ColorPicker';
@@ -85,7 +84,14 @@ const Index = () => {
   const [location, setLocation] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
   const [accentColor, setAccentColor] = useState(ORANGE_DOG_COLOR);
-  const [logoSize, setLogoSize] = useState(70); // Default logo size (width in px)
+  
+  // Updated logo size state - separate for facing out and facing in
+  const [facingOutLogoSize, setFacingOutLogoSize] = useState(70); // Default logo size for facing out (percentage)
+  const [facingInLogoSize, setFacingInLogoSize] = useState(70); // Default logo size for facing in (pixels)
+  
+  // Logo position state - for facing in preview
+  const [logoPositionX, setLogoPositionX] = useState(25); // Default X position (percentage)
+  const [logoPositionY, setLogoPositionY] = useState(25); // Default Y position (percentage)
   
   // Font state
   const [fontFamily, setFontFamily] = useState(FONT_OPTIONS[0].value);
@@ -155,25 +161,93 @@ const Index = () => {
                   {/* Logo Upload */}
                   <LogoUploader onLogoChange={handleLogoChange} />
                   
-                  {/* Logo Size Adjustment */}
+                  {/* Logo Size Adjustment for Facing Out */}
                   <div className="space-y-2">
-                    <Label htmlFor="logo-size" className="flex items-center gap-2">
-                      Logo Size
+                    <Label htmlFor="facing-out-logo-size" className="flex items-center gap-2">
+                      Logo Size (Facing Out)
                     </Label>
                     <div className="flex items-center gap-4">
                       <span className="text-sm">Small</span>
                       <Slider
-                        id="logo-size"
-                        defaultValue={[logoSize]}
+                        id="facing-out-logo-size"
+                        defaultValue={[facingOutLogoSize]}
                         max={120}
                         min={30}
                         step={1}
-                        onValueChange={(values) => setLogoSize(values[0])}
+                        onValueChange={(values) => setFacingOutLogoSize(values[0])}
                         className="flex-1"
                       />
                       <span className="text-sm">Large</span>
                     </div>
                   </div>
+                  
+                  {/* Logo Size Adjustment for Facing In */}
+                  <div className="space-y-2">
+                    <Label htmlFor="facing-in-logo-size" className="flex items-center gap-2">
+                      Logo Size (Facing In)
+                    </Label>
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm">Small</span>
+                      <Slider
+                        id="facing-in-logo-size"
+                        defaultValue={[facingInLogoSize]}
+                        max={120}
+                        min={30}
+                        step={1}
+                        onValueChange={(values) => setFacingInLogoSize(values[0])}
+                        className="flex-1"
+                      />
+                      <span className="text-sm">Large</span>
+                    </div>
+                  </div>
+                  
+                  {/* Logo Position Controls for Facing In */}
+                  <Card className="p-4">
+                    <h4 className="font-medium mb-4">Logo Position (Facing In)</h4>
+                    <div className="space-y-5">
+                      {/* X Position (Horizontal) */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <ArrowLeftRight className="h-4 w-4" />
+                          <Label htmlFor="logo-position-x">Horizontal Position</Label>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className="text-sm">Left</span>
+                          <Slider
+                            id="logo-position-x"
+                            defaultValue={[logoPositionX]}
+                            max={90}
+                            min={10}
+                            step={1}
+                            onValueChange={(values) => setLogoPositionX(values[0])}
+                            className="flex-1"
+                          />
+                          <span className="text-sm">Right</span>
+                        </div>
+                      </div>
+                      
+                      {/* Y Position (Vertical) */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <ArrowUpDown className="h-4 w-4" />
+                          <Label htmlFor="logo-position-y">Vertical Position</Label>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className="text-sm">Top</span>
+                          <Slider
+                            id="logo-position-y"
+                            defaultValue={[logoPositionY]}
+                            max={90}
+                            min={10}
+                            step={1}
+                            onValueChange={(values) => setLogoPositionY(values[0])}
+                            className="flex-1"
+                          />
+                          <span className="text-sm">Bottom</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
                   
                   {/* Business Information */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -204,7 +278,7 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  {/* Layout selector - Updated with backgroundColor and accentColor */}
+                  {/* Layout selector */}
                   <LayoutSelector 
                     layouts={LABEL_LAYOUTS}
                     selectedLayoutId={selectedLayoutId}
@@ -367,7 +441,10 @@ const Index = () => {
                   accentColor={accentColor}
                   selectedLayout={selectedLayout}
                   type="facingOut"
-                  logoSize={logoSize}
+                  facingOutLogoSize={facingOutLogoSize}
+                  facingInLogoSize={facingInLogoSize}
+                  logoPositionX={logoPositionX}
+                  logoPositionY={logoPositionY}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -385,7 +462,10 @@ const Index = () => {
                   accentColor={accentColor}
                   selectedLayout={selectedLayout}
                   type="facingIn"
-                  logoSize={logoSize}
+                  facingOutLogoSize={facingOutLogoSize}
+                  facingInLogoSize={facingInLogoSize}
+                  logoPositionX={logoPositionX}
+                  logoPositionY={logoPositionY}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -406,7 +486,10 @@ const Index = () => {
                   accentColor={accentColor}
                   selectedLayout={selectedLayout}
                   type="facingOut"
-                  logoSize={logoSize}
+                  facingOutLogoSize={facingOutLogoSize}
+                  facingInLogoSize={facingInLogoSize}
+                  logoPositionX={logoPositionX}
+                  logoPositionY={logoPositionY}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -427,7 +510,10 @@ const Index = () => {
                   accentColor={accentColor}
                   selectedLayout={selectedLayout}
                   type="facingIn"
-                  logoSize={logoSize}
+                  facingOutLogoSize={facingOutLogoSize}
+                  facingInLogoSize={facingInLogoSize}
+                  logoPositionX={logoPositionX}
+                  logoPositionY={logoPositionY}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -440,6 +526,7 @@ const Index = () => {
               </TabsContent>
             </Tabs>
             
+            {/* Specifications Card */}
             <Card className="mt-4">
               <CardContent className="p-4">
                 <h3 className="font-medium mb-2">Specifications</h3>

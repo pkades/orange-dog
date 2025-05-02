@@ -10,7 +10,10 @@ interface Layout1DesignProps {
   layoutId: string;
   layoutImage: string;
   layoutSvgUrl: string;
-  logoSize: number; // Added logo size prop
+  facingOutLogoSize: number; // Updated prop name
+  facingInLogoSize: number; // New prop
+  logoPositionX: number; // New prop
+  logoPositionY: number; // New prop
   phoneFont: string;
   locationFont: string;
   phoneFontSize: string;
@@ -27,7 +30,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   accentColor,
   layoutId,
   layoutSvgUrl,
-  logoSize,
+  facingOutLogoSize, // Updated prop
+  facingInLogoSize, // New prop
+  logoPositionX, // New prop
+  logoPositionY, // New prop
   phoneFont,
   locationFont,
   phoneFontSize,
@@ -83,9 +89,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Logo */}
         <div style={{
           position: 'absolute',
-          top: '10px',
-          left: '10px',
-          width: `${logoSize}px`,
+          top: `${logoPositionY}%`, // Use logoPositionY
+          left: `${logoPositionX}%`, // Use logoPositionX
+          transform: 'translate(-50%, -50%)',
+          width: `${facingInLogoSize}px`, // Use facingInLogoSize
           height: 'auto',
           maxHeight: '40px',
           zIndex: 10,
@@ -133,7 +140,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   
   // Layout Option 2 - Updated with new SVG
   const renderLayout2 = () => {
-    const svgUrl = layoutSvgUrl || "https://raw.githubusercontent.com/pkades/orangedogv2/main/option%202%20svg%20fix.svg";
+    const svgUrl = layoutSvgUrl || "https://raw.githubusercontent.com/pkades/orangedogv2/blob/main/option%202%20svg%20fix.svg";
     
     return (
       <div style={{
@@ -159,13 +166,13 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           }}
         />
         
-        {/* Logo - centered in white left panel */}
+        {/* Logo - centered in white left panel, now with custom positioning */}
         <div style={{
           position: 'absolute',
-          top: '25%',
-          left: '25%',
+          top: `${logoPositionY}%`, // Use logoPositionY
+          left: `${logoPositionX}%`, // Use logoPositionX
           transform: 'translate(-50%, -50%)',
-          width: `${logoSize}px`,
+          width: `${facingInLogoSize}px`, // Use facingInLogoSize
           maxWidth: '80px',
           height: 'auto',
           maxHeight: '50px',
@@ -248,9 +255,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Logo */}
         <div style={{
           position: 'absolute',
-          top: '10px',
-          left: '10px',
-          width: `${logoSize}px`,
+          top: `${logoPositionY}%`, // Use logoPositionY
+          left: `${logoPositionX}%`, // Use logoPositionX
+          transform: 'translate(-50%, -50%)',
+          width: `${facingInLogoSize}px`, // Use facingInLogoSize
           height: 'auto',
           maxHeight: '40px',
           zIndex: 10,
