@@ -19,10 +19,10 @@ interface LabelPreviewProps {
   facingInLogoSize: number;
   logoPositionX: number;
   logoPositionY: number;
-  phonePositionX: number; // Added position control for phone
-  phonePositionY: number; // Added position control for phone
-  locationPositionX: number; // Added position control for location
-  locationPositionY: number; // Added position control for location
+  phonePositionX: number;
+  phonePositionY: number;
+  locationPositionX: number;
+  locationPositionY: number;
   fontFamily: string;
   phoneFont: string;
   locationFont: string;
@@ -50,10 +50,10 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   facingInLogoSize,
   logoPositionX,
   logoPositionY,
-  phonePositionX, // New prop
-  phonePositionY, // New prop
-  locationPositionX, // New prop
-  locationPositionY, // New prop
+  phonePositionX,
+  phonePositionY,
+  locationPositionX,
+  locationPositionY,
   fontFamily,
   phoneFont,
   locationFont,
@@ -150,15 +150,16 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             </div>
           )}
           
-          {/* Contact info placement - UPDATED with position controls */}
+          {/* Phone number placement - UPDATED with nowrap for the text */}
           <div 
             className="absolute pointer-events-auto"
             style={{
-              top: `${phonePositionY}%`, // Use phonePositionY
-              left: `${phonePositionX}%`, // Use phonePositionX
+              top: `${phonePositionY}%`,
+              left: `${phonePositionX}%`,
               transform: 'translate(-50%, -50%)',
               textAlign: 'center',
               fontFamily: phoneFont || "'Bebas Neue', sans-serif",
+              whiteSpace: 'nowrap', // Added to prevent wrapping
             }}
           >
             <div style={{ 
@@ -169,12 +170,12 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             </div>
           </div>
 
-          {/* Location info placement - UPDATED with position controls */}
+          {/* Location info placement */}
           <div 
             className="absolute pointer-events-auto"
             style={{
-              top: `${locationPositionY}%`, // Use locationPositionY
-              left: `${locationPositionX}%`, // Use locationPositionX
+              top: `${locationPositionY}%`,
+              left: `${locationPositionX}%`,
               transform: 'translate(-50%, -50%)',
               textAlign: 'center',
               fontFamily: locationFont || "'Bebas Neue', sans-serif",

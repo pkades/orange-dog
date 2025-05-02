@@ -10,10 +10,10 @@ interface Layout1DesignProps {
   layoutId: string;
   layoutImage: string;
   layoutSvgUrl: string;
-  facingOutLogoSize: number; // Updated prop name
-  facingInLogoSize: number; // New prop
-  logoPositionX: number; // New prop
-  logoPositionY: number; // New prop
+  facingOutLogoSize: number;
+  facingInLogoSize: number;
+  logoPositionX: number;
+  logoPositionY: number;
   phoneFont: string;
   locationFont: string;
   phoneFontSize: string;
@@ -30,10 +30,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   accentColor,
   layoutId,
   layoutSvgUrl,
-  facingOutLogoSize, // Updated prop
-  facingInLogoSize, // New prop
-  logoPositionX, // New prop
-  logoPositionY, // New prop
+  facingOutLogoSize,
+  facingInLogoSize,
+  logoPositionX,
+  logoPositionY,
   phoneFont,
   locationFont,
   phoneFontSize,
@@ -89,10 +89,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Logo */}
         <div style={{
           position: 'absolute',
-          top: `${logoPositionY}%`, // Use logoPositionY
-          left: `${logoPositionX}%`, // Use logoPositionX
+          top: `${logoPositionY}%`,
+          left: `${logoPositionX}%`,
           transform: 'translate(-50%, -50%)',
-          width: `${facingInLogoSize}px`, // Use facingInLogoSize
+          width: `${facingInLogoSize}px`,
           height: 'auto',
           maxHeight: '40px',
           zIndex: 10,
@@ -108,7 +108,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           )}
         </div>
         
-        {/* Contact Info */}
+        {/* Contact Info - Added whiteSpace: 'nowrap' */}
         <div style={{
           position: 'absolute',
           top: '10px',
@@ -119,6 +119,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           fontWeight: phoneFontWeight || 'bold',
           lineHeight: '1.2',
           zIndex: 10,
+          whiteSpace: 'nowrap', // Added to prevent text wrapping
         }}>
           <div>{phoneNumber || ''}</div>
           {locationLines.map((line, index) => (
@@ -169,10 +170,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Logo - centered in white left panel, now with custom positioning */}
         <div style={{
           position: 'absolute',
-          top: `${logoPositionY}%`, // Use logoPositionY
-          left: `${logoPositionX}%`, // Use logoPositionX
+          top: `${logoPositionY}%`,
+          left: `${logoPositionX}%`,
           transform: 'translate(-50%, -50%)',
-          width: `${facingInLogoSize}px`, // Use facingInLogoSize
+          width: `${facingInLogoSize}px`,
           maxWidth: '80px',
           height: 'auto',
           maxHeight: '50px',
@@ -192,7 +193,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           )}
         </div>
         
-        {/* Contact Info - centered at bottom of white panel */}
+        {/* Contact Info - centered at bottom of white panel - Added whiteSpace: 'nowrap' */}
         <div style={{
           position: 'absolute',
           bottom: '10px',
@@ -205,6 +206,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           lineHeight: '1.2',
           zIndex: 10,
           width: '40%',
+          whiteSpace: 'nowrap', // Added to prevent text wrapping
         }}>
           <div>{phoneNumber || ''}</div>
           {locationLines.map((line, index) => (
@@ -255,10 +257,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
         {/* Logo */}
         <div style={{
           position: 'absolute',
-          top: `${logoPositionY}%`, // Use logoPositionY
-          left: `${logoPositionX}%`, // Use logoPositionX
+          top: `${logoPositionY}%`,
+          left: `${logoPositionX}%`,
           transform: 'translate(-50%, -50%)',
-          width: `${facingInLogoSize}px`, // Use facingInLogoSize
+          width: `${facingInLogoSize}px`,
           height: 'auto',
           maxHeight: '40px',
           zIndex: 10,
@@ -274,7 +276,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           )}
         </div>
         
-        {/* Contact Info */}
+        {/* Contact Info - Added whiteSpace: 'nowrap' */}
         <div style={{
           position: 'absolute',
           top: '10px',
@@ -285,6 +287,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           fontWeight: phoneFontWeight || 'bold',
           lineHeight: '1.2',
           zIndex: 10,
+          whiteSpace: 'nowrap', // Added to prevent text wrapping
         }}>
           <div>{phoneNumber || ''}</div>
           {locationLines.map((line, index) => (
