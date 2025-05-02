@@ -13,7 +13,7 @@ import FontSelector from '@/components/FontSelector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LayoutSelector, { Layout } from '@/components/LayoutSelector';
 import { Slider } from "@/components/ui/slider";
-import { exportLabelAsPDF, createPDFForSubmission, submitDesignToServer } from '@/utils/pdfExporter';
+import { exportLabelAsPDF, createPDFForSubmission, submitDesignToServer, submitDesignByEmail } from '@/utils/pdfExporter';
 import SubmissionModal, { CustomerInfo } from '@/components/SubmissionModal';
 
 // Updated Orange Dog logo URL
@@ -167,23 +167,15 @@ const Index = () => {
       toast.info("Submitting your design to Orange Dog...");
       
       try {
-        // This is just a placeholder. In production you'd have an actual endpoint.
-        // For demonstration, we'll simulate a successful submission after 2 seconds
-        // await submitDesignToServer(pdfBlob, customerInfo);
+        // Try email submission approach
+        await submitDesignByEmail(pdfBlob, customerInfo);
         
-        // Simulate network request
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        toast.success("Design successfully submitted to Orange Dog! We'll contact you soon.");
+        toast.success("Design successfully submitted to josh@orangedog.co.nz! We'll contact you soon.");
         setSubmissionModalOpen(false);
       } catch (error) {
         console.error("Error submitting design:", error);
         toast.error("Failed to submit design. Please try again or contact support.");
       }
-      
-      // Option 2: Email with attachment
-      // This would require backend functionality
-      // For now we'll just simulate this flow
     } catch (error) {
       console.error("Error preparing design submission:", error);
       toast.error("Failed to prepare design for submission. Please try again.");

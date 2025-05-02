@@ -47,7 +47,7 @@ const SubmissionModal = ({ open, onOpenChange, onSubmit, isLoading }: Submission
         <DialogHeader>
           <DialogTitle>Submit Design to Orange Dog</DialogTitle>
           <DialogDescription>
-            Fill out your information to submit your custom label design directly to Orange Dog.
+            Fill out your information to submit your custom label design directly to josh@orangedog.co.nz.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
