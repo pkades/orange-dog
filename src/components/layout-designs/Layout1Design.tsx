@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface Layout1DesignProps {
@@ -41,8 +40,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   phoneFontWeight,
   locationFontWeight,
 }) => {
-  // Split location into lines if it contains newlines
-  const locationLines = location ? location.split('\n') : [];
+  // Removed the split logic for location to keep it on one line
   
   const renderLayout = () => {
     // Determine which layout to render based on layoutId
@@ -122,18 +120,16 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           whiteSpace: 'nowrap', // Added to prevent text wrapping
         }}>
           <div>{phoneNumber || ''}</div>
-          {locationLines.map((line, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                fontFamily: locationFont || "'Bebas Neue', sans-serif",
-                fontSize: locationFontSize || '14px',
-                fontWeight: locationFontWeight || 'normal',
-              }}
-            >
-              {line}
-            </div>
-          ))}
+          <div 
+            style={{ 
+              fontFamily: locationFont || "'Bebas Neue', sans-serif",
+              fontSize: locationFontSize || '14px',
+              fontWeight: locationFontWeight || 'normal',
+              whiteSpace: 'nowrap', // Added to prevent text wrapping
+            }}
+          >
+            {location}
+          </div>
         </div>
       </div>
     );
@@ -206,21 +202,19 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           lineHeight: '1.2',
           zIndex: 10,
           width: '40%',
-          whiteSpace: 'nowrap', // Added to prevent text wrapping
+          whiteSpace: 'nowrap', // Ensures text doesn't wrap
         }}>
           <div>{phoneNumber || ''}</div>
-          {locationLines.map((line, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                fontFamily: locationFont || "'Bebas Neue', sans-serif",
-                fontSize: locationFontSize || '14px',
-                fontWeight: locationFontWeight || 'normal',
-              }}
-            >
-              {line}
-            </div>
-          ))}
+          <div 
+            style={{ 
+              fontFamily: locationFont || "'Bebas Neue', sans-serif",
+              fontSize: locationFontSize || '14px',
+              fontWeight: locationFontWeight || 'normal',
+              whiteSpace: 'nowrap', // Added to prevent text wrapping
+            }}
+          >
+            {location}
+          </div>
         </div>
       </div>
     );
@@ -287,21 +281,19 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           fontWeight: phoneFontWeight || 'bold',
           lineHeight: '1.2',
           zIndex: 10,
-          whiteSpace: 'nowrap', // Added to prevent text wrapping
+          whiteSpace: 'nowrap', // Ensures text doesn't wrap
         }}>
           <div>{phoneNumber || ''}</div>
-          {locationLines.map((line, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                fontFamily: locationFont || "'Bebas Neue', sans-serif",
-                fontSize: locationFontSize || '14px',
-                fontWeight: locationFontWeight || 'normal',
-              }}
-            >
-              {line}
-            </div>
-          ))}
+          <div 
+            style={{ 
+              fontFamily: locationFont || "'Bebas Neue', sans-serif",
+              fontSize: locationFontSize || '14px',
+              fontWeight: locationFontWeight || 'normal',
+              whiteSpace: 'nowrap', // Added to prevent text wrapping
+            }}
+          >
+            {location}
+          </div>
         </div>
       </div>
     );

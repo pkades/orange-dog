@@ -150,7 +150,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             </div>
           )}
           
-          {/* Phone number placement - UPDATED with nowrap for the text */}
+          {/* Phone number placement - with nowrap for the text */}
           <div 
             className="absolute pointer-events-auto"
             style={{
@@ -159,7 +159,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
               transform: 'translate(-50%, -50%)',
               textAlign: 'center',
               fontFamily: phoneFont || "'Bebas Neue', sans-serif",
-              whiteSpace: 'nowrap', // Added to prevent wrapping
+              whiteSpace: 'nowrap', // Prevents wrapping
             }}
           >
             <div style={{ 
@@ -170,7 +170,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             </div>
           </div>
 
-          {/* Location info placement */}
+          {/* Location info placement - UPDATED to add whiteSpace: 'nowrap' */}
           <div 
             className="absolute pointer-events-auto"
             style={{
@@ -179,6 +179,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
               transform: 'translate(-50%, -50%)',
               textAlign: 'center',
               fontFamily: locationFont || "'Bebas Neue', sans-serif",
+              whiteSpace: 'nowrap', // Added to prevent text wrapping
             }}
           >
             <div style={{ 
