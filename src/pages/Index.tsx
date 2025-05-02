@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -85,13 +86,19 @@ const Index = () => {
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
   const [accentColor, setAccentColor] = useState(ORANGE_DOG_COLOR);
   
-  // Updated logo size state - separate for facing out and facing in
-  const [facingOutLogoSize, setFacingOutLogoSize] = useState(70); // Default logo size for facing out (percentage)
-  const [facingInLogoSize, setFacingInLogoSize] = useState(70); // Default logo size for facing in (pixels)
+  // Logo size state - separate for facing out and facing in
+  const [facingOutLogoSize, setFacingOutLogoSize] = useState(70);
+  const [facingInLogoSize, setFacingInLogoSize] = useState(70);
   
   // Logo position state - for facing in preview
-  const [logoPositionX, setLogoPositionX] = useState(25); // Default X position (percentage)
-  const [logoPositionY, setLogoPositionY] = useState(25); // Default Y position (percentage)
+  const [logoPositionX, setLogoPositionX] = useState(25);
+  const [logoPositionY, setLogoPositionY] = useState(25);
+  
+  // NEW: Text position state - for phone and location
+  const [phonePositionX, setPhonePositionX] = useState(75);
+  const [phonePositionY, setPhonePositionY] = useState(25);
+  const [locationPositionX, setLocationPositionX] = useState(75);
+  const [locationPositionY, setLocationPositionY] = useState(35);
   
   // Font state
   const [fontFamily, setFontFamily] = useState(FONT_OPTIONS[0].value);
@@ -112,9 +119,10 @@ const Index = () => {
     setLogoUrl(url);
   };
 
-  // Handle phone number formatting
+  // Handle phone number formatting - UPDATED to allow spaces
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const cleaned = e.target.value.replace(/\D/g, '');
+    // Only remove characters that are not numbers or spaces
+    const cleaned = e.target.value.replace(/[^\d\s]/g, '');
     setPhoneNumber(cleaned);
   };
 
@@ -278,6 +286,105 @@ const Index = () => {
                     </div>
                   </div>
                   
+                  {/* NEW: Text Position Controls */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Phone Number Position */}
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Phone Number Position</h4>
+                      <div className="space-y-4">
+                        {/* Phone X Position */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <ArrowLeftRight className="h-4 w-4" />
+                            <Label htmlFor="phone-position-x">Horizontal Position</Label>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm">Left</span>
+                            <Slider
+                              id="phone-position-x"
+                              defaultValue={[phonePositionX]}
+                              max={90}
+                              min={10}
+                              step={1}
+                              onValueChange={(values) => setPhonePositionX(values[0])}
+                              className="flex-1"
+                            />
+                            <span className="text-sm">Right</span>
+                          </div>
+                        </div>
+                        
+                        {/* Phone Y Position */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <ArrowUpDown className="h-4 w-4" />
+                            <Label htmlFor="phone-position-y">Vertical Position</Label>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm">Top</span>
+                            <Slider
+                              id="phone-position-y"
+                              defaultValue={[phonePositionY]}
+                              max={90}
+                              min={10}
+                              step={1}
+                              onValueChange={(values) => setPhonePositionY(values[0])}
+                              className="flex-1"
+                            />
+                            <span className="text-sm">Bottom</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                    
+                    {/* Location Position */}
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-4">Location Position</h4>
+                      <div className="space-y-4">
+                        {/* Location X Position */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <ArrowLeftRight className="h-4 w-4" />
+                            <Label htmlFor="location-position-x">Horizontal Position</Label>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm">Left</span>
+                            <Slider
+                              id="location-position-x"
+                              defaultValue={[locationPositionX]}
+                              max={90}
+                              min={10}
+                              step={1}
+                              onValueChange={(values) => setLocationPositionX(values[0])}
+                              className="flex-1"
+                            />
+                            <span className="text-sm">Right</span>
+                          </div>
+                        </div>
+                        
+                        {/* Location Y Position */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <ArrowUpDown className="h-4 w-4" />
+                            <Label htmlFor="location-position-y">Vertical Position</Label>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm">Top</span>
+                            <Slider
+                              id="location-position-y"
+                              defaultValue={[locationPositionY]}
+                              max={90}
+                              min={10}
+                              step={1}
+                              onValueChange={(values) => setLocationPositionY(values[0])}
+                              className="flex-1"
+                            />
+                            <span className="text-sm">Bottom</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                  
                   {/* Layout selector */}
                   <LayoutSelector 
                     layouts={LABEL_LAYOUTS}
@@ -285,6 +392,7 @@ const Index = () => {
                     onLayoutChange={setSelectedLayoutId}
                     backgroundColor={backgroundColor}
                     accentColor={accentColor}
+                    hideTextPlaceholders={true} // NEW: Add prop to hide text placeholders
                   />
                   
                   {/* Font Selection */}
@@ -445,6 +553,10 @@ const Index = () => {
                   facingInLogoSize={facingInLogoSize}
                   logoPositionX={logoPositionX}
                   logoPositionY={logoPositionY}
+                  phonePositionX={phonePositionX}
+                  phonePositionY={phonePositionY}
+                  locationPositionX={locationPositionX}
+                  locationPositionY={locationPositionY}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -466,6 +578,10 @@ const Index = () => {
                   facingInLogoSize={facingInLogoSize}
                   logoPositionX={logoPositionX}
                   logoPositionY={logoPositionY}
+                  phonePositionX={phonePositionX}
+                  phonePositionY={phonePositionY}
+                  locationPositionX={locationPositionX}
+                  locationPositionY={locationPositionY}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -490,6 +606,10 @@ const Index = () => {
                   facingInLogoSize={facingInLogoSize}
                   logoPositionX={logoPositionX}
                   logoPositionY={logoPositionY}
+                  phonePositionX={phonePositionX}
+                  phonePositionY={phonePositionY}
+                  locationPositionX={locationPositionX}
+                  locationPositionY={locationPositionY}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}
@@ -514,6 +634,10 @@ const Index = () => {
                   facingInLogoSize={facingInLogoSize}
                   logoPositionX={logoPositionX}
                   logoPositionY={logoPositionY}
+                  phonePositionX={phonePositionX}
+                  phonePositionY={phonePositionY}
+                  locationPositionX={locationPositionX}
+                  locationPositionY={locationPositionY}
                   fontFamily={fontFamily}
                   phoneFont={phoneFont}
                   locationFont={locationFont}

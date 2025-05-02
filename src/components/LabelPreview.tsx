@@ -15,10 +15,14 @@ interface LabelPreviewProps {
     svgUrl: string; 
   } | null;
   type: 'facingOut' | 'facingIn';
-  facingOutLogoSize: number; // Renamed from logoSize to facingOutLogoSize
-  facingInLogoSize: number; // Added separate size for facing in
-  logoPositionX: number; // Added X position control
-  logoPositionY: number; // Added Y position control
+  facingOutLogoSize: number;
+  facingInLogoSize: number;
+  logoPositionX: number;
+  logoPositionY: number;
+  phonePositionX: number; // Added position control for phone
+  phonePositionY: number; // Added position control for phone
+  locationPositionX: number; // Added position control for location
+  locationPositionY: number; // Added position control for location
   fontFamily: string;
   phoneFont: string;
   locationFont: string;
@@ -42,10 +46,14 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
   accentColor,
   selectedLayout,
   type,
-  facingOutLogoSize, // Updated prop name
-  facingInLogoSize, // New prop
-  logoPositionX, // New prop
-  logoPositionY, // New prop
+  facingOutLogoSize,
+  facingInLogoSize,
+  logoPositionX,
+  logoPositionY,
+  phonePositionX, // New prop
+  phonePositionY, // New prop
+  locationPositionX, // New prop
+  locationPositionY, // New prop
   fontFamily,
   phoneFont,
   locationFont,
@@ -69,7 +77,7 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             src={logoUrl} 
             alt="Business logo" 
             className="max-w-full max-h-full object-contain"
-            style={{ width: `${facingOutLogoSize}%` }} // Use facingOutLogoSize here
+            style={{ width: `${facingOutLogoSize}%` }}
             onError={(e) => {
               console.error(`Failed to load logo: ${logoUrl}`);
               e.currentTarget.style.display = 'none';
@@ -126,12 +134,12 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             <div 
               className="absolute pointer-events-auto"
               style={{
-                width: `${facingInLogoSize}px`, // Use facingInLogoSize here
+                width: `${facingInLogoSize}px`,
                 height: isLayout2 ? 'auto' : '40px',
                 maxHeight: isLayout2 ? '50px' : 'auto',
-                top: `${logoPositionY}%`, // Apply Y position as percentage
-                left: `${logoPositionX}%`, // Apply X position as percentage
-                transform: 'translate(-50%, -50%)', // Center the logo at the position point
+                top: `${logoPositionY}%`,
+                left: `${logoPositionX}%`,
+                transform: 'translate(-50%, -50%)',
               }}
             >
               <img 
@@ -142,50 +150,43 @@ const LabelPreview: React.FC<LabelPreviewProps> = ({
             </div>
           )}
           
-          {/* Contact info placement - adjusted for layout2 */}
-          {isLayout2 ? (
-            <div 
-              className="absolute bottom-3 left-1/4 transform -translate-x-1/2 text-center pointer-events-auto"
-              style={{ 
-                fontFamily: phoneFont || "'Bebas Neue', sans-serif",
-              }}
-            >
-              <div style={{ 
-                fontSize: phoneFontSize || '16px',
-                fontWeight: phoneFontWeight || 'bold' 
-              }}>
-                {phoneNumber}
-              </div>
-              <div style={{ 
-                fontFamily: locationFont || "'Bebas Neue', sans-serif",
-                fontSize: locationFontSize || '12px',
-                fontWeight: locationFontWeight || 'normal'
-              }}>
-                {location}
-              </div>
+          {/* Contact info placement - UPDATED with position controls */}
+          <div 
+            className="absolute pointer-events-auto"
+            style={{
+              top: `${phonePositionY}%`, // Use phonePositionY
+              left: `${phonePositionX}%`, // Use phonePositionX
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
+              fontFamily: phoneFont || "'Bebas Neue', sans-serif",
+            }}
+          >
+            <div style={{ 
+              fontSize: phoneFontSize || '16px',
+              fontWeight: phoneFontWeight || 'bold' 
+            }}>
+              {phoneNumber}
             </div>
-          ) : (
-            <div 
-              className="absolute top-3 right-3 text-right pointer-events-auto" 
-              style={{ 
-                fontFamily: phoneFont || "'Bebas Neue', sans-serif",
-              }}
-            >
-              <div style={{ 
-                fontSize: phoneFontSize || '16px',
-                fontWeight: phoneFontWeight || 'bold' 
-              }}>
-                {phoneNumber}
-              </div>
-              <div style={{ 
-                fontFamily: locationFont || "'Bebas Neue', sans-serif",
-                fontSize: locationFontSize || '12px',
-                fontWeight: locationFontWeight || 'normal'
-              }}>
-                {location}
-              </div>
+          </div>
+
+          {/* Location info placement - UPDATED with position controls */}
+          <div 
+            className="absolute pointer-events-auto"
+            style={{
+              top: `${locationPositionY}%`, // Use locationPositionY
+              left: `${locationPositionX}%`, // Use locationPositionX
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
+              fontFamily: locationFont || "'Bebas Neue', sans-serif",
+            }}
+          >
+            <div style={{ 
+              fontSize: locationFontSize || '12px',
+              fontWeight: locationFontWeight || 'normal'
+            }}>
+              {location}
             </div>
-          )}
+          </div>
         </div>
       </div>
     );

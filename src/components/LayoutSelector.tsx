@@ -8,7 +8,7 @@ export interface Layout {
   id: string;
   name: string;
   image?: string;
-  svgUrl: string; // Add SVG URL property
+  svgUrl: string;
 }
 
 interface LayoutSelectorProps {
@@ -17,6 +17,7 @@ interface LayoutSelectorProps {
   onLayoutChange: (layoutId: string) => void;
   backgroundColor: string;
   accentColor: string;
+  hideTextPlaceholders?: boolean; // Added new prop
 }
 
 const LayoutSelector: React.FC<LayoutSelectorProps> = ({
@@ -25,6 +26,7 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
   onLayoutChange,
   backgroundColor,
   accentColor,
+  hideTextPlaceholders = false, // Default to false to maintain backward compatibility
 }) => {
   // Debug layouts on component mount
   useEffect(() => {
@@ -58,11 +60,13 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
           <span className="text-[8px]">LOGO</span>
         </div>
         
-        {/* Demo elements for preview only */}
-        <div className="absolute top-2 right-2 text-right text-xs z-10">
-          <div className="font-bold">PHONE</div>
-          <div>LOCATION</div>
-        </div>
+        {/* Demo elements for preview only - conditionally rendered based on hideTextPlaceholders */}
+        {!hideTextPlaceholders && (
+          <div className="absolute top-2 right-2 text-right text-xs z-10">
+            <div className="font-bold">PHONE</div>
+            <div>LOCATION</div>
+          </div>
+        )}
       </div>
     );
   };
