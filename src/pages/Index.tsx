@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -169,7 +168,7 @@ const Index = () => {
                   {/* Logo Upload */}
                   <LogoUploader onLogoChange={handleLogoChange} />
                   
-                  {/* MOVED: Layout selector under logo upload */}
+                  {/* Layout selector under logo upload */}
                   <LayoutSelector 
                     layouts={LABEL_LAYOUTS}
                     selectedLayoutId={selectedLayoutId}
@@ -178,6 +177,21 @@ const Index = () => {
                     accentColor={accentColor}
                     hideTextPlaceholders={true}
                   />
+                  
+                  {/* MOVED: Color Selection to be right after layout selection */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <CustomColorPicker 
+                      label="Background Colour"
+                      color={backgroundColor}
+                      onChange={setBackgroundColor}
+                    />
+                    
+                    <CustomColorPicker 
+                      label="Accent Colour"
+                      color={accentColor}
+                      onChange={setAccentColor}
+                    />
+                  </div>
                   
                   {/* Logo Size Adjustment for Facing Out */}
                   <div className="space-y-2">
@@ -498,21 +512,6 @@ const Index = () => {
                         </div>
                       </div>
                     </Card>
-                  </div>
-                  
-                  {/* Color Selection */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <CustomColorPicker 
-                      label="Background Colour"
-                      color={backgroundColor}
-                      onChange={setBackgroundColor}
-                    />
-                    
-                    <CustomColorPicker 
-                      label="Accent Colour"
-                      color={accentColor}
-                      onChange={setAccentColor}
-                    />
                   </div>
                   
                   <Button 
