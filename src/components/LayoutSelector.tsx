@@ -70,46 +70,62 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
   const renderLayoutPreview = (layout: Layout) => {
     // For layout1, we'll use the inline SVG with dynamic color substitution
     if (layout.id === 'layout1') {
-      // Create blob URL from SVG string for layout1
-      const svgWithColors = LAYOUT1_SVG
-        .replace(/fill="#FEFEFE"/g, `fill="${backgroundColor}"`)
-        .replace(/fill:#FEFEFE/g, `fill:${backgroundColor}`)
-        .replace(/fill="#F58634"/g, `fill="${accentColor}"`)
-        .replace(/fill:#F58634/g, `fill:${accentColor}`);
-      
-      const blob = new Blob([svgWithColors], { type: 'image/svg+xml' });
-      const svgUrl = URL.createObjectURL(blob);
-      
-      return (
-        <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
-          {/* SVG Background with dynamic colors */}
-          <div className="absolute inset-0 w-full h-full">
-            <img 
-              src={svgUrl}
-              alt={`${layout.name} Preview`} 
-              className="absolute inset-0 w-full h-full object-cover"
-              onLoad={() => URL.revokeObjectURL(svgUrl)}
-              onError={(e) => {
-                console.error(`Failed to load SVG for ${layout.name}`);
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          </div>
-          
-          {/* Demo logo for preview */}
-          <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center z-10">
-            <span className="text-[8px]">LOGO</span>
-          </div>
-          
-          {/* Demo elements for preview only - conditionally rendered based on hideTextPlaceholders */}
-          {!hideTextPlaceholders && (
-            <div className="absolute top-2 right-2 text-right text-xs z-10">
-              <div className="font-bold">PHONE</div>
-              <div>LOCATION</div>
+      try {
+        // Create blob URL from SVG string for layout1
+        const svgWithColors = LAYOUT1_SVG
+          .replace(/fill="#FEFEFE"/g, `fill="${backgroundColor}"`)
+          .replace(/fill:#FEFEFE/g, `fill:${backgroundColor}`)
+          .replace(/fill="#F58634"/g, `fill="${accentColor}"`)
+          .replace(/fill:#F58634/g, `fill:${accentColor}`);
+        
+        const blob = new Blob([svgWithColors], { type: 'image/svg+xml' });
+        const svgUrl = URL.createObjectURL(blob);
+        
+        return (
+          <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
+            {/* SVG Background with dynamic colors */}
+            <div className="absolute inset-0 w-full h-full">
+              <img 
+                src={svgUrl}
+                alt={`${layout.name} Preview`} 
+                className="absolute inset-0 w-full h-full object-cover"
+                onLoad={() => URL.revokeObjectURL(svgUrl)}
+                onError={(e) => {
+                  console.error(`Failed to load SVG for ${layout.name}`);
+                  e.currentTarget.style.display = 'none';
+                  const parent = e.currentTarget.parentElement;
+                  if (parent) {
+                    const fallback = document.createElement('div');
+                    fallback.textContent = "Template Failed to Load";
+                    fallback.className = "w-full h-full flex items-center justify-center text-red-500";
+                    parent.appendChild(fallback);
+                  }
+                }}
+              />
             </div>
-          )}
-        </div>
-      );
+            
+            {/* Demo logo for preview */}
+            <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center z-10">
+              <span className="text-[8px]">LOGO</span>
+            </div>
+            
+            {/* Demo elements for preview only - conditionally rendered based on hideTextPlaceholders */}
+            {!hideTextPlaceholders && (
+              <div className="absolute top-2 right-2 text-right text-xs z-10">
+                <div className="font-bold">PHONE</div>
+                <div>LOCATION</div>
+              </div>
+            )}
+          </div>
+        );
+      } catch (error) {
+        console.error("Error rendering layout1 preview:", error);
+        return (
+          <div className="w-full h-32 bg-red-50 border border-red-200 flex items-center justify-center">
+            <span className="text-red-500">Template Preview Failed</span>
+          </div>
+        );
+      }
     }
     
     // For other layouts, we'll use the old approach
@@ -129,6 +145,13 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
             onError={(e) => {
               console.error(`Failed to load SVG: ${layout.svgUrl}`);
               e.currentTarget.style.display = 'none';
+              const parent = e.currentTarget.parentElement;
+              if (parent) {
+                const fallback = document.createElement('div');
+                fallback.textContent = "Template Failed to Load";
+                fallback.className = "w-full h-full flex items-center justify-center text-red-500";
+                parent.appendChild(fallback);
+              }
             }}
           />
         </div>

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // Define the inline SVG string for layout 1
 const LAYOUT1_SVG = `<?xml version="1.0" encoding="UTF-8"?>
@@ -81,33 +81,54 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   const getSvgWithColors = () => {
     // For layout1, replace the colors in the SVG
     if (layoutId === 'layout1') {
-      const svgWithColors = LAYOUT1_SVG
-        .replace(/fill="#FEFEFE"/g, `fill="${backgroundColor}"`)
-        .replace(/fill:#FEFEFE/g, `fill:${backgroundColor}`)
-        .replace(/fill="#F58634"/g, `fill="${accentColor}"`)
-        .replace(/fill:#F58634/g, `fill:${accentColor}`);
-        
-      const blob = new Blob([svgWithColors], { type: 'image/svg+xml' });
-      return URL.createObjectURL(blob);
+      try {
+        const svgWithColors = LAYOUT1_SVG
+          .replace(/fill="#FEFEFE"/g, `fill="${backgroundColor}"`)
+          .replace(/fill:#FEFEFE/g, `fill:${backgroundColor}`)
+          .replace(/fill="#F58634"/g, `fill="${accentColor}"`)
+          .replace(/fill:#F58634/g, `fill:${accentColor}`);
+          
+        const blob = new Blob([svgWithColors], { type: 'image/svg+xml' });
+        return URL.createObjectURL(blob);
+      } catch (error) {
+        console.error("Error creating SVG blob:", error);
+        return ''; // Return empty string on error
+      }
     }
     
     // For other layouts, return the original URL
     return layoutSvgUrl;
   };
   
-  // Layout Option 1 - Using the new inline SVG
+  // Layout Option 1 - Using the inline SVG
   const renderLayout1 = () => {
     // Get the SVG URL with dynamic colors
     const svgUrl = getSvgWithColors();
     
     // Clean up the URL when component unmounts
-    React.useEffect(() => {
-      return () => {
-        if (layoutId === 'layout1') {
+    useEffect(() => {
+      if (layoutId === 'layout1' && svgUrl) {
+        return () => {
           URL.revokeObjectURL(svgUrl);
-        }
-      };
+        };
+      }
     }, [svgUrl]);
+    
+    if (!svgUrl) {
+      return (
+        <div style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: backgroundColor || '#FFFFFF',
+          color: '#FF0000',
+        }}>
+          Failed to load template
+        </div>
+      );
+    }
     
     return (
       <div style={{
@@ -129,6 +150,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
             height: '100%',
             objectFit: 'cover',
           }}
+          onError={(e) => {
+            console.error("Failed to load SVG image");
+            e.currentTarget.style.display = 'none';
+          }}
         />
         
         {/* Logo */}
@@ -147,6 +172,10 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
               src={logoUrl} 
               alt="Logo" 
               style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
+              onError={(e) => {
+                console.error("Failed to load logo image");
+                e.currentTarget.style.display = 'none';
+              }}
             />
           ) : (
             <div style={{ fontSize: '16px', fontWeight: 'bold' }}>LOGO</div>
@@ -164,7 +193,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           fontWeight: phoneFontWeight || 'bold',
           lineHeight: '1.2',
           zIndex: 10,
-          whiteSpace: 'nowrap', // Added to prevent text wrapping
+          whiteSpace: 'nowrap', 
         }}>
           <div style={{ fontFamily: phoneFont || "'Bebas Neue', sans-serif" }}>
             {phoneNumber || ''}
@@ -174,7 +203,7 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
               fontFamily: locationFont || "'Bebas Neue', sans-serif",
               fontSize: locationFontSize || '14px',
               fontWeight: locationFontWeight || 'normal',
-              whiteSpace: 'nowrap', // Added to prevent text wrapping
+              whiteSpace: 'nowrap', 
             }}
           >
             {location}
