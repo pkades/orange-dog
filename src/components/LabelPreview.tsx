@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useRef, useEffect, forwardRef, useImperativeHandle, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 
 // Define the inline SVG string for layout 1
@@ -102,11 +102,44 @@ const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
   console.log("Phone font:", phoneFont);
   console.log("Location font:", locationFont);
   
+  // State for SVG URL
+  const [svgUrl, setSvgUrl] = useState<string>('');
+  
   // Reference to the actual label content for exporting
   const contentRef = useRef<HTMLDivElement>(null);
   
   // Expose the content ref via the forwarded ref
   useImperativeHandle(ref, () => contentRef.current as HTMLDivElement);
+  
+  // Process SVG with dynamic colors when needed
+  useEffect(() => {
+    // Only process for layout1 and facing in
+    if (type === 'facingIn' && selectedLayout?.id === 'layout1') {
+      try {
+        const svgWithColors = LAYOUT1_SVG
+          .replace(/fill="#FEFEFE"/g, `fill="${backgroundColor}"`)
+          .replace(/fill:#FEFEFE/g, `fill:${backgroundColor}`)
+          .replace(/fill="#F58634"/g, `fill="${accentColor}"`)
+          .replace(/fill:#F58634/g, `fill:${accentColor}`);
+          
+        const blob = new Blob([svgWithColors], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        setSvgUrl(url);
+        
+        // Clean up the blob URL when component unmounts or dependencies change
+        return () => {
+          URL.revokeObjectURL(url);
+        };
+      } catch (error) {
+        console.error("Error creating SVG blob:", error);
+        setSvgUrl('');
+      }
+    } else if (selectedLayout?.svgUrl) {
+      setSvgUrl(selectedLayout.svgUrl);
+    } else {
+      setSvgUrl('');
+    }
+  }, [type, selectedLayout, backgroundColor, accentColor]);
   
   const renderFacingOut = () => (
     <div 
@@ -138,142 +171,120 @@ const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
       return <div className="w-full h-full flex items-center justify-center">No layout selected</div>;
     }
 
-    // For layout1, we'll use the inline SVG
+    // Layout1 special processing
     if (selectedLayout.id === 'layout1') {
-      try {
-        // Replace the colors in the SVG
-        const svgWithColors = LAYOUT1_SVG
-          .replace(/fill="#FEFEFE"/g, `fill="${backgroundColor}"`)
-          .replace(/fill:#FEFEFE/g, `fill:${backgroundColor}`)
-          .replace(/fill="#F58634"/g, `fill="${accentColor}"`)
-          .replace(/fill:#F58634/g, `fill:${accentColor}`);
-          
-        // Create a blob URL to display the modified SVG
-        const blob = new Blob([svgWithColors], { type: 'image/svg+xml' });
-        const svgUrl = URL.createObjectURL(blob);
-        
-        // Clean up blob URL when component unmounts
-        useEffect(() => {
-          return () => {
-            URL.revokeObjectURL(svgUrl);
-          };
-        }, [svgUrl]);
-        
-        return (
-          <div className="w-full h-full relative">
-            {/* SVG background using the inline SVG with dynamic colors */}
-            <div className="absolute inset-0 w-full h-full z-0">
-              <img 
-                src={svgUrl}
-                alt="Service Label Template" 
-                className="w-full h-full object-fill"
-                onError={(e) => {
-                  console.error(`Failed to load SVG from blob URL`);
-                  e.currentTarget.style.display = 'none';
-                  const parent = e.currentTarget.parentElement;
-                  if (parent) {
-                    const fallback = document.createElement('div');
-                    fallback.textContent = "Template Failed to Load";
-                    fallback.className = "w-full h-full flex items-center justify-center text-red-500";
-                    parent.appendChild(fallback);
-                  }
-                }}
-              />
-            </div>
-            
-            {/* Logo and text overlay - positioned in front with z-index 10 */}
-            <div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
-              {/* Logo placement */}
-              {logoUrl && (
-                <div 
-                  className="absolute pointer-events-auto"
-                  style={{
-                    width: `${facingInLogoSize}px`,
-                    height: 'auto',
-                    maxHeight: '50px',
-                    top: `${logoPositionY}%`,
-                    left: `${logoPositionX}%`,
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                >
-                  <img 
-                    src={logoUrl} 
-                    alt="Business logo" 
-                    className="max-w-full max-h-full object-contain"
-                    onError={(e) => {
-                      console.error(`Failed to load logo`);
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                </div>
-              )}
-              
-              {/* Phone number placement - with nowrap for the text */}
-              <div 
-                className="absolute pointer-events-auto"
-                style={{
-                  top: `${phonePositionY}%`,
-                  left: `${phonePositionX}%`,
-                  transform: 'translate(-50%, -50%)',
-                  textAlign: 'center',
-                  fontFamily: phoneFont || "'Bebas Neue', sans-serif",
-                  whiteSpace: 'nowrap', // Prevents wrapping
-                }}
-              >
-                <div style={{ 
-                  fontSize: phoneFontSize || '16px',
-                  fontWeight: phoneFontWeight || 'bold',
-                  fontFamily: phoneFont || "'Bebas Neue', sans-serif",
-                }}>
-                  {phoneNumber}
-                </div>
-              </div>
-
-              {/* Location info placement - with nowrap */}
-              <div 
-                className="absolute pointer-events-auto"
-                style={{
-                  top: `${locationPositionY}%`,
-                  left: `${locationPositionX}%`,
-                  transform: 'translate(-50%, -50%)',
-                  textAlign: 'center',
-                  fontFamily: locationFont || "'Bebas Neue', sans-serif",
-                  whiteSpace: 'nowrap', // Prevents text wrapping
-                }}
-              >
-                <div style={{ 
-                  fontSize: locationFontSize || '12px',
-                  fontWeight: locationFontWeight || 'normal',
-                  fontFamily: locationFont || "'Bebas Neue', sans-serif",
-                }}>
-                  {location}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      } catch (error) {
-        console.error("Error rendering layout1:", error);
+      if (!svgUrl) {
         return (
           <div className="w-full h-full flex items-center justify-center bg-red-50 text-red-500">
             Failed to load template
           </div>
         );
       }
+      
+      return (
+        <div className="w-full h-full relative">
+          {/* SVG background */}
+          <div className="absolute inset-0 w-full h-full z-0">
+            <img 
+              src={svgUrl}
+              alt="Service Label Template" 
+              className="w-full h-full object-fill"
+              onError={(e) => {
+                console.error(`Failed to load SVG from blob URL`);
+                e.currentTarget.style.display = 'none';
+                const parent = e.currentTarget.parentElement;
+                if (parent) {
+                  const fallback = document.createElement('div');
+                  fallback.textContent = "Template Failed to Load";
+                  fallback.className = "w-full h-full flex items-center justify-center text-red-500";
+                  parent.appendChild(fallback);
+                }
+              }}
+            />
+          </div>
+          
+          {/* Logo and text overlay */}
+          <div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
+            {/* Logo placement */}
+            {logoUrl && (
+              <div 
+                className="absolute pointer-events-auto"
+                style={{
+                  width: `${facingInLogoSize}px`,
+                  height: 'auto',
+                  maxHeight: '50px',
+                  top: `${logoPositionY}%`,
+                  left: `${logoPositionX}%`,
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <img 
+                  src={logoUrl} 
+                  alt="Business logo" 
+                  className="max-w-full max-h-full object-contain"
+                  onError={(e) => {
+                    console.error(`Failed to load logo`);
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+            
+            {/* Phone number placement */}
+            <div 
+              className="absolute pointer-events-auto"
+              style={{
+                top: `${phonePositionY}%`,
+                left: `${phonePositionX}%`,
+                transform: 'translate(-50%, -50%)',
+                textAlign: 'center',
+                fontFamily: phoneFont || "'Bebas Neue', sans-serif",
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <div style={{ 
+                fontSize: phoneFontSize || '16px',
+                fontWeight: phoneFontWeight || 'bold',
+                fontFamily: phoneFont || "'Bebas Neue', sans-serif",
+              }}>
+                {phoneNumber}
+              </div>
+            </div>
+
+            {/* Location info placement */}
+            <div 
+              className="absolute pointer-events-auto"
+              style={{
+                top: `${locationPositionY}%`,
+                left: `${locationPositionX}%`,
+                transform: 'translate(-50%, -50%)',
+                textAlign: 'center',
+                fontFamily: locationFont || "'Bebas Neue', sans-serif",
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <div style={{ 
+                fontSize: locationFontSize || '12px',
+                fontWeight: locationFontWeight || 'normal',
+                fontFamily: locationFont || "'Bebas Neue', sans-serif",
+              }}>
+                {location}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     }
     
-    // For other layouts, use the original SVG URL
-    const svgUrl = selectedLayout.svgUrl;
-    
-    // Special layout adjustments for Option 2 (layout2)
+    // Default layout handling
     const isLayout2 = selectedLayout.id === 'layout2';
     
     return (
       <div className="w-full h-full relative">
-        {/* SVG background - positioned at the back with z-index 0 */}
+        {/* SVG background */}
         <div className="absolute inset-0 w-full h-full z-0">
           <img 
-            src={svgUrl} 
+            src={selectedLayout.svgUrl} 
             alt="Service Label Template" 
             className="w-full h-full object-fill"
             style={{ 
@@ -281,7 +292,7 @@ const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
               filter: `drop-shadow(0 0 0 ${accentColor}) saturate(100%)` 
             }}
             onError={(e) => {
-              console.error(`Failed to load SVG: ${svgUrl}`);
+              console.error(`Failed to load SVG: ${selectedLayout.svgUrl}`);
               e.currentTarget.style.display = 'none';
               const parent = e.currentTarget.parentElement;
               if (parent) {
@@ -294,9 +305,9 @@ const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
           />
         </div>
         
-        {/* Logo and text overlay - positioned in front with z-index 10 */}
+        {/* Logo and text overlay */}
         <div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
-          {/* Logo placement - adjusted for layout2 and adding position controls */}
+          {/* Logo placement */}
           {logoUrl && (
             <div 
               className="absolute pointer-events-auto"
@@ -321,7 +332,7 @@ const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
             </div>
           )}
           
-          {/* Phone number placement - with nowrap for the text */}
+          {/* Phone number placement */}
           <div 
             className="absolute pointer-events-auto"
             style={{
@@ -330,7 +341,7 @@ const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
               transform: 'translate(-50%, -50%)',
               textAlign: 'center',
               fontFamily: phoneFont || "'Bebas Neue', sans-serif",
-              whiteSpace: 'nowrap', // Prevents wrapping
+              whiteSpace: 'nowrap',
             }}
           >
             <div style={{ 
@@ -342,7 +353,7 @@ const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
             </div>
           </div>
 
-          {/* Location info placement - with nowrap */}
+          {/* Location info placement */}
           <div 
             className="absolute pointer-events-auto"
             style={{
@@ -351,7 +362,7 @@ const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
               transform: 'translate(-50%, -50%)',
               textAlign: 'center',
               fontFamily: locationFont || "'Bebas Neue', sans-serif",
-              whiteSpace: 'nowrap', // Prevents text wrapping
+              whiteSpace: 'nowrap',
             }}
           >
             <div style={{ 
@@ -367,6 +378,7 @@ const LabelPreview = forwardRef<HTMLDivElement, LabelPreviewProps>(({
     );
   };
   
+  // Always return a consistent structure of components, regardless of type
   return (
     <Card className="overflow-hidden">
       <CardContent className="p-0">

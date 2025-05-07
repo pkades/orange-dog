@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Define the inline SVG string for layout 1
 const LAYOUT1_SVG = `<?xml version="1.0" encoding="UTF-8"?>
@@ -77,8 +77,11 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
   console.log("Layout1Design - Phone font:", phoneFont);
   console.log("Layout1Design - Location font:", locationFont);
   
-  // Create a blob URL for the SVG with dynamic colors for layout1
-  const getSvgWithColors = () => {
+  // State to hold the processed SVG URL
+  const [svgUrl, setSvgUrl] = useState<string>('');
+  
+  // Process SVG with dynamic colors
+  useEffect(() => {
     // For layout1, replace the colors in the SVG
     if (layoutId === 'layout1') {
       try {
@@ -89,45 +92,41 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
           .replace(/fill:#F58634/g, `fill:${accentColor}`);
           
         const blob = new Blob([svgWithColors], { type: 'image/svg+xml' });
-        return URL.createObjectURL(blob);
+        const url = URL.createObjectURL(blob);
+        setSvgUrl(url);
+        
+        // Clean up the URL when component unmounts or when dependencies change
+        return () => {
+          URL.revokeObjectURL(url);
+        };
       } catch (error) {
         console.error("Error creating SVG blob:", error);
-        return ''; // Return empty string on error
+        setSvgUrl(''); // Set empty string on error
       }
+    } else {
+      // For other layouts, use the provided URL
+      setSvgUrl(layoutSvgUrl);
     }
-    
-    // For other layouts, return the original URL
-    return layoutSvgUrl;
-  };
+  }, [layoutId, backgroundColor, accentColor, layoutSvgUrl]);
+  
+  const renderErrorState = () => (
+    <div style={{
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: backgroundColor || '#FFFFFF',
+      color: '#FF0000',
+    }}>
+      Failed to load template
+    </div>
+  );
   
   // Layout Option 1 - Using the inline SVG
   const renderLayout1 = () => {
-    // Get the SVG URL with dynamic colors
-    const svgUrl = getSvgWithColors();
-    
-    // Clean up the URL when component unmounts
-    useEffect(() => {
-      if (layoutId === 'layout1' && svgUrl) {
-        return () => {
-          URL.revokeObjectURL(svgUrl);
-        };
-      }
-    }, [svgUrl]);
-    
     if (!svgUrl) {
-      return (
-        <div style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: backgroundColor || '#FFFFFF',
-          color: '#FF0000',
-        }}>
-          Failed to load template
-        </div>
-      );
+      return renderErrorState();
     }
     
     return (
@@ -251,8 +250,8 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
     );
   };
 
-  const renderLayout = () => {
-    // Determine which layout to render based on layoutId
+  // Render the appropriate layout based on layoutId
+  const renderContent = () => {
     switch(layoutId) {
       case 'layout1':
         return renderLayout1();
@@ -265,7 +264,8 @@ const Layout1Design: React.FC<Layout1DesignProps> = ({
     }
   };
 
-  return renderLayout();
+  // Always return content without conditional early returns
+  return renderContent();
 };
 
 export default Layout1Design;

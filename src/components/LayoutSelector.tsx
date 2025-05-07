@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent } from "@/components/ui/card";
@@ -61,113 +61,122 @@ const LayoutSelector: React.FC<LayoutSelectorProps> = ({
   accentColor,
   hideTextPlaceholders = false,
 }) => {
+  // State to hold the generated SVG URLs
+  const [svgUrls, setSvgUrls] = useState<Record<string, string>>({});
+  
   // Debug layouts on component mount
   useEffect(() => {
     console.log("Available layouts:", layouts);
   }, [layouts]);
+  
+  // Generate SVG URLs with dynamic colors
+  useEffect(() => {
+    // Create a new object to store the generated URLs
+    const newUrls: Record<string, string> = {};
+    
+    // For layout1, process the inline SVG with dynamic colors
+    try {
+      const svgWithColors = LAYOUT1_SVG
+        .replace(/fill="#FEFEFE"/g, `fill="${backgroundColor}"`)
+        .replace(/fill:#FEFEFE/g, `fill:${backgroundColor}`)
+        .replace(/fill="#F58634"/g, `fill="${accentColor}"`)
+        .replace(/fill:#F58634/g, `fill:${accentColor}`);
+      
+      const blob = new Blob([svgWithColors], { type: 'image/svg+xml' });
+      newUrls['layout1'] = URL.createObjectURL(blob);
+    } catch (error) {
+      console.error("Error creating SVG blob for layout1:", error);
+    }
+    
+    // Update the state with the new URLs
+    setSvgUrls(newUrls);
+    
+    // Clean up the URLs when component unmounts or dependencies change
+    return () => {
+      Object.values(newUrls).forEach(url => {
+        URL.revokeObjectURL(url);
+      });
+    };
+  }, [backgroundColor, accentColor]);
 
   // Render the layout preview based on layout ID
   const renderLayoutPreview = (layout: Layout) => {
-    // For layout1, we'll use the inline SVG with dynamic color substitution
-    if (layout.id === 'layout1') {
-      try {
-        // Create blob URL from SVG string for layout1
-        const svgWithColors = LAYOUT1_SVG
-          .replace(/fill="#FEFEFE"/g, `fill="${backgroundColor}"`)
-          .replace(/fill:#FEFEFE/g, `fill:${backgroundColor}`)
-          .replace(/fill="#F58634"/g, `fill="${accentColor}"`)
-          .replace(/fill:#F58634/g, `fill:${accentColor}`);
-        
-        const blob = new Blob([svgWithColors], { type: 'image/svg+xml' });
-        const svgUrl = URL.createObjectURL(blob);
-        
-        return (
-          <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
-            {/* SVG Background with dynamic colors */}
-            <div className="absolute inset-0 w-full h-full">
-              <img 
-                src={svgUrl}
-                alt={`${layout.name} Preview`} 
-                className="absolute inset-0 w-full h-full object-cover"
-                onLoad={() => URL.revokeObjectURL(svgUrl)}
-                onError={(e) => {
-                  console.error(`Failed to load SVG for ${layout.name}`);
-                  e.currentTarget.style.display = 'none';
-                  const parent = e.currentTarget.parentElement;
-                  if (parent) {
-                    const fallback = document.createElement('div');
-                    fallback.textContent = "Template Failed to Load";
-                    fallback.className = "w-full h-full flex items-center justify-center text-red-500";
-                    parent.appendChild(fallback);
-                  }
-                }}
-              />
-            </div>
-            
-            {/* Demo logo for preview */}
-            <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center z-10">
-              <span className="text-[8px]">LOGO</span>
-            </div>
-            
-            {/* Demo elements for preview only - conditionally rendered based on hideTextPlaceholders */}
-            {!hideTextPlaceholders && (
-              <div className="absolute top-2 right-2 text-right text-xs z-10">
-                <div className="font-bold">PHONE</div>
-                <div>LOCATION</div>
-              </div>
-            )}
+    // For layout1, use the dynamically generated SVG URL with colors
+    if (layout.id === 'layout1' && svgUrls['layout1']) {
+      return (
+        <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
+          {/* SVG Background with dynamic colors */}
+          <div className="absolute inset-0 w-full h-full">
+            <img 
+              src={svgUrls['layout1']}
+              alt={`${layout.name} Preview`} 
+              className="absolute inset-0 w-full h-full object-cover"
+              onError={(e) => {
+                console.error(`Failed to load SVG for ${layout.name}`);
+                e.currentTarget.style.display = 'none';
+                const parent = e.currentTarget.parentElement;
+                if (parent) {
+                  const fallback = document.createElement('div');
+                  fallback.textContent = "Template Failed to Load";
+                  fallback.className = "w-full h-full flex items-center justify-center text-red-500";
+                  parent.appendChild(fallback);
+                }
+              }}
+            />
           </div>
-        );
-      } catch (error) {
-        console.error("Error rendering layout1 preview:", error);
-        return (
-          <div className="w-full h-32 bg-red-50 border border-red-200 flex items-center justify-center">
-            <span className="text-red-500">Template Preview Failed</span>
+          
+          {/* Demo logo for preview */}
+          <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center z-10">
+            <span className="text-[8px]">LOGO</span>
           </div>
-        );
-      }
+          
+          {/* Demo elements for preview only - conditionally rendered based on hideTextPlaceholders */}
+          {!hideTextPlaceholders && (
+            <div className="absolute top-2 right-2 text-right text-xs z-10">
+              <div className="font-bold">PHONE</div>
+              <div>LOCATION</div>
+            </div>
+          )}
+        </div>
+      );
     }
     
-    // For other layouts, we'll use the old approach
-    return (
-      <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
-        {/* SVG Background */}
-        <div className="absolute inset-0 w-full h-full">
-          <img 
-            src={layout.svgUrl}
-            alt={`${layout.name} Preview`} 
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ 
-              backgroundColor: layout.id === selectedLayoutId ? backgroundColor : undefined,
-              filter: layout.id === selectedLayoutId ? 
-                `drop-shadow(0 0 0 ${accentColor}) saturate(100%)` : undefined 
-            }}
-            onError={(e) => {
-              console.error(`Failed to load SVG: ${layout.svgUrl}`);
-              e.currentTarget.style.display = 'none';
-              const parent = e.currentTarget.parentElement;
-              if (parent) {
-                const fallback = document.createElement('div');
-                fallback.textContent = "Template Failed to Load";
-                fallback.className = "w-full h-full flex items-center justify-center text-red-500";
-                parent.appendChild(fallback);
-              }
-            }}
-          />
-        </div>
-        
-        {/* Demo logo for preview */}
-        <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center z-10">
-          <span className="text-[8px]">LOGO</span>
-        </div>
-        
-        {/* Demo elements for preview only - conditionally rendered based on hideTextPlaceholders */}
-        {!hideTextPlaceholders && (
-          <div className="absolute top-2 right-2 text-right text-xs z-10">
-            <div className="font-bold">PHONE</div>
-            <div>LOCATION</div>
+    // For layout2 and layout3, we'll use placeholder content
+    if (layout.id === 'layout2' || layout.id === 'layout3') {
+      return (
+        <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden">
+          {/* Placeholder background for layout2 and layout3 */}
+          <div className="absolute inset-0 w-full h-full bg-gray-100 flex items-center justify-center">
+            <div 
+              className="text-center font-medium"
+              style={{ color: layout.id === selectedLayoutId ? accentColor : 'gray' }}
+            >
+              {layout.name}
+            </div>
           </div>
-        )}
+          
+          {/* Demo logo for preview */}
+          <div className="absolute top-2 left-2 w-10 h-6 bg-gray-300 flex items-center justify-center z-10">
+            <span className="text-[8px]">LOGO</span>
+          </div>
+          
+          {/* Demo elements for preview only - conditionally rendered based on hideTextPlaceholders */}
+          {!hideTextPlaceholders && (
+            <div className="absolute top-2 right-2 text-right text-xs z-10">
+              <div className="font-bold">PHONE</div>
+              <div>LOCATION</div>
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    // Fallback for any other layouts
+    return (
+      <div className="w-full h-32 bg-white border border-gray-200 relative overflow-hidden flex items-center justify-center">
+        <div className="text-center text-gray-500">
+          Layout Preview Unavailable
+        </div>
       </div>
     );
   };
